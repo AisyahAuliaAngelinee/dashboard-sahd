@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+.DS_Store
+
+# Local configuration and generated output
+.env*
+!.env.example
+dist/
+.openai/
+.vercel/
+*.log

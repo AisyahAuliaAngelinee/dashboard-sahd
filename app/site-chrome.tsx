@@ -1,0 +1,12 @@
+ 'use client';
+import {useRef, useState} from 'react';
+import {Plus, ChevronDown, HeartPulse, Flame, ArrowUpRight, Menu, X} from 'lucide-react';
+import Gallery from './gallery';
+export function SiteHeader(){
+const [menu,setMenu]=useState(false);
+const divisionMenu=useRef<HTMLDetailsElement>(null);
+return <> <div className="topbar"><span><span className="status-dot"/> HERE FOR YOU. AROUND THE CLOCK.</span><span>LOS SANTOS & SANDY SHORES <Plus size={11}/></span></div>
+ <header><a className="brand" href="/" aria-label="Executive Medical Center Home"><span className="brand-logo"><img src="/sahd-logo.webp" alt="SAHD logo"/></span><span>EXECUTIVE<small>RP MEDICAL CENTER</small></span></a><nav className={menu?'open':''}>{[['Home','home'],['Facilities','facility'],['Services','services'],['Doctors','doctors'],['Locations','locations']].map(([label,id])=><a onClick={()=>setMenu(false)} key={id} href={'/#'+id}>{label}</a>)}<details className="division-menu" ref={divisionMenu} onBlur={e=>{if(!e.currentTarget.contains(e.relatedTarget as Node))e.currentTarget.open=false}} onKeyDown={e=>{if(e.key==='Escape'){e.currentTarget.open=false;e.currentTarget.querySelector('summary')?.focus()}}}><summary>Divisions <ChevronDown size={13}/></summary><div className="division-dropdown"><a href="/medical-service" onClick={()=>{setMenu(false);if(divisionMenu.current)divisionMenu.current.open=false}}><HeartPulse size={17}/><span>Medical Service<small>Medical care & treatment</small></span></a><a href="/fire-department" onClick={()=>{setMenu(false);if(divisionMenu.current)divisionMenu.current.open=false}}><Flame size={17}/><span>Fire Department<small>Fire response & rescue</small></span></a></div></details></nav><a className="nav-cta" href="/#locations">Visit Us <ArrowUpRight size={16}/></a><button className="menu-toggle" onClick={()=>setMenu(!menu)} aria-label="Toggle navigation" aria-expanded={menu}>{menu?<X/>:<Menu/>}</button></header>
+</>;
+}
+export function SiteFooter(){return <footer><a className="brand" href="/"><span className="brand-logo"><img src="/sahd-logo.webp" alt="SAHD logo"/></span><span>EXECUTIVE<small>RP MEDICAL CENTER</small></span></a><p>© {new Date().getFullYear()} Anton Epson, MD. All rights reserved.<span>Fictional medical center for GTA Roleplay.</span></p><div className="footer-links" aria-label="More pages"><Gallery/><a href="/pendulus-x-sahd">Pendulus X SAHD</a></div><span className="footer-sign">DEDICATED TO LIFE. <Plus size={13}/></span></footer>;}
