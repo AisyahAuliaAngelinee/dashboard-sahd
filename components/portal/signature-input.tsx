@@ -1,0 +1,3 @@
+'use client';
+import {useId} from 'react';
+export default function SignatureInput({label,value,disabled,hint,onChange}:{label:string;value:string;disabled:boolean;hint:string;onChange:(value:string)=>void}){const id=useId();return <span className="signature-input-wrap" tabIndex={disabled?0:undefined} aria-label={disabled?`${label}: ${hint}`:undefined} aria-describedby={disabled?id:undefined}><input aria-label={label} disabled={disabled} aria-describedby={disabled?id:undefined} value={value} onChange={e=>onChange(e.target.value)}/>{disabled&&<span className="signature-input-tooltip" id={id} role="tooltip">{hint}</span>}</span>}

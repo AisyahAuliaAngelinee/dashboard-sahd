@@ -1,0 +1,35 @@
+'use client';
+import { createContext,useContext,useEffect,useState } from 'react';import {useRouter} from 'next/navigation';
+import type {Profile,Notice,Appointment,Surgery} from '@/lib/portal-data';import type {Bootstrap} from '@/lib/portal-server';import {consultationAppointment,type ConsultationRow} from '@/lib/consultation';
+import {browserClient} from '@/lib/supabase/client';
+type State={mode:'demo'|'live';profile:Profile;members:Profile[];notices:Notice[];appointments:Appointment[];surgeries:Surgery[];announcements:Bootstrap['announcements'];error:string|null;ready:boolean;saveProfile:(p:Profile)=>Promise<void>;markRead:(id?:string)=>void;logout:()=>Promise<void>;uploadAvatar:(file:File)=>Promise<string>};
+const Context=createContext<State|null>(null);
+export function PortalProvider({children,initial}:{children:React.ReactNode;initial:Bootstrap}){
+ const router=useRouter();const [profile,setProfile]=useState(initial.profile),[notices,setNotices]=useState(initial.notices),[error,setError]=useState(initial.error),[appointments,setAppointments]=useState(initial.appointments),[announcements,setAnnouncements]=useState(initial.announcements);
+ useEffect(()=>{setProfile(initial.profile);setNotices(initial.notices);setError(initial.error);setAppointments(initial.appointments);setAnnouncements(initial.announcements);if(initial.mode!=='demo')return;try{const raw=localStorage.getItem('sahd-demo-profile');if(raw){const saved=JSON.parse(raw);setProfile({...initial.profile,name:typeof saved.name==='string'?saved.name:initial.profile.name,avatar:typeof saved.avatar==='string'?saved.avatar:'',notifications:typeof saved.notifications==='boolean'?saved.notifications:true})}const read=JSON.parse(localStorage.getItem('sahd-demo-read')||'[]');if(Array.isArray(read))setNotices(n=>n.map(x=>({...x,read:read.includes(x.id)})))}catch{}},[initial]);
+ useEffect(()=>{
+  if(initial.mode!=='live')return;
+  const {data:{subscription}}=browserClient().auth.onAuthStateChange((event)=>{
+   if(event==='SIGNED_OUT')void fetch('/api/demo',{method:'DELETE'}).finally(()=>window.location.replace('/login'));
+   if(event==='PASSWORD_RECOVERY')window.location.replace('/reset-password');
+  });
+  return ()=>subscription.unsubscribe();
+ },[initial.mode]);
+ useEffect(()=>{
+  if(initial.mode==='demo'){
+   const update=()=>{try{const rows:ConsultationRow[]=JSON.parse(localStorage.getItem(`sahd-consultations:${profile.id}`)||'[]');const extra:Notice[]=JSON.parse(localStorage.getItem(`sahd-demo-notices:${profile.id}`)||'[]');const read:string[]=JSON.parse(localStorage.getItem('sahd-demo-read')||'[]');setAppointments([...rows.filter(r=>!r.deleted_at).map(consultationAppointment),...initial.appointments.filter(a=>!rows.some(r=>r.id===a.id))]);const announcements=JSON.parse(localStorage.getItem('sahd-demo-announcements')||'[]');setAnnouncements([...announcements.filter((a:{deleted_at?:string})=>!a.deleted_at).map((a:{id:string;title:string;subtitle:string;body_text:string;published_at:string})=>({id:a.id,title:a.title,subtitle:a.subtitle,body:a.body_text,publishedAt:a.published_at})),...initial.announcements.filter(a=>!announcements.some((r:{id:string})=>r.id===a.id))].sort((a,b)=>b.publishedAt.localeCompare(a.publishedAt)));setNotices([...extra,...initial.notices].map(n=>({...n,read:n.read||read.includes(n.id)})))}catch{}};
+   update();window.addEventListener('sahd-consultations-changed',update);window.addEventListener('sahd-announcements-changed',update);return ()=>{window.removeEventListener('sahd-consultations-changed',update);window.removeEventListener('sahd-announcements-changed',update)};
+  }
+  const client=browserClient();let timer:ReturnType<typeof setTimeout>;
+  const refresh=()=>{clearTimeout(timer);timer=setTimeout(()=>router.refresh(),200)};
+  const channel=client.channel(`portal-events:${profile.id}`).on('postgres_changes',{event:'INSERT',schema:'public',table:'notifications',filter:`recipient_id=eq.${profile.id}`},refresh).on('postgres_changes',{event:'*',schema:'public',table:'consultations'},refresh).on('postgres_changes',{event:'*',schema:'public',table:'announcements'},refresh).subscribe();
+  return ()=>{clearTimeout(timer);void client.removeChannel(channel)};
+ },[initial.mode,initial.appointments,initial.notices,initial.announcements,profile.id,router]);
+ async function saveProfile(next:Profile){if(initial.mode==='demo'){localStorage.setItem('sahd-demo-profile',JSON.stringify({name:next.name,avatar:next.avatar,notifications:next.notifications}))}else{const res=await fetch('/api/profile',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:next.name,notifications:next.notifications})});if(!res.ok)throw new Error((await res.json()).error||'Profil gagal disimpan.')}setProfile({...next,role:profile.role,division:profile.division});if(initial.mode==='live')router.refresh()}
+ async function uploadAvatar(file:File){const form=new FormData();form.set('avatar',file);const res=await fetch('/api/profile',{method:'POST',body:form});const body=await res.json();if(!res.ok)throw new Error(body.error||'Upload gagal.');return String(body.avatar||'')}
+ function markRead(id?:string){void (async()=>{if(initial.mode==='live'){const res=await fetch('/api/notifications',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});if(!res.ok){setError('Status notifikasi gagal disimpan.');return}}setNotices(n=>{const updated=n.map(x=>({...x,read:x.read||!id||x.id===id}));if(initial.mode==='demo')localStorage.setItem('sahd-demo-read',JSON.stringify(updated.filter(x=>x.read).map(x=>x.id)));return updated})})().catch(()=>setError('Tidak dapat memperbarui notifikasi.'))}
+ async function logout(){try{if(initial.mode==='live'){const {error}=await browserClient().auth.signOut({scope:'local'});if(error)throw error}const response=await fetch('/api/demo',{method:'DELETE'});if(!response.ok)throw new Error('Logout gagal.');window.location.replace('/login')}catch{setError('Logout gagal. Coba lagi.')}}
+ return <Context.Provider value={{...initial,profile,members:initial.members.map(m=>m.id===profile.id?profile:m),notices,appointments,announcements,error,ready:true,saveProfile,markRead,logout,uploadAvatar}}>{children}</Context.Provider>
+}
+export function usePortal(){const context=useContext(Context);if(!context)throw new Error('Missing portal provider');return context}
+export function Avatar({profile}:{profile:Pick<Profile,'name'|'avatar'>}){const [failed,setFailed]=useState(false);useEffect(()=>setFailed(false),[profile.avatar]);return <span className="avatar">{profile.avatar&&!failed?<img src={profile.avatar} onError={()=>setFailed(true)} referrerPolicy="no-referrer" alt={`Foto ${profile.name}`}/>:profile.name.split(' ').slice(0,2).map(n=>n[0]).join('')}</span>}

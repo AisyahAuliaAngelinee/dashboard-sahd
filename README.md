@@ -9,7 +9,10 @@ Website profil medical service dan fire department untuk komunitas GTA Roleplay 
 | Next.js 16 (App Router) | Routing, rendering, dan production build |
 | React 19 | Komponen dan interaksi antarmuka |
 | TypeScript 5 | Pemeriksaan tipe |
-| CSS | Layout responsif, tema divisi, dan styling |
+| Tailwind CSS 4 dan shadcn UI | Antarmuka portal, form, dialog, serta menu |
+| CSS | Styling website publik |
+| Supabase | Integrasi auth, database PostgreSQL, dan avatar storage |
+| Recharts | Analytics surgery |
 | Framer Motion 12 | Animasi antarmuka |
 | Lucide React | Ikon |
 | Google Fonts — DM Sans | Tipografi |
@@ -36,7 +39,9 @@ npm run build
 npm start
 ```
 
-Website ini frontend-only: tidak membutuhkan database, API key, atau file `.env`. Tidak ada sistem login maupun penyimpanan data pengguna. Font Google membutuhkan koneksi internet.
+Website publik dapat berjalan tanpa konfigurasi database. Portal staf Sprint 1 tersedia di `/login` dan `/dashboard`, dengan mode demo lokal. Integrasi register, Google, Discord, profil, dan data anggota memerlukan konfigurasi Supabase; lihat [panduan Sprint 1](docs/implementation/SPRINT-1-SETUP.md). Login produksi belum diverifikasi terhadap layanan eksternal. Font Google membutuhkan koneksi internet.
+
+Jalankan `npm test` untuk memeriksa perhitungan analytics. Deployment tetap menggunakan Vercel dan domain `clarishna.my.id`; deployment dan perubahan DNS belum dilakukan.
 
 ## Halaman dan fitur
 
@@ -88,3 +93,5 @@ Lokasi peta merupakan referensi area jalan; pintu masuk spesifik server tidak di
 ## Lisensi
 
 Kode sumber dilisensikan dengan [MIT License](LICENSE), copyright © 2026 Anton Epson, MD. Lisensi kode tidak memberikan hak tambahan atas merek, logo, screenshot permainan, foto pihak ketiga, atau aset lain yang dimiliki pihak lain. Hak aset tersebut tetap mengikuti pemilik dan lisensi masing-masing.
+
+Announcement dan Trash tersedia di `/announcements` dan `/trash`. Untuk mengaktifkan database, realtime announcement, retensi 30 hari, dan cleanup lampiran, ikuti [panduan konfigurasi](docs/sprint-6.md) serta migration 011–013. Migration belum otomatis dijalankan oleh aplikasi.

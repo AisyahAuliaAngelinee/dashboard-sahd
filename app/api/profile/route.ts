@@ -1,0 +1,15 @@
+import {serverClient,validOrigin} from '@/lib/supabase/server';
+export async function PATCH(request:Request){
+ if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});const client=await serverClient();if(!client)return Response.json({error:'Layanan akun belum dikonfigurasi.'},{status:503});const {data:{user}}=await client.auth.getUser();if(!user)return Response.json({error:'Sesi berakhir.'},{status:401});
+ const body=await request.json().catch(()=>null);if(!body||typeof body.name!=='string'||!body.name.trim()||body.name.trim().length>100||typeof body.notifications!=='boolean')return Response.json({error:'Profil tidak valid.'},{status:400});
+ const {error}=await client.from('profiles').update({display_name:body.name.trim(),notifications_enabled:body.notifications}).eq('id',user.id);if(error)return Response.json({error:'Profil gagal disimpan.'},{status:500});return Response.json({ok:true});
+}
+export async function POST(request:Request){
+ if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});const client=await serverClient();if(!client)return Response.json({error:'Layanan akun belum dikonfigurasi.'},{status:503});const {data:{user}}=await client.auth.getUser();if(!user)return Response.json({error:'Sesi berakhir.'},{status:401});
+ const form=await request.formData().catch(()=>null);const file=form?.get('avatar');if(!(file instanceof File)||file.size>2*1024*1024||file.size===0)return Response.json({error:'Foto maksimal 2 MB.'},{status:400});
+ const bytes=new Uint8Array(await file.arrayBuffer());const png=bytes[0]===137&&bytes[1]===80&&bytes[2]===78&&bytes[3]===71;const jpeg=bytes[0]===255&&bytes[1]===216&&bytes[2]===255;const webp=new TextDecoder().decode(bytes.slice(0,4))==='RIFF'&&new TextDecoder().decode(bytes.slice(8,12))==='WEBP';const ext=png?'png':jpeg?'jpg':webp?'webp':null;const mime=png?'image/png':jpeg?'image/jpeg':webp?'image/webp':null;
+ if(!ext||mime!==file.type)return Response.json({error:'Gunakan file PNG, JPEG atau WebP yang valid.'},{status:400});
+ const path=`${user.id}/${crypto.randomUUID()}.${ext}`;const {error:uploadError}=await client.storage.from('avatars').upload(path,bytes,{contentType:mime!});if(uploadError)return Response.json({error:'Upload foto gagal.'},{status:500});
+ const {error}=await client.from('profiles').update({avatar_path:path}).eq('id',user.id);if(error){await client.storage.from('avatars').remove([path]);return Response.json({error:'Foto gagal disimpan pada profil.'},{status:500})}
+ const {data,error:signError}=await client.storage.from('avatars').createSignedUrl(path,3600);if(signError)return Response.json({error:'Foto tersimpan; preview belum dapat dimuat.'},{status:500});return Response.json({avatar:data?.signedUrl});
+}

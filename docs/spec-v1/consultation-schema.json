@@ -1,0 +1,58 @@
+{
+  "template_id": "consultation",
+  "version": 1,
+  "source": "user supplied",
+  "raw_source": "consultation-template.txt",
+  "fields": [
+    {
+      "key": "name",
+      "label": "Name :",
+      "type": "text"
+    },
+    {
+      "key": "date_of_birth",
+      "label": "Date of Birth :",
+      "type": "date"
+    },
+    {
+      "key": "date",
+      "label": "Date :",
+      "type": "date"
+    },
+    {
+      "key": "contact_number",
+      "label": "Contact Number :",
+      "type": "text"
+    },
+    {
+      "key": "job",
+      "label": "Job :",
+      "type": "text"
+    },
+    {
+      "key": "complaint",
+      "label": "keluhan:",
+      "type": "multiline_text"
+    },
+    {
+      "key": "medical_notes",
+      "label": "Medical Notes :",
+      "type": "multiline_text"
+    },
+    {
+      "key": "created_by",
+      "label": "craeated by:",
+      "type": "authenticated_user_readonly"
+    },
+    {
+      "key": "mentions",
+      "label": "tag mention",
+      "type": "mention_targets_array"
+    }
+  ],
+  "required_policy": "user has not marked required fields; drafts allow incomplete input; server always requires authenticated author",
+  "date_semantics": "consultation/appointment date; time not supplied by source",
+  "timezone": "Asia/Jakarta",
+  "author_policy": "server session user_id and display_name snapshot; never trusted client author input",
+  "mention_policy": "resolve permitted targets to deduplicated registered users on send; persist inbox notification and event idempotently"
+}

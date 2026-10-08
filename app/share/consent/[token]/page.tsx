@@ -1,0 +1,3 @@
+import {notFound} from 'next/navigation';import {serverClient} from '@/lib/supabase/server';import ConsentDocument from '@/components/portal/consent-document';import {validConsent} from '@/lib/consent';import '@/app/portal.css';
+export const metadata={title:'SAHD Patient Consent',robots:{index:false,follow:false}};
+export default async function Page({params}:{params:Promise<{token:string}>}){const {token}=await params;if(!/^[0-9a-f-]{36}$/i.test(token))notFound();const c=await serverClient();if(!c)notFound();const {data,error}=await c.rpc('read_shared_consent',{token});if(error||!validConsent(data))notFound();return <main className="consent-shared"><ConsentDocument data={data}/></main>}

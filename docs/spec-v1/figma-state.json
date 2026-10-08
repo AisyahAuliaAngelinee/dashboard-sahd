@@ -1,0 +1,94 @@
+{
+  "fileKey": "l6Qrgr8qF2dpHssY7MDM0n",
+  "pageId": "0:1",
+  "wrappers": {
+    "Login": "3:31",
+    "Dashboard Medis": "3:32",
+    "Dashboard FD": "3:33",
+    "Duty Employee": "3:34",
+    "Kunjungan Pasien": "3:35"
+  },
+  "vars": {
+    "bg": "VariableID:3:4",
+    "surface": "VariableID:3:6",
+    "nav": "VariableID:3:8",
+    "text": "VariableID:3:10",
+    "muted": "VariableID:3:12",
+    "inverse": "VariableID:3:14",
+    "teal": "VariableID:3:16",
+    "blue": "VariableID:3:18",
+    "amber": "VariableID:3:20",
+    "soft": "VariableID:3:22",
+    "gap": "VariableID:3:23",
+    "padding": "VariableID:3:24",
+    "radius": "VariableID:3:25"
+  },
+  "styles": {
+    "Body": "S:bb9672336abc8fdb949d51c11e4375d823eb98c7,",
+    "Caption": "S:e7ac3922c6ad1ef10f79297be951aee3f605d985,",
+    "Heading": "S:511c41cc20391bb5afbde6586626b1c4f98a5986,",
+    "Section": "S:6cfc4d28be5b83cec440af7c10afa8f018eed906,",
+    "Metric": "S:ade409a92ab6f941cee6bb585781b0b92a95fbe3,"
+  },
+  "collectionId": "VariableCollectionId:3:2",
+  "createdNodeIds": [
+    "3:31",
+    "3:32",
+    "3:33",
+    "3:34",
+    "3:35"
+  ],
+  "bounds": [
+    {
+      "name": "Login",
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "name": "Dashboard Medis",
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "name": "Dashboard FD",
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "name": "Duty Employee",
+      "width": 1440,
+      "height": 960
+    },
+    {
+      "name": "Kunjungan Pasien",
+      "width": 1440,
+      "height": 960
+    }
+  ],
+  "gapAnalysis": "Library cards use a different marketing layout; custom RP metric component needed. Reuse SDS button.",
+  "font": "Inter",
+  "completedSteps": [
+    "foundations",
+    "five-screens",
+    "structural-validation",
+    "visual-validation",
+    "navbar",
+    "soft-styling",
+    "aligned-tables",
+    "prototype-links",
+    "v2-visual-validation"
+  ],
+  "revision": "v2-navbar",
+  "navbarComponentId": "8:45",
+  "overlays": {
+    "search": "8:74",
+    "notifications": "8:92",
+    "account": "8:104",
+    "settings": "8:111"
+  },
+  "tableRowComponents": [
+    "9:166",
+    "9:198",
+    "9:226"
+  ]
+}

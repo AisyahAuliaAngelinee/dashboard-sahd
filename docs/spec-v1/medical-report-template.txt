@@ -1,0 +1,92 @@
+Report Created by :
+===============================================================================================================
+Patien Name : 
+Date of Birth : 
+Contact Person : 
+Age : 
+Gender : 
+Blood Type : 
+Weight : 
+Job / Occupation : 
+===============================================================================================================
+Medical Teams & Operation :
+Head Operation (Surgeron) : 
+Assistant Operation
+- 
+// add more
+===============================================================================================================
+ANAMNESIS 
+[time] GMT+7 [DD/MM/YYYY]
+
+// enter anamnesis explanation here
+===============================================================================================================
+DEBRIEF
+[time] GMT+7 [DD/MM/YYYY]
+
+DEBRIEF — Physical Examination
+// enter physical examination here
+
+DEBRIEF — Radiology Examination
+// enter radiology examination here
+===============================================================================================================
+ANESTHESIA & MEDICATION
+[time] GMT+7 [DD/MM/YYYY]
+
+Type of Anesthesia : ["general" | "local"]
+Anesthetic Medications    :
+- 
+// add more
+
+/** Optional **/
+Supportive Medications    :
+-
+// add more
+
+Anesthesia :
+// enter anesthesia explanation here
+============================================================================================================
+TREATMENT
+[time] GMT+7 [DD/MM/YYYY]
+
+Preoperative Preparation
+// enter text here
+
+Operative Procedure
+// enter text here
+
+Postoperative Management
+// enter text here
+============================================================================================================
+MONITORING
+[time] GMT+7 [DD/MM/YYYY]
+
+Before Surgery
+Blood Pressure (BP) : ... mmHg
+Heart Rate (HR) : ... x/menit
+Respiratory Rate (RR) : ... x/menit
+Temperature : ...°C
+SpO₂ : ...%
+Glasgow Coma Scale (GCS) : E? V? M? = .../15
+
+Preoperative Status: // enter text here
+
+After Surgery
+Blood Pressure (BP) : ... mmHg
+Heart Rate (HR) : ... x/menit
+Respiratory Rate (RR) : ... x/menit
+Temperature : ...°C
+SpO₂ : ...%
+Glasgow Coma Scale (GCS) : E? V? M? = .../15
+
+Postoperative Status: // enter text here
+============================================================================================================
+FOLLOW UP CARE
+[time] GMT+7 [DD/MM/YYYY]
+
+/**
+  * This row can be add some text paragraph or use per-points
+  * points can be more than 3 or more
+  * add many as you want
+ **/
+
+Status: // enter text here

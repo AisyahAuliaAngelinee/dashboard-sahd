@@ -1,0 +1,62 @@
+{
+  "template_id": "announcement",
+  "version": 1,
+  "fields": [
+    {
+      "key": "title",
+      "type": "plain_text",
+      "required": true,
+      "validation": "trimmed nonempty"
+    },
+    {
+      "key": "subtitle",
+      "type": "plain_text",
+      "required": false
+    },
+    {
+      "key": "body",
+      "type": "rich_editor_document",
+      "required": false,
+      "required_note": "user did not mark body mandatory"
+    }
+  ],
+  "toolbar": [
+    "font_family",
+    "font_size",
+    "bold",
+    "italic",
+    "underline",
+    "text_color",
+    "highlight",
+    "alignment",
+    "bullet_list",
+    "numbered_list",
+    "indent",
+    "link",
+    "clear_formatting",
+    "undo",
+    "redo",
+    "insert_table"
+  ],
+  "blocks": [
+    "paragraph",
+    "list",
+    "table"
+  ],
+  "table_actions": [
+    "add_row",
+    "remove_row",
+    "add_column",
+    "remove_column",
+    "toggle_header_row",
+    "delete_table"
+  ],
+  "composition_example": [
+    "paragraph",
+    "table",
+    "paragraph_footer"
+  ],
+  "footer_policy": "ordinary body text, not an additional mandatory field",
+  "storage": "canonical editor_document_json plus sanitized HTML and plain-text snapshots",
+  "publish_policy": "Sprint 6 global notification on successful initial publication"
+}

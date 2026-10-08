@@ -1,0 +1,219 @@
+{
+  "template_id": "ms-operation",
+  "version": 1,
+  "source": "user-provided format",
+  "raw_source": "medical-report-template.txt",
+  "timestamp_timezone": "Asia/Jakarta",
+  "timestamp_display": "HH:mm GMT+7 DD/MM/YYYY",
+  "required_policy": "draft allows incomplete fields; final required rules pending approval",
+  "sections": [
+    {
+      "key": "author",
+      "heading": "Report Created by :",
+      "timestamp": false,
+      "fields": [
+        {
+          "key": "name",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "key": "patient",
+      "heading": "Patient identity",
+      "timestamp": false,
+      "fields": [
+        {
+          "key": "name",
+          "type": "text"
+        },
+        {
+          "key": "date_of_birth",
+          "type": "date"
+        },
+        {
+          "key": "contact_person",
+          "type": "text"
+        },
+        {
+          "key": "age",
+          "type": "integer"
+        },
+        {
+          "key": "gender",
+          "type": "text"
+        },
+        {
+          "key": "blood_type",
+          "type": "text"
+        },
+        {
+          "key": "weight",
+          "type": "decimal"
+        },
+        {
+          "key": "occupation",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "key": "team",
+      "heading": "Medical Teams & Operation :",
+      "timestamp": false,
+      "fields": [
+        {
+          "key": "head_operation",
+          "type": "text"
+        },
+        {
+          "key": "assistants",
+          "type": "text_array"
+        }
+      ]
+    },
+    {
+      "key": "anamnesis",
+      "heading": "ANAMNESIS",
+      "timestamp": true,
+      "fields": [
+        {
+          "key": "text",
+          "type": "richtext"
+        }
+      ]
+    },
+    {
+      "key": "debrief",
+      "heading": "DEBRIEF",
+      "timestamp": true,
+      "fields": [
+        {
+          "key": "physical_examination",
+          "type": "richtext"
+        },
+        {
+          "key": "radiology_examination",
+          "type": "richtext"
+        }
+      ]
+    },
+    {
+      "key": "anesthesia",
+      "heading": "ANESTHESIA & MEDICATION",
+      "timestamp": true,
+      "fields": [
+        {
+          "key": "type",
+          "type": "enum_general_local"
+        },
+        {
+          "key": "anesthetic_medications",
+          "type": "medication_array"
+        },
+        {
+          "key": "supportive_medications",
+          "type": "medication_array_optional"
+        },
+        {
+          "key": "explanation",
+          "type": "richtext"
+        }
+      ]
+    },
+    {
+      "key": "treatment",
+      "heading": "TREATMENT",
+      "timestamp": true,
+      "fields": [
+        {
+          "key": "preoperative_preparation",
+          "type": "richtext"
+        },
+        {
+          "key": "operative_procedure",
+          "type": "richtext"
+        },
+        {
+          "key": "postoperative_management",
+          "type": "richtext"
+        }
+      ]
+    },
+    {
+      "key": "monitoring",
+      "heading": "MONITORING",
+      "timestamp": true,
+      "fields": [
+        {
+          "key": "before",
+          "type": "vitals"
+        },
+        {
+          "key": "preoperative_status",
+          "type": "richtext"
+        },
+        {
+          "key": "after",
+          "type": "vitals"
+        },
+        {
+          "key": "postoperative_status",
+          "type": "richtext"
+        }
+      ]
+    },
+    {
+      "key": "follow_up",
+      "heading": "FOLLOW UP CARE",
+      "timestamp": true,
+      "fields": [
+        {
+          "key": "content",
+          "type": "paragraphs_or_points"
+        },
+        {
+          "key": "status",
+          "type": "richtext"
+        }
+      ]
+    }
+  ],
+  "vitals": {
+    "bp_systolic": "number nullable",
+    "bp_diastolic": "number nullable",
+    "hr": "number nullable",
+    "rr": "number nullable",
+    "temperature": "number nullable",
+    "spo2": "number nullable",
+    "gcs_e": "integer 1..4 nullable",
+    "gcs_v": "integer 1..5 nullable",
+    "gcs_m": "integer 1..6 nullable",
+    "gcs_total": "derived only when all three components filled",
+    "observed_at": "datetime nullable",
+    "source": "user/simulated",
+    "confirmed_at": "datetime nullable"
+  },
+  "metadata_outside_document": [
+    "case_text",
+    "case_title",
+    "surgery_category",
+    "procedure_id",
+    "performed_at",
+    "consent_links",
+    "imaging_assets",
+    "template_version",
+    "author_user_id"
+  ],
+  "medication_item": {
+    "text": "editable user-entered line",
+    "catalog_item_id": "nullable",
+    "source": "user/recommendation_sop",
+    "review_status": "pending/accepted"
+  },
+  "preserve_labels": [
+    "Patien Name :",
+    "Head Operation (Surgeron) :"
+  ],
+  "export_notes": "instruction comments and placeholders are not patient facts; preserve source headings and sequence"
+}
