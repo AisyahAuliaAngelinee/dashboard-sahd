@@ -1,3 +1,4 @@
+export const dynamic='force-dynamic';
 import '@/app/portal.css';
 import Link from 'next/link';
 import { HeartPulse } from 'lucide-react';

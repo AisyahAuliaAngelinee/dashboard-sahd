@@ -1,9 +1,23 @@
 import {NextResponse,type NextRequest} from 'next/server';import {createServerClient} from '@supabase/ssr';
+import {canonicalOrigin,sessionCookieOptions,sessionCacheHeaders} from '@/lib/auth-session';
 export async function proxy(request:NextRequest){
- if(request.nextUrl.pathname.startsWith('/api/cron/')){const response=NextResponse.next();response.headers.set('Cache-Control','private, no-store');return response;}
- if(process.env.SAHD_APP_URL&&request.method==='GET'){const canonical=new URL(process.env.SAHD_APP_URL);if(request.headers.get('host')!==canonical.host){canonical.pathname=request.nextUrl.pathname;canonical.search=request.nextUrl.search;return NextResponse.redirect(canonical)}}
- let response=NextResponse.next({request});response.headers.set('Cache-Control','private, no-store');
+ const noStore=(response:NextResponse)=>{Object.entries(sessionCacheHeaders).forEach(([name,value])=>response.headers.set(name,value));return response};
+ if(request.nextUrl.pathname.startsWith('/api/cron/'))return noStore(NextResponse.next());
+ // Start OAuth on the canonical host so the PKCE verifier and session cookies stay together.
+ const canonical=process.env.NODE_ENV==='production'&&process.env.VERCEL_ENV!=='preview'?canonicalOrigin(process.env.SAHD_APP_URL,true):null;
+ if(canonical&&request.method==='GET'&&request.nextUrl.origin!==canonical){const target=new URL(canonical);target.pathname=request.nextUrl.pathname;target.search=request.nextUrl.search;return noStore(NextResponse.redirect(target))}
+ let response=noStore(NextResponse.next({request}));
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;if(!url||!key)return response;
- const client=createServerClient(url,key,{cookies:{getAll:()=>request.cookies.getAll(),setAll:(values)=>{values.forEach(({name,value})=>request.cookies.set(name,value));response=NextResponse.next({request});values.forEach(({name,value,options})=>response.cookies.set(name,value,options));response.headers.set('Cache-Control','private, no-store')}}});await client.auth.getClaims();return response;
+ const client=createServerClient(url,key,{cookieOptions:sessionCookieOptions(process.env.NODE_ENV==='production'),cookies:{
+  getAll:()=>request.cookies.getAll(),
+  setAll:(values,headers)=>{
+   values.forEach(({name,value})=>request.cookies.set(name,value));
+   const previous=response.cookies.getAll();response=noStore(NextResponse.next({request}));
+   previous.forEach(cookie=>response.cookies.set(cookie));
+   values.forEach(({name,value,options})=>response.cookies.set(name,value,options));
+   Object.entries(headers).forEach(([name,value])=>response.headers.set(name,value));
+  },
+ }});
+ await client.auth.getClaims();return response;
 }
 export const config={matcher:['/login','/reset-password','/dashboard/:path*','/settings/:path*','/reports/:path*','/patient-consents/:path*','/case-assistant/:path*','/consultations/:path*','/announcements/:path*','/trash/:path*','/admin/:path*','/auth/:path*','/api/:path*']};
