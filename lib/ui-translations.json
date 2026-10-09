@@ -1,0 +1,2514 @@
+[
+  [
+    "Account Settings",
+    "Pengaturan Akun"
+  ],
+  [
+    "Account Access",
+    "Akses Web"
+  ],
+  [
+    "General",
+    "Umum"
+  ],
+  [
+    "Members",
+    "Anggota"
+  ],
+  [
+    "Name",
+    "Nama"
+  ],
+  [
+    "Role",
+    "Role"
+  ],
+  [
+    "Division",
+    "Divisi"
+  ],
+  [
+    "Position",
+    "Jabatan"
+  ],
+  [
+    "Team",
+    "Tim"
+  ],
+  [
+    "General Information",
+    "Informasi Umum"
+  ],
+  [
+    "Role & Division",
+    "Role & Divisi"
+  ],
+  [
+    "Display Name",
+    "Nama Tampilan"
+  ],
+  [
+    "Change Profile Photo",
+    "Ubah Foto Profil"
+  ],
+  [
+    "Notification Preferences",
+    "Preferensi Notifikasi"
+  ],
+  [
+    "Save Changes",
+    "Simpan Perubahan"
+  ],
+  [
+    "Workspace Members",
+    "Anggota Workspace"
+  ],
+  [
+    "Search Members",
+    "Cari Anggota"
+  ],
+  [
+    "Unassigned",
+    "Belum Ditentukan"
+  ],
+  [
+    "Your Workspace Profile",
+    "Profil Workspace Anda"
+  ],
+  [
+    "Manage your profile, preferences, and member directory.",
+    "Kelola profil, preferensi, dan direktori anggota."
+  ],
+  [
+    "Your profile is visible to your team.",
+    "Profil yang ditampilkan kepada tim Anda."
+  ],
+  [
+    "Assignments are managed by an admin.",
+    "Role, divisi, jabatan, dan team ditetapkan oleh admin."
+  ],
+  [
+    "Show popups for new notifications. Your inbox remains available.",
+    "Tampilkan popup notifikasi baru. Inbox tetap tersedia."
+  ],
+  [
+    "All registered workspace accounts.",
+    "Seluruh akun yang terdaftar di workspace."
+  ],
+  [
+    "No matching members.",
+    "Tidak ada anggota yang sesuai."
+  ],
+  [
+    "You",
+    "Anda"
+  ],
+  [
+    "Patient Consent",
+    "Persetujuan Pasien"
+  ],
+  [
+    "Patient Consents",
+    "Persetujuan Pasien"
+  ],
+  [
+    "Case Assistant",
+    "Asisten Kasus"
+  ],
+  [
+    "Consultation",
+    "Konsultasi"
+  ],
+  [
+    "Consultations",
+    "Konsultasi"
+  ],
+  [
+    "Announcement",
+    "Pengumuman"
+  ],
+  [
+    "Trash",
+    "Sampah"
+  ],
+  [
+    "Reports",
+    "Laporan"
+  ],
+  [
+    "Workspace",
+    "Workspace"
+  ],
+  [
+    "Surgery Report",
+    "Laporan Operasi"
+  ],
+  [
+    "Psychiatrist Report",
+    "Laporan Psikiatri"
+  ],
+  [
+    "Forensics Report",
+    "Laporan Forensik"
+  ],
+  [
+    "Pharmacy Report",
+    "Laporan Farmasi"
+  ],
+  [
+    "Big Fire Report",
+    "Laporan Kebakaran Besar"
+  ],
+  [
+    "Logout",
+    "Keluar"
+  ],
+  [
+    "Search anything…",
+    "Cari sesuatu…"
+  ],
+  [
+    "Notification",
+    "Notifikasi"
+  ],
+  [
+    "Mark all as read",
+    "Tandai Semua Dibaca"
+  ],
+  [
+    "All",
+    "Semua"
+  ],
+  [
+    "Mentioned",
+    "Disebut"
+  ],
+  [
+    "Appointments",
+    "Janji Temu"
+  ],
+  [
+    "No Notifications",
+    "Belum Ada Notifikasi"
+  ],
+  [
+    "View Details",
+    "Lihat Detail"
+  ],
+  [
+    "Create Patient Consent",
+    "Buat Persetujuan Pasien"
+  ],
+  [
+    "Create Surgery Report",
+    "Buat Laporan Operasi"
+  ],
+  [
+    "Create Consultation",
+    "Buat Konsultasi"
+  ],
+  [
+    "Create Announcement",
+    "Buat Pengumuman"
+  ],
+  [
+    "Admin Panel",
+    "Panel Admin"
+  ],
+  [
+    "Action",
+    "Aksi"
+  ],
+  [
+    "Add table column",
+    "Tambah kolom tabel"
+  ],
+  [
+    "Add table row",
+    "Tambah baris tabel"
+  ],
+  [
+    "Age",
+    "Usia"
+  ],
+  [
+    "Access Unavailable",
+    "Akses Belum Tersedia"
+  ],
+  [
+    "Medical Service access is required.",
+    "Akses Medical Service diperlukan."
+  ],
+  [
+    "Your account has no division. Contact an admin before accessing operational data.",
+    "Akun Anda belum memiliki divisi. Hubungi admin untuk assignment sebelum mengakses data operasional."
+  ],
+  [
+    "Align center",
+    "Rata tengah"
+  ],
+  [
+    "Align left",
+    "Rata kiri"
+  ],
+  [
+    "Align right",
+    "Rata kanan"
+  ],
+  [
+    "All modules",
+    "Semua modul"
+  ],
+  [
+    "All status",
+    "Semua status"
+  ],
+  [
+    "All time",
+    "Sepanjang waktu"
+  ],
+  [
+    "Roleplay /me & /do flow",
+    "Alur roleplay /me & /do"
+  ],
+  [
+    "Patient anamnesis",
+    "Anamnesis pasien"
+  ],
+  [
+    "Patient anamnesis *",
+    "Anamnesis pasien *"
+  ],
+  [
+    "You were mentioned in an appointment",
+    "Anda disebut dalam janji temu"
+  ],
+  [
+    "Anesthesia",
+    "Anestesi"
+  ],
+  [
+    "Anesthetic Medications",
+    "Obat Anestesi"
+  ],
+  [
+    "Announcement Detail",
+    "Detail Pengumuman"
+  ],
+  [
+    "Announcement content",
+    "Isi pengumuman"
+  ],
+  [
+    "Announcement date range",
+    "Rentang tanggal pengumuman"
+  ],
+  [
+    "Announcement formatting",
+    "Format pengumuman"
+  ],
+  [
+    "Announcement not found or deleted.",
+    "Announcement tidak ditemukan atau sudah dihapus."
+  ],
+  [
+    "Are you sure you want to restore this data to its original list?",
+    "Apakah Anda yakin ingin mengembalikan data ini ke daftar asal?"
+  ],
+  [
+    "Are you sure? Permanently deleted data cannot be recovered.",
+    "Apakah Anda yakin? Data yang dihapus permanen tidak dapat dipulihkan."
+  ],
+  [
+    "Assignment failed.",
+    "Assignment gagal."
+  ],
+  [
+    "Assignment saved.",
+    "Assignment tersimpan."
+  ],
+  [
+    "Assistant Operation",
+    "Asisten Operasi"
+  ],
+  [
+    "Assumptions & information to confirm",
+    "Asumsi & informasi yang perlu dikonfirmasi"
+  ],
+  [
+    "Attachments",
+    "Lampiran"
+  ],
+  [
+    "Manage members' role, division, position, and team. Changes are audited.",
+    "Atur Role, Divisi, Jabatan, dan Team anggota. Perubahan dicatat dalam audit."
+  ],
+  [
+    "Cancel",
+    "Batal"
+  ],
+  [
+    "Cancel consultation?",
+    "Batalkan consultation?"
+  ],
+  [
+    "Optional images · PNG, JPG, WebP · Maximum 4 MB per image.",
+    "Beberapa gambar opsional · PNG, JPG, WebP · Maksimal 4 MB per gambar."
+  ],
+  [
+    "No published announcements yet.",
+    "Belum ada announcement yang dipublikasikan."
+  ],
+  [
+    "No matching announcements.",
+    "Belum ada announcement yang sesuai."
+  ],
+  [
+    "No consent matches the patient's name.",
+    "Belum ada consent dengan nama pasien yang sesuai."
+  ],
+  [
+    "No matching consents.",
+    "Belum ada consent yang sesuai."
+  ],
+  [
+    "No reports yet",
+    "Belum ada report"
+  ],
+  [
+    "Unread",
+    "Belum dibaca"
+  ],
+  [
+    "Not assigned",
+    "Belum ditetapkan"
+  ],
+  [
+    "Unavailable",
+    "Belum tersedia"
+  ],
+  [
+    "Big Fire",
+    "Kebakaran Besar"
+  ],
+  [
+    "Bold",
+    "Tebal"
+  ],
+  [
+    "The browser could not save the draft.",
+    "Browser tidak dapat menyimpan draft."
+  ],
+  [
+    "Open or close sidebar",
+    "Buka atau tutup sidebar"
+  ],
+  [
+    "Bullet list",
+    "Daftar poin"
+  ],
+  [
+    "Canceled",
+    "Dibatalkan"
+  ],
+  [
+    "Search assistants",
+    "Cari assistant"
+  ],
+  [
+    "Search and select multiple members. Click a selected name to remove it.",
+    "Cari dan pilih beberapa member. Klik nama yang dipilih untuk membatalkan."
+  ],
+  [
+    "Search pages, patients, or cases…",
+    "Cari halaman, pasien, atau kasus…"
+  ],
+  [
+    "Search pages, account settings, or appointments. Use the arrow keys and Enter to select.",
+    "Cari halaman, pengaturan akun, atau janji temu. Gunakan tombol panah dan Enter untuk memilih."
+  ],
+  [
+    "Search members",
+    "Cari members"
+  ],
+  [
+    "Search reports",
+    "Cari report"
+  ],
+  [
+    "Search titles, cases, or authors…",
+    "Cari title, kasus, atau pembuat…"
+  ],
+  [
+    "Search workspace",
+    "Cari workspace"
+  ],
+  [
+    "Case",
+    "Kasus"
+  ],
+  [
+    "Handled case",
+    "Case yang ditangani"
+  ],
+  [
+    "Handled case *",
+    "Case yang ditangani *"
+  ],
+  [
+    "Clear",
+    "Hapus Pilihan"
+  ],
+  [
+    "Consent Date of Birth",
+    "Tanggal Lahir Persetujuan"
+  ],
+  [
+    "Consent Gender",
+    "Gender Persetujuan"
+  ],
+  [
+    "Consent moved to Trash. Its share link is unavailable while deleted.",
+    "Consent dipindahkan ke Trash. Link share tidak dapat dibuka selama consent dihapus."
+  ],
+  [
+    "Consent saved in the demo browser.",
+    "Consent tersimpan di browser demo."
+  ],
+  [
+    "Consent saved.",
+    "Consent tersimpan."
+  ],
+  [
+    "Could not load consent.",
+    "Consent tidak dapat dimuat."
+  ],
+  [
+    "Consultation Date",
+    "Tanggal Konsultasi"
+  ],
+  [
+    "Consultation Date of Birth",
+    "Tanggal Lahir Konsultasi"
+  ],
+  [
+    "Consultation Detail",
+    "Detail Konsultasi"
+  ],
+  [
+    "Consultation canceled with a reason.",
+    "Consultation dibatalkan dengan keterangan."
+  ],
+  [
+    "Could not load consultations.",
+    "Consultation gagal dimuat."
+  ],
+  [
+    "Consultation saved and notifications sent.",
+    "Consultation tersimpan dan notifikasi dikirim."
+  ],
+  [
+    "Consultation saved in the demo browser.",
+    "Consultation tersimpan di browser demo."
+  ],
+  [
+    "Consultation not found or access unavailable.",
+    "Consultation tidak ditemukan atau akses tidak tersedia."
+  ],
+  [
+    "Contact Number",
+    "Nomor Kontak"
+  ],
+  [
+    "Contact Number (optional)",
+    "Nomor Kontak (opsional)"
+  ],
+  [
+    "Content",
+    "Isi"
+  ],
+  [
+    "Example: left tibia fracture after an RP accident…",
+    "Contoh: patah tulang tibia kiri setelah kecelakaan RP…"
+  ],
+  [
+    "Copy report",
+    "Salin laporan"
+  ],
+  [
+    "Copy to Surgery Report",
+    "Salin ke Laporan Operasi"
+  ],
+  [
+    "Create new",
+    "Buat baru"
+  ],
+  [
+    "Created at",
+    "Dibuat pada"
+  ],
+  [
+    "Created by",
+    "Dibuat oleh"
+  ],
+  [
+    "Created by:",
+    "Dibuat oleh:"
+  ],
+  [
+    "Report list",
+    "Daftar laporan"
+  ],
+  [
+    "Reports list",
+    "Daftar report"
+  ],
+  [
+    "Dark Mode",
+    "Mode Gelap"
+  ],
+  [
+    "Consent data is invalid. Check birth date, gender, document number, and input length (maximum 200 characters).",
+    "Data consent belum valid. Periksa tanggal lahir, gender, nomor dokumen, dan panjang input (maksimal 200 karakter)."
+  ],
+  [
+    "Data can be restored for 30 days, then permanently deleted by the database schedule.",
+    "Data dapat dipulihkan selama 30 hari. Setelah batas tersebut, data akan dihapus permanen oleh jadwal database."
+  ],
+  [
+    "Data you temporarily deleted from all modules. Admins can manage all members.",
+    "Data dari seluruh modul yang Anda hapus sementara. Admin dapat mengelola seluruh anggota."
+  ],
+  [
+    "Data moved to Trash and removed from the list.",
+    "Data dipindahkan ke Trash dan tidak lagi ditampilkan pada daftar."
+  ],
+  [
+    "Could not load data.",
+    "Data gagal dimuat."
+  ],
+  [
+    "Data moved to Trash and can be restored for 30 days.",
+    "Data masuk ke Trash dan dapat dipulihkan selama 30 hari."
+  ],
+  [
+    "Data has passed the 30-day limit and cannot be restored.",
+    "Data melewati batas 30 hari dan tidak dapat dipulihkan."
+  ],
+  [
+    "Date",
+    "Tanggal"
+  ],
+  [
+    "Date * (GMT+7)",
+    "Tanggal * (GMT+7)"
+  ],
+  [
+    "Date of Birth",
+    "Tanggal Lahir"
+  ],
+  [
+    "Date of Birth *",
+    "Tanggal Lahir *"
+  ],
+  [
+    "Date range",
+    "Rentang tanggal"
+  ],
+  [
+    "Day",
+    "Hari"
+  ],
+  [
+    "Delete permanently",
+    "Hapus permanen"
+  ],
+  [
+    "Delete table",
+    "Hapus tabel"
+  ],
+  [
+    "Delete temporary",
+    "Hapus sementara"
+  ],
+  [
+    "Deleted at",
+    "Dihapus pada"
+  ],
+  [
+    "Deleting…",
+    "Menghapus…"
+  ],
+  [
+    "Demo · sample data",
+    "Demo · data contoh"
+  ],
+  [
+    "Detail",
+    "Detail"
+  ],
+  [
+    "Appointment details",
+    "Detail janji temu"
+  ],
+  [
+    "Target doctor",
+    "Dokter tujuan"
+  ],
+  [
+    "Document every procedure using the SAHD format.",
+    "Dokumentasikan setiap tindakan dengan format SAHD."
+  ],
+  [
+    "Done",
+    "Selesai"
+  ],
+  [
+    "Download PDF",
+    "Unduh PDF"
+  ],
+  [
+    "Could not load the assistant draft.",
+    "Draft assistant tidak dapat dimuat."
+  ],
+  [
+    "Draft from Case Assistant. Review the simulation and complete patient information.",
+    "Draft dari Case Assistant. Tinjau hasil simulasi dan lengkapi informasi pasien."
+  ],
+  [
+    "Could not load the report draft.",
+    "Draft report tidak dapat dimuat."
+  ],
+  [
+    "Could not restore the report draft.",
+    "Draft report tidak dapat dipulihkan."
+  ],
+  [
+    "Could not load the saved draft.",
+    "Draft tersimpan tidak dapat dimuat."
+  ],
+  [
+    "Could not save the draft in this browser.",
+    "Draft tidak dapat disimpan di browser."
+  ],
+  [
+    "Edit",
+    "Ubah"
+  ],
+  [
+    "Edit & export",
+    "Ubah & ekspor"
+  ],
+  [
+    "Edit Announcement",
+    "Ubah Pengumuman"
+  ],
+  [
+    "Edit Consultation",
+    "Ubah Konsultasi"
+  ],
+  [
+    "Edit form",
+    "Ubah formulir"
+  ],
+  [
+    "Editable report preview",
+    "Pratinjau laporan yang dapat diubah"
+  ],
+  [
+    "Emergency Full Name",
+    "Nama Lengkap Kontak Darurat"
+  ],
+  [
+    "Emergency contact",
+    "Kontak darurat"
+  ],
+  [
+    "Enable Dark Mode",
+    "Aktifkan Mode Gelap"
+  ],
+  [
+    "Enable Light Mode",
+    "Aktifkan Mode Terang"
+  ],
+  [
+    "Expires at",
+    "Kedaluwarsa pada"
+  ],
+  [
+    "Export DOCX",
+    "Ekspor DOCX"
+  ],
+  [
+    "Export PDF",
+    "Ekspor PDF"
+  ],
+  [
+    "Export failed.",
+    "Export gagal."
+  ],
+  [
+    "Export failed. Please try again.",
+    "Export gagal. Silakan coba lagi."
+  ],
+  [
+    "File ready to download.",
+    "File siap diunduh."
+  ],
+  [
+    "Filter consultation status",
+    "Filter status konsultasi"
+  ],
+  [
+    "Filter type",
+    "Filter jenis"
+  ],
+  [
+    "Filter module",
+    "Filter modul"
+  ],
+  [
+    "Filter notifications",
+    "Filter notifikasi"
+  ],
+  [
+    "Filter report date range",
+    "Filter rentang tanggal report"
+  ],
+  [
+    "Filter payment status",
+    "Filter status payment"
+  ],
+  [
+    "Filter consultation date",
+    "Filter tanggal consultation"
+  ],
+  [
+    "Date filters use consultation schedules (GMT+7). Edit and delete only your own data.",
+    "Filter tanggal menggunakan jadwal consultation (GMT+7). Edit dan hapus hanya untuk data milik Anda."
+  ],
+  [
+    "Filter patient consent date",
+    "Filter tanggal patient consent"
+  ],
+  [
+    "Follow Up Care",
+    "Perawatan Lanjutan"
+  ],
+  [
+    "Follow up & discharge medicine",
+    "Perawatan lanjutan & obat pulang"
+  ],
+  [
+    "Font family",
+    "Jenis font"
+  ],
+  [
+    "Font size",
+    "Ukuran font"
+  ],
+  [
+    "The full consultation form will be available in a future update.",
+    "Form consultation lengkap akan tersedia pada pengembangan berikutnya."
+  ],
+  [
+    "Could not read the photo.",
+    "Foto gagal dibaca."
+  ],
+  [
+    "Profile photo saved.",
+    "Foto profil tersimpan."
+  ],
+  [
+    "Photo ready to save.",
+    "Foto siap disimpan."
+  ],
+  [
+    "Full Name *",
+    "Nama Lengkap *"
+  ],
+  [
+    "Gender",
+    "Gender"
+  ],
+  [
+    "Gender *",
+    "Gender *"
+  ],
+  [
+    "Generate",
+    "Buat"
+  ],
+  [
+    "Generate preview",
+    "Buat pratinjau"
+  ],
+  [
+    "Regenerating the preview replaces manual edits with the form contents. DOCX and PDF retain basic text formatting; Copy uses plain text.",
+    "Generate preview ulang akan mengganti edit manual dengan isi form. DOCX dan PDF mempertahankan format dasar teks; Copy menggunakan teks polos."
+  ],
+  [
+    "Use PNG, JPEG or WebP, maximum 2 MB.",
+    "Gunakan PNG, JPEG atau WebP maksimal 2 MB."
+  ],
+  [
+    "Use my name",
+    "Gunakan nama saya"
+  ],
+  [
+    "Only fictional GTA RP cases. Example vitals are simulated; review results before adding them to a report.",
+    "Hanya kasus fiktif GTA RP. TTV contoh merupakan simulasi; hasil perlu ditinjau sebelum masuk report."
+  ],
+  [
+    "Delete failed.",
+    "Hapus gagal."
+  ],
+  [
+    "Temporary delete failed.",
+    "Hapus sementara gagal."
+  ],
+  [
+    "Head Operation (Surgeon)",
+    "Kepala Operasi (Dokter Bedah)"
+  ],
+  [
+    "Heading",
+    "Judul Bagian"
+  ],
+  [
+    "Contact an admin for Fire Department assignment.",
+    "Hubungi admin untuk assignment Fire Department."
+  ],
+  [
+    "Contact an admin for Medical Service assignment.",
+    "Hubungi admin untuk assignment Medical Service."
+  ],
+  [
+    "Contact an admin for the appropriate division assignment.",
+    "Hubungi admin untuk assignment divisi yang sesuai."
+  ],
+  [
+    "Information and updates for all members.",
+    "Informasi dan pembaruan untuk seluruh anggota."
+  ],
+  [
+    "Insert table",
+    "Tambahkan tabel"
+  ],
+  [
+    "Enter Patient Name to display consent.",
+    "Isi Patient Name untuk menampilkan consent."
+  ],
+  [
+    "Fill in form",
+    "Isi form"
+  ],
+  [
+    "Enter a cancellation reason for",
+    "Isi keterangan pembatalan untuk"
+  ],
+  [
+    "Report content copied.",
+    "Isi report berhasil disalin."
+  ],
+  [
+    "Italic",
+    "Miring"
+  ],
+  [
+    "Schedule",
+    "Jadwal"
+  ],
+  [
+    "Earliest schedule",
+    "Jadwal terdekat"
+  ],
+  [
+    "Latest schedule",
+    "Jadwal terjauh"
+  ],
+  [
+    "New appointment",
+    "Janji temu baru"
+  ],
+  [
+    "Appointment end date",
+    "Janji temu tanggal akhir"
+  ],
+  [
+    "Appointment start date",
+    "Janji temu tanggal awal"
+  ],
+  [
+    "Type",
+    "Jenis"
+  ],
+  [
+    "Report type",
+    "Jenis report"
+  ],
+  [
+    "Job",
+    "Pekerjaan"
+  ],
+  [
+    "Title *",
+    "Judul *"
+  ],
+  [
+    "Announcement title",
+    "Judul announcement"
+  ],
+  [
+    "Title is required.",
+    "Judul wajib diisi."
+  ],
+  [
+    "Cases & latest appointments",
+    "Kasus & janji temu terbaru"
+  ],
+  [
+    "Which case did you handle?",
+    "Kasus apa yang ditangani?"
+  ],
+  [
+    "Case handled",
+    "Kasus yang ditangani"
+  ],
+  [
+    "Manage consultations and track patient schedules.",
+    "Kelola konsultasi dan pantau jadwal pasien."
+  ],
+  [
+    "Complaint",
+    "Keluhan"
+  ],
+  [
+    "Complaint *",
+    "Keluhan *"
+  ],
+  [
+    "Back",
+    "Kembali"
+  ],
+  [
+    "Back to Dashboard →",
+    "Kembali ke Dashboard →"
+  ],
+  [
+    "Back to MS Report",
+    "Kembali ke Report MS"
+  ],
+  [
+    "Cancellation reason",
+    "Keterangan pembatalan"
+  ],
+  [
+    "Cancellation reason *",
+    "Keterangan pembatalan *"
+  ],
+  [
+    "Cancellation reason unavailable.",
+    "Keterangan pembatalan belum tersedia."
+  ],
+  [
+    "Cancellation reason is required (maximum 2000 characters).",
+    "Keterangan pembatalan wajib diisi (maksimal 2000 karakter)."
+  ],
+  [
+    "Click to edit. You can also select text with your mouse or Ctrl/⌘ A.",
+    "Klik untuk mengedit. Anda juga dapat menyeleksi teks dengan mouse atau Ctrl/⌘ A."
+  ],
+  [
+    "LATEST ANNOUNCEMENT",
+    "PENGUMUMAN TERBARU"
+  ],
+  [
+    "Continue to form",
+    "Lanjut ke form"
+  ],
+  [
+    "Complete required fields and Medic Signature before saving.",
+    "Lengkapi field bertanda * dan Medic Signature sebelum menyimpan."
+  ],
+  [
+    "Complete the marked required fields.",
+    "Lengkapi field wajib yang ditandai."
+  ],
+  [
+    "Remove attachment",
+    "Lepas lampiran"
+  ],
+  [
+    "Light Mode",
+    "Mode Terang"
+  ],
+  [
+    "View details →",
+    "Lihat detail →"
+  ],
+  [
+    "View all",
+    "Lihat semua"
+  ],
+  [
+    "Surgery and Big Fire line chart",
+    "Line chart Surgery dan Big Fire"
+  ],
+  [
+    "Local",
+    "Lokal"
+  ],
+  [
+    "Major Surgery",
+    "Operasi Mayor"
+  ],
+  [
+    "Medic Signature",
+    "Tanda Tangan Medis"
+  ],
+  [
+    "Medic Signature *",
+    "Tanda Tangan Medis *"
+  ],
+  [
+    "Medical Notes",
+    "Catatan Medis"
+  ],
+  [
+    "Medical Teams & Operation",
+    "Tim Medis & Operasi"
+  ],
+  [
+    "Medications",
+    "Obat"
+  ],
+  [
+    "Processing…",
+    "Memproses…"
+  ],
+  [
+    "Loading Trash…",
+    "Memuat Trash…"
+  ],
+  [
+    "Loading announcements…",
+    "Memuat announcement…"
+  ],
+  [
+    "Loading consents…",
+    "Memuat consent…"
+  ],
+  [
+    "Loading consultations…",
+    "Memuat consultation…"
+  ],
+  [
+    "Loading…",
+    "Memuat…"
+  ],
+  [
+    "Men",
+    "Pria"
+  ],
+  [
+    "Mentions for you will appear here.",
+    "Mention untuk Anda akan muncul di sini."
+  ],
+  [
+    "Awaiting automatic deletion",
+    "Menunggu penghapusan otomatis"
+  ],
+  [
+    "Preparing workspace…",
+    "Menyiapkan workspace…"
+  ],
+  [
+    "Saving…",
+    "Menyimpan…"
+  ],
+  [
+    "Generating scenario…",
+    "Menyusun skenario…"
+  ],
+  [
+    "Minor Surgery",
+    "Operasi Minor"
+  ],
+  [
+    "Module",
+    "Modul"
+  ],
+  [
+    "Month",
+    "Bulan"
+  ],
+  [
+    "Start with a case you handled.",
+    "Mulai dari kasus yang Anda tangani."
+  ],
+  [
+    "Name A–Z",
+    "Nama A–Z"
+  ],
+  [
+    "Name Z–A",
+    "Nama Z–A"
+  ],
+  [
+    "Name cannot be empty.",
+    "Nama tidak boleh kosong."
+  ],
+  [
+    "Name *",
+    "Nama *"
+  ],
+  [
+    "Name, Date, and Complaint are required.",
+    "Name, Date, dan Keluhan wajib diisi."
+  ],
+  [
+    "Next",
+    "Berikutnya"
+  ],
+  [
+    "Appointment notifications will appear here.",
+    "Notifikasi janji temu akan muncul di sini."
+  ],
+  [
+    "Numbered list",
+    "Daftar bernomor"
+  ],
+  [
+    "Major operations during this period",
+    "Operasi major pada periode ini"
+  ],
+  [
+    "Minor operations during this period",
+    "Operasi minor pada periode ini"
+  ],
+  [
+    "Operative Procedure",
+    "Prosedur Operasi"
+  ],
+  [
+    "PNG, JPEG, WebP · maximum 2 MB",
+    "PNG, JPEG, WebP · maksimal 2 MB"
+  ],
+  [
+    "Pages",
+    "Halaman"
+  ],
+  [
+    "Paid",
+    "Lunas"
+  ],
+  [
+    "Patient / Case",
+    "Pasien / Kasus"
+  ],
+  [
+    "Patient Full Name",
+    "Nama Lengkap Pasien"
+  ],
+  [
+    "Patient Name",
+    "Nama Pasien"
+  ],
+  [
+    "Patient consent linked to report. Save the report to keep draft changes.",
+    "Patient consent terhubung ke report. Simpan report untuk menyimpan perubahan draft."
+  ],
+  [
+    "Patient and Witness Signatures automatically use the patient and emergency contact names.",
+    "Patient dan Witness Signature otomatis mengikuti nama pasien dan emergency contact."
+  ],
+  [
+    "Patient information",
+    "Informasi pasien"
+  ],
+  [
+    "Patient name",
+    "Nama pasien"
+  ],
+  [
+    "Cancellation failed. Check the page message and try again.",
+    "Pembatalan gagal. Periksa pesan pada halaman dan coba kembali."
+  ],
+  [
+    "Pending",
+    "Menunggu"
+  ],
+  [
+    "Announcements, mentions, and new appointments will appear here.",
+    "Pengumuman, mention, dan janji temu terbaru akan muncul di sini."
+  ],
+  [
+    "Save failed.",
+    "Penyimpanan gagal."
+  ],
+  [
+    "Announcement period",
+    "Periode announcement"
+  ],
+  [
+    "Request failed.",
+    "Permintaan gagal."
+  ],
+  [
+    "Change failed.",
+    "Perubahan gagal."
+  ],
+  [
+    "Physical Examination",
+    "Pemeriksaan Fisik"
+  ],
+  [
+    "Select",
+    "Pilih"
+  ],
+  [
+    "Select Member",
+    "Pilih Anggota"
+  ],
+  [
+    "Select Assistant Operation",
+    "Pilih Assistant Operation"
+  ],
+  [
+    "Select assistants…",
+    "Pilih assistant…"
+  ],
+  [
+    "Select division, role, or member…",
+    "Pilih divisi, role, atau member…"
+  ],
+  [
+    "Select anesthesia type",
+    "Pilih jenis anestesi"
+  ],
+  [
+    "Select member",
+    "Pilih member"
+  ],
+  [
+    "Select mention",
+    "Pilih mention"
+  ],
+  [
+    "Select date range",
+    "Pilih rentang tanggal"
+  ],
+  [
+    "Select a valid date range, maximum 366 days.",
+    "Pilih rentang tanggal yang valid, maksimal 366 hari."
+  ],
+  [
+    "Select all reports you can delete in these results",
+    "Pilih semua report yang dapat dihapus pada hasil ini"
+  ],
+  [
+    "Select date",
+    "Pilih tanggal"
+  ],
+  [
+    "Select the preview text and use Ctrl/⌘ C.",
+    "Pilih teks preview lalu gunakan Ctrl/⌘ C."
+  ],
+  [
+    "Position / Title",
+    "Position / Jabatan"
+  ],
+  [
+    "Postoperative Management",
+    "Manajemen Pascaoperasi"
+  ],
+  [
+    "Postoperative Status",
+    "Status Pascaoperasi"
+  ],
+  [
+    "Preoperative Preparation",
+    "Persiapan Praoperasi"
+  ],
+  [
+    "Preoperative Status",
+    "Status Praoperasi"
+  ],
+  [
+    "Preview",
+    "Pratinjau"
+  ],
+  [
+    "Consent preview —",
+    "Preview consent —"
+  ],
+  [
+    "Previous",
+    "Sebelumnya"
+  ],
+  [
+    "Demo profile saved in this browser.",
+    "Profil demo tersimpan di browser ini."
+  ],
+  [
+    "Could not save profile.",
+    "Profil gagal disimpan."
+  ],
+  [
+    "Profile saved.",
+    "Profil tersimpan."
+  ],
+  [
+    "Publish announcement",
+    "Terbitkan pengumuman"
+  ],
+  [
+    "Published ·",
+    "Diterbitkan ·"
+  ],
+  [
+    "Quote",
+    "Kutipan"
+  ],
+  [
+    "Radiology Examination",
+    "Pemeriksaan Radiologi"
+  ],
+  [
+    "Range",
+    "Rentang"
+  ],
+  [
+    "Redo",
+    "Ulangi"
+  ],
+  [
+    "Relationship to Patient (optional)",
+    "Hubungan dengan Pasien (opsional)"
+  ],
+  [
+    "Resolved Big Fire reports in this period",
+    "Report Big Fire teratasi pada periode ini"
+  ],
+  [
+    "Report Overview",
+    "Ringkasan Laporan"
+  ],
+  [
+    "Report actions",
+    "Aksi laporan"
+  ],
+  [
+    "The report will be moved to Trash for 30 days.",
+    "Report akan dipindahkan ke Trash dengan masa retensi 30 hari."
+  ],
+  [
+    "Report preview",
+    "Pratinjau laporan"
+  ],
+  [
+    "Saved reports",
+    "Report tersimpan"
+  ],
+  [
+    "Report saved in the demo browser.",
+    "Report tersimpan di browser demo."
+  ],
+  [
+    "Report saved in the database.",
+    "Report tersimpan di database."
+  ],
+  [
+    "Reset",
+    "Reset"
+  ],
+  [
+    "Restore",
+    "Pulihkan"
+  ],
+  [
+    "Role / specialty",
+    "Role / spesialis"
+  ],
+  [
+    "Save Assignment",
+    "Simpan Assignment"
+  ],
+  [
+    "Search announcement",
+    "Cari pengumuman"
+  ],
+  [
+    "Search announcement…",
+    "Cari pengumuman…"
+  ],
+  [
+    "Search consultations",
+    "Cari konsultasi"
+  ],
+  [
+    "Search consultation…",
+    "Cari konsultasi…"
+  ],
+  [
+    "Search member, role, division…",
+    "Cari anggota, role, divisi…"
+  ],
+  [
+    "Search patient consents",
+    "Cari persetujuan pasien"
+  ],
+  [
+    "Search patient consent…",
+    "Cari persetujuan pasien…"
+  ],
+  [
+    "Search trash",
+    "Cari sampah"
+  ],
+  [
+    "Search trash…",
+    "Cari sampah…"
+  ],
+  [
+    "Search user…",
+    "Cari pengguna…"
+  ],
+  [
+    "Good evening",
+    "Selamat malam"
+  ],
+  [
+    "Good morning",
+    "Selamat pagi"
+  ],
+  [
+    "Good afternoon",
+    "Selamat siang"
+  ],
+  [
+    "Good late afternoon",
+    "Selamat sore"
+  ],
+  [
+    "Select all announcements",
+    "Pilih semua pengumuman"
+  ],
+  [
+    "Select all consents",
+    "Pilih semua persetujuan"
+  ],
+  [
+    "Select all consultations",
+    "Pilih semua konsultasi"
+  ],
+  [
+    "Select all trash",
+    "Pilih semua sampah"
+  ],
+  [
+    "All your team's activities in one workspace.",
+    "Semua aktivitas tim, dalam satu workspace."
+  ],
+  [
+    "All types",
+    "Semua jenis"
+  ],
+  [
+    "All payments",
+    "Semua payment"
+  ],
+  [
+    "Invalid session.",
+    "Sesi tidak valid."
+  ],
+  [
+    "Adjust your filters or search.",
+    "Sesuaikan filter atau pencarian Anda."
+  ],
+  [
+    "Signatures",
+    "Tanda Tangan"
+  ],
+  [
+    "Save Canceled",
+    "Simpan Pembatalan"
+  ],
+  [
+    "Save consent",
+    "Simpan consent"
+  ],
+  [
+    "Save consultation",
+    "Simpan consultation"
+  ],
+  [
+    "Could not save.",
+    "Simpan gagal."
+  ],
+  [
+    "Save report",
+    "Simpan report"
+  ],
+  [
+    "Status A–Z",
+    "Status A–Z"
+  ],
+  [
+    "Status Z–A",
+    "Status Z–A"
+  ],
+  [
+    "Consultation status updated to Done.",
+    "Status consultation diperbarui menjadi Done."
+  ],
+  [
+    "Consultation status has changed. Reload the list.",
+    "Status consultation sudah berubah. Muat ulang daftar."
+  ],
+  [
+    "Payment status",
+    "Status Pembayaran"
+  ],
+  [
+    "Strikethrough",
+    "Coret"
+  ],
+  [
+    "Subtitle",
+    "Subjudul"
+  ],
+  [
+    "Supportive Medications",
+    "Obat Pendukung"
+  ],
+  [
+    "Surgery",
+    "Operasi"
+  ],
+  [
+    "Surgery & Big Fire",
+    "Operasi & Kebakaran Besar"
+  ],
+  [
+    "Surgery instruments",
+    "Instrumen operasi"
+  ],
+  [
+    "Surgery end date",
+    "Surgery tanggal akhir"
+  ],
+  [
+    "Surgery start date",
+    "Surgery tanggal awal"
+  ],
+  [
+    "Generate procedure scenarios and roleplay flows with Gemini.",
+    "Susun skenario tindakan dan alur roleplay dengan Gemini."
+  ],
+  [
+    "The table is ready. Creating",
+    "Tabel sudah disiapkan. Pembuatan"
+  ],
+  [
+    "Tag mention",
+    "Tag mention"
+  ],
+  [
+    "Add text, tables, and a closing directly in the editor. New announcements notify all members.",
+    "Tambahkan teks, tabel, lalu penutup langsung di editor. Announcement baru akan dikirim ke notifikasi seluruh anggota."
+  ],
+  [
+    "Reference date",
+    "Tanggal acuan"
+  ],
+  [
+    "Dates use GMT+7. Edit and delete only your own consents.",
+    "Tanggal berdasarkan GMT+7. Edit dan hapus hanya untuk consent milik Anda."
+  ],
+  [
+    "Dates use WIB",
+    "Tanggal berdasarkan WIB"
+  ],
+  [
+    "Dates use WIB · Click columns to sort · You can only temporarily delete your own reports.",
+    "Tanggal berdasarkan WIB · Klik kolom untuk urutan naik/turun · Hapus sementara hanya untuk report milik Anda."
+  ],
+  [
+    "Newest created",
+    "Terbaru dibuat"
+  ],
+  [
+    "Oldest created",
+    "Terlama dibuat"
+  ],
+  [
+    "Text color",
+    "Warna teks"
+  ],
+  [
+    "No matching consultations.",
+    "Tidak ada consultation yang sesuai."
+  ],
+  [
+    "No results",
+    "Tidak ada hasil"
+  ],
+  [
+    "No results for “",
+    "Tidak ada hasil untuk “"
+  ],
+  [
+    "No appointments in this range.",
+    "Tidak ada janji temu pada rentang ini."
+  ],
+  [
+    "No reports in this period.",
+    "Tidak ada report pada periode ini."
+  ],
+  [
+    "Not found.",
+    "Tidak ditemukan."
+  ],
+  [
+    "Action failed.",
+    "Tindakan gagal."
+  ],
+  [
+    "Title",
+    "Judul"
+  ],
+  [
+    "Total reports created · WIB period · according to division access",
+    "Total report dibuat · periode WIB · sesuai akses divisi"
+  ],
+  [
+    "Could not load Trash.",
+    "Trash gagal dimuat."
+  ],
+  [
+    "Trash is empty. No matching data.",
+    "Trash kosong. Tidak ada data yang sesuai."
+  ],
+  [
+    "Enter a cancellation reason…",
+    "Tuliskan alasan pembatalan…"
+  ],
+  [
+    "Enter the injury location, complaints, and important known information.",
+    "Tuliskan lokasi cedera, keluhan, dan informasi penting yang sudah diketahui."
+  ],
+  [
+    "Close search",
+    "Tutup pencarian"
+  ],
+  [
+    "Type of Anesthesia",
+    "Jenis Anestesi"
+  ],
+  [
+    "Underline",
+    "Garis bawah"
+  ],
+  [
+    "Undo",
+    "Urungkan"
+  ],
+  [
+    "Unpaid",
+    "Belum Lunas"
+  ],
+  [
+    "Untitled",
+    "Tanpa Judul"
+  ],
+  [
+    "Upload failed.",
+    "Upload gagal."
+  ],
+  [
+    "Upload attachment images",
+    "Upload gambar attachment"
+  ],
+  [
+    "Sort appointments",
+    "Urutkan janji temu"
+  ],
+  [
+    "User account",
+    "Akun pengguna"
+  ],
+  [
+    "Time (GMT+7)",
+    "Waktu (GMT+7)"
+  ],
+  [
+    "Week",
+    "Minggu"
+  ],
+  [
+    "Weight",
+    "Berat Badan"
+  ],
+  [
+    "Weight unit",
+    "Satuan berat"
+  ],
+  [
+    "Woman",
+    "Wanita"
+  ],
+  [
+    "Workspace ready",
+    "Workspace sudah disiapkan"
+  ],
+  [
+    "YOUR DAILY OVERVIEW",
+    "RINGKASAN HARIAN ANDA"
+  ],
+  [
+    "Year",
+    "Tahun"
+  ],
+  [
+    "Yes, delete permanently",
+    "Ya, hapus permanen"
+  ],
+  [
+    "Yes, restore",
+    "Ya, pulihkan"
+  ],
+  [
+    "You’re all caught up",
+    "Semua sudah dibaca"
+  ],
+  [
+    "will be available once the document format is defined.",
+    "akan tersedia setelah format dokumen ditentukan."
+  ],
+  [
+    "cases",
+    "kasus"
+  ],
+  [
+    "cases · page",
+    "kasus · halaman"
+  ],
+  [
+    "members",
+    "anggota"
+  ],
+  [
+    "· DEMO DATA",
+    "· DATA DEMO"
+  ],
+  [
+    "· One report counted once",
+    "· Satu report dihitung sekali"
+  ],
+  [
+    "↑ ↓ Select",
+    "↑ ↓ Pilih"
+  ],
+  [
+    "↵ Open",
+    "↵ Buka"
+  ],
+  [
+    "Esc Close",
+    "Esc Tutup"
+  ],
+  [
+    "(optional)",
+    "(opsional)"
+  ],
+  [
+    "Delete temporary (",
+    "Hapus sementara ("
+  ],
+  [
+    "Restore (",
+    "Pulihkan ("
+  ],
+  [
+    " · demo data",
+    " · data demo"
+  ],
+  [
+    " – Select end",
+    " – Pilih akhir"
+  ],
+  [
+    ". The reason will appear in consultation details.",
+    ". Keterangan akan ditampilkan pada detail consultation."
+  ],
+  [
+    ". Division or role mentions reach all matching members.",
+    ". Mention divisi atau role menjangkau seluruh anggota yang cocok."
+  ],
+  [
+    "Jan",
+    "Jan"
+  ],
+  [
+    "Feb",
+    "Feb"
+  ],
+  [
+    "Mar",
+    "Mar"
+  ],
+  [
+    "Apr",
+    "Apr"
+  ],
+  [
+    "May",
+    "Mei"
+  ],
+  [
+    "Jun",
+    "Jun"
+  ],
+  [
+    "Jul",
+    "Jul"
+  ],
+  [
+    "Aug",
+    "Agu"
+  ],
+  [
+    "Sep",
+    "Sep"
+  ],
+  [
+    "Oct",
+    "Okt"
+  ],
+  [
+    "Nov",
+    "Nov"
+  ],
+  [
+    "Dec",
+    "Des"
+  ],
+  [
+    "January",
+    "Januari"
+  ],
+  [
+    "February",
+    "Februari"
+  ],
+  [
+    "March",
+    "Maret"
+  ],
+  [
+    "April",
+    "April"
+  ],
+  [
+    "May",
+    "Mei"
+  ],
+  [
+    "June",
+    "Juni"
+  ],
+  [
+    "July",
+    "Juli"
+  ],
+  [
+    "August",
+    "Agustus"
+  ],
+  [
+    "September",
+    "September"
+  ],
+  [
+    "October",
+    "Oktober"
+  ],
+  [
+    "November",
+    "November"
+  ],
+  [
+    "December",
+    "Desember"
+  ],
+  [
+    "Blood Type",
+    "Golongan Darah"
+  ],
+  [
+    "Job / Occupation",
+    "Pekerjaan / Profesi"
+  ],
+  [
+    "Blood Pressure (BP)",
+    "Tekanan Darah (BP)"
+  ],
+  [
+    "Heart Rate (HR)",
+    "Denyut Jantung (HR)"
+  ],
+  [
+    "Respiratory Rate (RR)",
+    "Frekuensi Pernapasan (RR)"
+  ],
+  [
+    "Temperature",
+    "Suhu"
+  ],
+  [
+    "Before Surgery",
+    "Sebelum Operasi"
+  ],
+  [
+    "After Surgery",
+    "Setelah Operasi"
+  ],
+  [
+    "Monitoring",
+    "Pemantauan"
+  ],
+  [
+    "Treatment",
+    "Penanganan"
+  ],
+  [
+    "Debrief",
+    "Pemeriksaan"
+  ],
+  [
+    "Local Anesthesia",
+    "Anestesi Lokal"
+  ],
+  [
+    "General Anesthesia",
+    "Anestesi Umum"
+  ],
+  [
+    "Access",
+    "Akses"
+  ],
+  [
+    "Medical Service",
+    "Layanan Medis"
+  ],
+  [
+    "Fire Department",
+    "Pemadam Kebakaran"
+  ],
+  [
+    "General Practitioner",
+    "Dokter Umum"
+  ],
+  [
+    "Doctor Resident",
+    "Dokter Residen"
+  ],
+  [
+    "Doctor Attending",
+    "Dokter Penanggung Jawab"
+  ],
+  [
+    "Trainee",
+    "Peserta Pelatihan"
+  ],
+  [
+    "Medical Student",
+    "Mahasiswa Kedokteran"
+  ],
+  [
+    "First Responder",
+    "Penolong Pertama"
+  ],
+  [
+    "Firefighter",
+    "Petugas Pemadam"
+  ],
+  [
+    "Lieutenant",
+    "Letnan"
+  ],
+  [
+    "Captain",
+    "Kapten"
+  ],
+  [
+    "Chief",
+    "Kepala"
+  ],
+  [
+    "Deputy",
+    "Wakil"
+  ],
+  [
+    "Advisor",
+    "Penasihat"
+  ],
+  [
+    "Deputy Director",
+    "Wakil Direktur"
+  ],
+  [
+    "Director",
+    "Direktur"
+  ],
+  [
+    "Finance",
+    "Keuangan"
+  ],
+  [
+    "Public Relation",
+    "Hubungan Masyarakat"
+  ],
+  [
+    "Human Resource",
+    "Sumber Daya Manusia"
+  ],
+  [
+    "Internal Affairs",
+    "Urusan Internal"
+  ],
+  [
+    "Account",
+    "Akun"
+  ],
+  [
+    "Save changes",
+    "Simpan Perubahan"
+  ],
+  [
+    "Emergency Contact",
+    "Kontak Darurat"
+  ],
+  [
+    "Full Name",
+    "Nama Lengkap"
+  ],
+  [
+    "Contact Person",
+    "Kontak"
+  ],
+  [
+    "Anamnesis",
+    "Anamnesis"
+  ],
+  [
+    "Debrief — Physical Examination",
+    "Pemeriksaan — Fisik"
+  ],
+  [
+    "Debrief — Radiology Examination",
+    "Pemeriksaan — Radiologi"
+  ],
+  [
+    "Report Created by",
+    "Laporan Dibuat oleh"
+  ],
+  [
+    "Enable notifications",
+    "Aktifkan notifikasi"
+  ],
+  [
+    "Switch to English",
+    "Ganti ke Bahasa Inggris"
+  ],
+  [
+    "Switch to Indonesian",
+    "Ganti ke Bahasa Indonesia"
+  ],
+  [
+    "8 October 2026 · Demo data",
+    "8 Oktober 2026 · Data demo"
+  ],
+  [
+    "Name, role, or division",
+    "Nama, role, atau divisi"
+  ],
+  [
+    "Announcement",
+    "Pengumuman"
+  ],
+  [
+    "announcement?",
+    "pengumuman?"
+  ],
+  [
+    "consultation?",
+    "konsultasi?"
+  ],
+  [
+    "consent?",
+    "persetujuan?"
+  ],
+  [
+    "report?",
+    "laporan?"
+  ],
+  [
+    "data?",
+    "data?"
+  ],
+  [
+    "Sign-in required.",
+    "Login diperlukan."
+  ],
+  [
+    "Announcements unavailable. Run migration 011.",
+    "Announcement belum tersedia. Jalankan migration 011."
+  ],
+  [
+    "Invalid origin.",
+    "Origin tidak valid."
+  ],
+  [
+    "Enter an announcement title and check the content format.",
+    "Isi judul announcement dan periksa format konten."
+  ],
+  [
+    "Could not save announcement. Check ownership or admin access and migration 011.",
+    "Announcement gagal disimpan. Pastikan Anda pemilik atau admin dan migration 011 sudah dijalankan."
+  ],
+  [
+    "Invalid selection.",
+    "Pilihan tidak valid."
+  ],
+  [
+    "Could not delete. Check announcement ownership.",
+    "Hapus gagal. Periksa kepemilikan announcement."
+  ],
+  [
+    "Service unavailable.",
+    "Layanan belum tersedia."
+  ],
+  [
+    "Session expired.",
+    "Sesi berakhir."
+  ],
+  [
+    "Could not load reports. Ensure medical report migrations have been applied.",
+    "Report belum dapat dimuat. Pastikan migration report medis sudah dijalankan."
+  ],
+  [
+    "Invalid report data.",
+    "Data report tidak valid."
+  ],
+  [
+    "Invalid title or payment status.",
+    "Title dan status payment tidak valid."
+  ],
+  [
+    "Invalid patient consent link.",
+    "Link patient consent tidak valid."
+  ],
+  [
+    "Patient consent not found or deleted.",
+    "Patient consent tidak ditemukan atau sudah dihapus."
+  ],
+  [
+    "Could not save report. Check medical report migrations and account access.",
+    "Report gagal disimpan. Periksa migration report medis dan akses akun."
+  ],
+  [
+    "Invalid report selection.",
+    "Pilihan report tidak valid."
+  ],
+  [
+    "Temporary delete failed. Check report ownership and migration 003.",
+    "Hapus sementara gagal. Pastikan report milik Anda dan migration 003 sudah dijalankan."
+  ],
+  [
+    "Service not connected.",
+    "Layanan belum terhubung."
+  ],
+  [
+    "Access denied.",
+    "Akses ditolak."
+  ],
+  [
+    "Invalid input.",
+    "Input tidak valid."
+  ],
+  [
+    "Invalid role, division, position, or team.",
+    "Role, divisi, jabatan, atau team tidak valid."
+  ],
+  [
+    "Assignment failed. Check permissions and role/division choices.",
+    "Assignment gagal. Periksa izin dan pilihan role/divisi."
+  ],
+  [
+    "Images must be no larger than 4 MB.",
+    "Gambar maksimal 4 MB."
+  ],
+  [
+    "Use a valid PNG, JPG, or WebP file.",
+    "Gunakan file PNG, JPG, atau WebP yang valid."
+  ],
+  [
+    "Upload failed. Check the radiology bucket and migration 005.",
+    "Upload gagal. Periksa bucket radiology dan migration 005."
+  ],
+  [
+    "Image uploaded but preview unavailable.",
+    "Gambar diunggah tetapi preview belum tersedia."
+  ],
+  [
+    "Upload failed. Please try again.",
+    "Upload gagal. Silakan coba kembali."
+  ],
+  [
+    "Run migration 006 to enable consent.",
+    "Jalankan migration 006 untuk mengaktifkan consent."
+  ],
+  [
+    "Complete required fields and signatures.",
+    "Lengkapi field wajib dan tanda tangan."
+  ],
+  [
+    "Invalid report.",
+    "Report tidak valid."
+  ],
+  [
+    "Could not save consent and report link. Check report ownership and migration 008.",
+    "Consent dan link report gagal disimpan. Periksa kepemilikan report dan migration 008."
+  ],
+  [
+    "Could not save consent. Check migration 006.",
+    "Consent gagal disimpan. Periksa migration 006."
+  ],
+  [
+    "Delete failed. Check consent ownership and migration 007.",
+    "Hapus gagal. Pastikan consent milik Anda dan migration 007 tersedia."
+  ],
+  [
+    "Could not save notification status.",
+    "Status notifikasi gagal disimpan."
+  ],
+  [
+    "Demo is disabled in this environment.",
+    "Demo tidak aktif pada lingkungan ini."
+  ],
+  [
+    "Consultations unavailable. Run migration 008.",
+    "Consultation belum tersedia. Jalankan migration 008."
+  ],
+  [
+    "Complete Name, Date, Complaint and check the date format.",
+    "Lengkapi Name, Date, Keluhan dan periksa format tanggal."
+  ],
+  [
+    "An admin must assign your account's division.",
+    "Admin perlu menetapkan divisi akun Anda."
+  ],
+  [
+    "Could not save consultation. Check migration 008 and mention choices.",
+    "Consultation gagal disimpan. Periksa migration 008 dan pilihan mention."
+  ],
+  [
+    "Delete failed. Select your own data and check migration 009.",
+    "Hapus gagal. Pilih data milik Anda dan pastikan migration 009 tersedia."
+  ],
+  [
+    "Invalid action.",
+    "Action tidak valid."
+  ],
+  [
+    "Check required fields and date format.",
+    "Periksa field wajib dan format tanggal."
+  ],
+  [
+    "Cancellation reason is required, maximum 2000 characters.",
+    "Keterangan pembatalan wajib diisi, maksimal 2000 karakter."
+  ],
+  [
+    "Change failed. Check account access, data status, and migrations 009–010.",
+    "Perubahan gagal. Periksa akses akun, status data, dan migration 009–010."
+  ],
+  [
+    "Sign in to use the assistant.",
+    "Login Google atau Discord untuk menggunakan assistant."
+  ],
+  [
+    "An admin must configure GEMINI_API_KEY on the server.",
+    "Admin perlu mengisi GEMINI_API_KEY di server."
+  ],
+  [
+    "The case must contain 10–2000 characters.",
+    "Kasus harus berisi 10–2000 karakter."
+  ],
+  [
+    "Assistant quota reached or migration 004 is unavailable.",
+    "Kuota assistant tercapai atau migration 004 belum tersedia."
+  ],
+  [
+    "Account service is not configured.",
+    "Layanan akun belum dikonfigurasi."
+  ],
+  [
+    "Invalid profile.",
+    "Profil tidak valid."
+  ],
+  [
+    "Photos must be no larger than 2 MB.",
+    "Foto maksimal 2 MB."
+  ],
+  [
+    "Use a valid PNG, JPEG, or WebP file.",
+    "Gunakan file PNG, JPEG atau WebP yang valid."
+  ],
+  [
+    "Photo upload failed.",
+    "Upload foto gagal."
+  ],
+  [
+    "Could not save the profile photo.",
+    "Foto gagal disimpan pada profil."
+  ],
+  [
+    "Photo saved; preview is unavailable.",
+    "Foto tersimpan; preview belum dapat dimuat."
+  ],
+  [
+    "Trash unavailable. Run migration 011.",
+    "Trash belum tersedia. Jalankan migration 011."
+  ],
+  [
+    "Action failed. Data may have expired, changed, or belongs to another user.",
+    "Tindakan gagal. Data mungkin kedaluwarsa, berubah, atau bukan milik Anda."
+  ],
+  [
+    "AI recommendations are disabled. Fill in the report manually.",
+    "Rekomendasi AI dinonaktifkan. Isi report secara manual."
+  ],
+  [
+    "Appointments",
+    "Janji temu"
+  ],
+  [
+    "Save Canceled",
+    "Simpan Canceled"
+  ],
+  [
+    "Member not found.",
+    "Member tidak ditemukan."
+  ],
+  [
+    "Change password",
+    "Ganti password"
+  ],
+  [
+    "Confirm new password",
+    "Konfirmasi password baru"
+  ],
+  [
+    "Current password",
+    "Password saat ini"
+  ],
+  [
+    "New password",
+    "Password baru"
+  ],
+  [
+    "Update password",
+    "Perbarui password"
+  ],
+  [
+    "Updating…",
+    "Memperbarui…"
+  ],
+  [
+    "Only for email/password accounts.",
+    "Hanya untuk akun email/password."
+  ],
+  [
+    "Demo mode does not save or change passwords.",
+    "Mode demo tidak menyimpan atau mengganti password."
+  ],
+  [
+    "Password changed.",
+    "Password berhasil diganti."
+  ],
+  [
+    "Password change failed.",
+    "Password gagal diganti."
+  ],
+  [
+    "Password change failed. Check the password policy.",
+    "Password gagal diganti. Periksa kebijakan password."
+  ],
+  [
+    "Password must be at least 8 characters and match its confirmation.",
+    "Password minimal 8 karakter dan konfirmasi harus sama."
+  ],
+  [
+    "Current password is incorrect.",
+    "Password saat ini tidak sesuai."
+  ],
+  [
+    "Restore and server retention will be built with document storage.",
+    "Restore dan retensi server akan dibangun bersama fitur penyimpanan dokumen."
+  ],
+  [
+    "Divider",
+    "Pemisah"
+  ],
+  [
+    "General Doctor",
+    "Dokter Umum"
+  ],
+  [
+    "Specialist",
+    "Spesialis"
+  ],
+  [
+    "Pharmacist",
+    "Apoteker"
+  ],
+  [
+    "ANNOUNCEMENT",
+    "PENGUMUMAN"
+  ],
+  [
+    "CONSULTATION",
+    "KONSULTASI"
+  ],
+  [
+    "MEDICAL SERVICE",
+    "LAYANAN MEDIS"
+  ],
+  [
+    "WORKSPACE",
+    "WORKSPACE"
+  ],
+  [
+    "Anesthesia & Medication",
+    "Anestesi & Obat"
+  ],
+  [
+    "Some data could not be loaded. Check the connection and database migrations; sample data is not substituted.",
+    "Sebagian data belum dapat dimuat. Periksa koneksi dan migration database; data contoh tidak digunakan sebagai pengganti."
+  ],
+  [
+    "Anamnesis",
+    "Anamnesis"
+  ],
+  [
+    "Superadmin",
+    "Superadmin"
+  ],
+  [
+    "Status payment",
+    "Status Pembayaran"
+  ]
+]

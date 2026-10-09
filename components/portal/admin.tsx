@@ -1,14 +1,16 @@
 'use client';
+import {LocalizedView} from '@/components/portal/localized-view';
+
 import {useState} from 'react';import {useRouter} from 'next/navigation';import type {Profile} from '@/lib/portal-data';import {Button} from '@/components/ui/button';import {ReportSelect} from './report-fields';import {divisions,organizationRoles,memberTeams,positions} from '@/lib/member-options';
 export default function AdminForm({members}:{members:Profile[]}){
  const router=useRouter();const [id,setId]=useState(''),[role,setRole]=useState('SAHD'),[division,setDivision]=useState(''),[position,setPosition]=useState(''),[teams,setTeams]=useState<string[]>([]),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);
  async function submit(e:React.FormEvent){e.preventDefault();setBusy(true);try{const res=await fetch('/api/admin',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,role,division:division||null,position:position||null,teams})});if(!res.ok)throw new Error((await res.json()).error);setMessage('Assignment tersimpan.');router.refresh()}catch(e){setMessage(e instanceof Error?e.message:'Assignment gagal.')}finally{setBusy(false)}}
  const items=(values:readonly string[])=>values.map(value=>({value,label:value}));
- return <><h1>Admin Panel</h1><p className="muted text-xs mt-2">Atur Role, Divisi, Jabatan, dan Team anggota. Perubahan dicatat dalam audit.</p><form onSubmit={submit} className="panel mt-6 max-w-xl flex flex-col gap-5">
+ return <LocalizedView>{<><h1>Admin Panel</h1><p className="muted text-xs mt-2">Atur Role, Divisi, Jabatan, dan Team anggota. Perubahan dicatat dalam audit.</p><form onSubmit={submit} className="panel mt-6 max-w-xl flex flex-col gap-5">
  <ReportSelect label="Member" value={id||'none'} items={[{value:'none',label:'Pilih Anggota'},...members.map(m=>({value:m.id,label:m.name}))]} onChange={value=>{setId(value==='none'?'':value);const m=members.find(x=>x.id===value);setRole(['Admin','Member',...organizationRoles].includes(m?.role||'')?m!.role:'SAHD');setDivision(m?.division==='Belum ditetapkan'?'':m?.division||'');setPosition(m?.position||'');setTeams(m?.teams||[])}}/>
  <ReportSelect label="Role" value={role} items={items([...organizationRoles,'Member','Admin'])} onChange={setRole}/>
  <ReportSelect label="Division" value={division||'none'} items={[{value:'none',label:'Belum Ditentukan'},...items(divisions)]} onChange={value=>{setDivision(value==='none'?'':value);setPosition('')}}/>
  <ReportSelect label="Position / Jabatan" value={position||'none'} items={[{value:'none',label:'Belum Ditentukan'},...items(positions[division]||[])]} onChange={value=>setPosition(value==='none'?'':value)}/>
  <fieldset><legend className="text-xs mb-3">Team</legend><div className="settings-teams">{memberTeams.map(team=><label key={team}><input type="checkbox" checked={teams.includes(team)} onChange={e=>setTeams(previous=>e.target.checked?[...previous,team]:previous.filter(t=>t!==team))}/>{team}</label>)}</div></fieldset>
- <Button disabled={busy||!id}>{busy?'Saving…':'Save Assignment'}</Button><p role="status" className="muted text-xs">{message}</p></form></>;
+ <Button disabled={busy||!id}>{busy?'Saving…':'Save Assignment'}</Button><p role="status" className="muted text-xs">{message}</p></form></>}</LocalizedView>;
 }

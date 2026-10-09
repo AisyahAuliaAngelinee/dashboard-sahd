@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import {useOptionalPreferences} from "@/components/portal/preferences"
+import {id,enUS} from "date-fns/locale"
 import { cn } from "cn"
 import {
   ChevronDownIcon,
@@ -27,10 +29,13 @@ function Calendar({
 }: React.ComponentProps<typeof DayPicker> & {
   buttonVariant?: React.ComponentProps<typeof Button>["variant"]
 }) {
+  const preferences=useOptionalPreferences()
   const defaultClassNames = getDefaultClassNames()
 
   return (
     <DayPicker
+      locale={preferences?.language==="id"?id:enUS}
+      labels={{labelNav:()=>preferences?.language==='id'?'Navigasi kalender':'Calendar navigation',labelDayButton:(date,modifiers)=>`${modifiers.today?(preferences?.language==='id'?'Hari ini, ':'Today, '):''}${date.toLocaleDateString(preferences?.language==='id'?'id-ID':'en-US',{weekday:'long',day:'numeric',month:'long',year:'numeric'})}${modifiers.selected?(preferences?.language==='id'?', dipilih':', selected'):''}`,labelNext:()=>preferences?.language==='id'?'Bulan berikutnya':'Next month',labelPrevious:()=>preferences?.language==='id'?'Bulan sebelumnya':'Previous month',labelMonthDropdown:()=>preferences?.language==='id'?'Pilih bulan':'Select month',labelYearDropdown:()=>preferences?.language==='id'?'Pilih tahun':'Select year'}}
       showOutsideDays={showOutsideDays}
       className={cn(
         "group/calendar bg-background p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent",
@@ -41,7 +46,7 @@ function Calendar({
       captionLayout={captionLayout}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString(preferences?.language==="id"?"id-ID":"en-US", { month: "short" }),
         ...formatters,
       }}
       classNames={{
@@ -185,6 +190,7 @@ function CalendarDayButton({
   modifiers,
   ...props
 }: React.ComponentProps<typeof DayButton>) {
+  const preferences=useOptionalPreferences()
   const defaultClassNames = getDefaultClassNames()
 
   const ref = React.useRef<HTMLButtonElement>(null)

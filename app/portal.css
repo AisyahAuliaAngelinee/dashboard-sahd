@@ -270,3 +270,50 @@ html[data-sahd-theme=dark] .portal [data-slot=dropdown-menu-item]:hover,html[dat
 .portal .dashboard-sort{padding:0;border:0;background:transparent;color:inherit;display:inline-flex;gap:6px;align-items:center}.portal .dashboard-sort:hover{color:#087f83}
 
 html[data-sahd-theme=dark] .portal .announcement .label{color:#a5e2ce!important}
+
+/* A single dark interaction palette covers custom controls and library portals. */
+.portal .member-sort{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;padding:0;color:inherit;font-weight:inherit;text-align:left}
+.portal .member-sort:hover{color:#087f75}
+.portal .badge[data-division="Medical Service"]{background:#dff6e9;color:#08764e}
+.portal .badge[data-division="Fire Department"]{background:#ffead9;color:#b44715}
+html[data-sahd-theme=dark] .portal{--accent:#2b403e;--accent-foreground:#d7eee5;--secondary:#23363f;--secondary-foreground:#dce8ed;--popover:#17252d;--border:#344750;--input:#344750;--color-accent:#2b403e;--color-accent-foreground:#d7eee5;--color-primary:#286e5f;--color-primary-foreground:#effcf6;--color-secondary:#23363f;--color-secondary-foreground:#dce8ed}
+html[data-sahd-theme=dark] .portal :is(.filters,.table-search,.report-select-popup,[data-slot=select-content],[data-slot=command],.report-rich-editor,.report-editor-toolbar,.workspace-command){background:#1e3039;color:#dce8ed;border-color:#344750}
+html[data-sahd-theme=dark] .portal :is(button,[role=button]):not(:disabled):hover{background:#2a3f47!important;color:#e2f1ed!important;border-color:#4b6b70!important}
+html[data-sahd-theme=dark] .portal :is([data-slot=select-item],[data-slot=dropdown-menu-item],[cmdk-item]):is(:hover,[data-highlighted],[data-selected=true]){background:#28433d!important;color:#c7efdf!important}
+html[data-sahd-theme=dark] .portal :is(.filters button.selected,.notification-filters button.selected,[data-slot=tabs-trigger][data-active],button[data-selected=true],button[data-range-start=true],button[data-range-end=true]){background:#285747!important;color:#c6f0dd!important;border-color:#4d8a71!important}
+html[data-sahd-theme=dark] .portal :is(.report-primary,.consultation-save,.consent-create-new,button.bg-primary):hover:not(:disabled){background:#245a49!important;color:#e6fff0!important}
+html[data-sahd-theme=dark] .portal :is(.logout-item,.report-delete-action,[data-variant=destructive],.bg-destructive):hover:not(:disabled){background:#63303a!important;color:#ffd8de!important;border-color:#90515d!important}
+html[data-sahd-theme=dark] .portal :is(.report-filter-reset,.table-reset-link,.member-sort,.dashboard-sort):hover{background:transparent!important;color:#a1decb!important}
+html[data-sahd-theme=dark] .portal .badge[data-division="Medical Service"]{background:#224c3b;color:#a2efc5}
+html[data-sahd-theme=dark] .portal .badge[data-division="Fire Department"]{background:#4b2e22;color:#ffc199}
+html[data-sahd-theme=dark] .portal :is(.report-editor-toolbar button,.filters button){background:transparent;color:#b6cad3}
+html[data-sahd-theme=dark] .portal .account-tabs [data-slot=tabs-trigger]{background:transparent!important}
+html[data-sahd-theme=dark] .portal :is(.report-message,.consent-error,.consultation-cancellation-note){background:#293e37;color:#c8e9d9;border-color:#43624e}
+html[data-sahd-theme=dark] .portal .report-rich-editor .tiptap{color:#e2edf2;background:#17252d}
+html[data-sahd-theme=dark] .portal .report-rich-editor .tiptap:focus{background:#17252d}
+
+html[data-sahd-theme=dark] .portal .account-tabs button:not(:disabled):hover{background:transparent!important;border-color:transparent!important;color:#b8e5d9!important}
+html[data-sahd-theme=dark] .portal .account-tabs button[data-active]:not(:disabled):hover{border-bottom-color:#76d5c2!important}
+html[data-sahd-theme=dark] .portal .report-payment-toggle .payment-paid[aria-pressed=true]{background:#256747;color:#d3fce4;border-color:#256747}
+html[data-sahd-theme=dark] .portal .report-payment-toggle .payment-unpaid[aria-pressed=true]{background:#6d343e;color:#ffdee5;border-color:#6d343e}
+html[data-sahd-theme=dark] .portal .report-payment-toggle .payment-paid:hover:not(:disabled){background:#315d48!important;color:#d3fce4!important}
+html[data-sahd-theme=dark] .portal .report-payment-toggle .payment-unpaid:hover:not(:disabled){background:#65343e!important;color:#ffdee5!important}
+
+html[data-sahd-theme=dark] .portal [data-slot=dropdown-menu-item].report-delete:is(:hover,[data-highlighted]){background:#63303a!important;color:#ffd8de!important}
+html[data-sahd-theme=dark] .portal button.report-delete:hover:not(:disabled){background:#63303a!important;color:#ffd8de!important}
+/* Base UI portals also inherit the active theme outside the portal shell. */
+html[data-sahd-theme=dark]{--color-background:#10191f;--color-foreground:#e4edf2;--color-popover:#17252d;--color-popover-foreground:#e4edf2;--color-accent:#2b403e;--color-accent-foreground:#d7eee5;--color-muted:#22333d;--color-muted-foreground:#aabfc9;--color-border:#344750;--color-input:#344750;--color-primary:#286e5f;--color-primary-foreground:#effcf6}
+html[data-sahd-theme=dark] :is([data-slot=select-content],[data-slot=popover-content],[data-slot=dropdown-menu-content],[data-slot=dialog-content]){background:#17252d!important;color:#e4edf2!important;border-color:#344750!important}
+html[data-sahd-theme=dark] [data-slot=select-item]{color:#d9e7ec}
+html[data-sahd-theme=dark] :is([data-slot=select-item],[data-slot=dropdown-menu-item]):is(:hover,[data-highlighted]){background:#28433d!important;color:#c7efdf!important}
+html[data-sahd-theme=dark] [data-slot=dropdown-menu-item].report-delete:is(:hover,[data-highlighted]){background:#63303a!important;color:#ffd8de!important}
+html[data-sahd-theme=dark]{color-scheme:dark}
+html[data-sahd-theme=dark] [data-slot=select-trigger]{background:#22343e!important;color:#dbe9ee!important;border-color:#405965!important}
+html[data-sahd-theme=dark] [data-slot=select-trigger]:hover:not(:disabled){background:#2a3f47!important;color:#e2f1ed!important;border-color:#4b6b70!important}
+html[data-sahd-theme=dark] [data-slot=select-item] :is(div,span,svg){color:inherit!important}
+html[data-sahd-theme=dark] [data-slot=select-value]{color:inherit!important}
+html[data-sahd-theme=dark] .portal .report-search{background:#22343e;border-color:#405965}
+html[data-sahd-theme=dark] .portal .report-search input{background:transparent;border:0}
+html[data-sahd-theme=dark] .portal.report-date-popover [data-slot=calendar] [data-slot=button]{color:#dbe9ee}
+html[data-sahd-theme=dark] :is(.report-calendar-popup,.report-date-popover) [data-range-middle=true]{background:#213d34!important;color:#d0eadc!important}
+html[data-sahd-theme=dark] :is(.report-calendar-popup,.report-date-popover) [data-slot=button]:is([data-range-start=true],[data-range-end=true],[data-selected-single=true]){background:#2c6953!important;color:#e0f7e9!important}
