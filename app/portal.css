@@ -519,3 +519,5 @@ html[data-sahd-theme=dark] .portal.announcement-action-menu [role=menuitem]{colo
 html[data-sahd-theme=dark] .portal.announcement-action-menu [role=menuitem]:is(:hover,[data-highlighted]){background:#243c43;color:#8cdbd1}
 html[data-sahd-theme=dark] .portal.announcement-action-menu .delete-menu-item{color:#ff8795}
 html[data-sahd-theme=dark] .portal.announcement-action-menu .delete-menu-item:is(:hover,[data-highlighted]){background:#472b34;color:#ffa5af}
+
+.portal .table-navigation{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
