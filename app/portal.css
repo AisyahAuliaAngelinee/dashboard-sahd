@@ -351,3 +351,47 @@ html[data-sahd-division=fd] .portal .avatar{background:#ffeadc;color:#a34620}
 html[data-sahd-division=fd][data-sahd-theme=dark] .portal :is(.filters button.selected,.notification-filters button.selected){background:#483026!important;color:#f4bd9f!important;border-color:#a06749!important}
 html[data-sahd-division=fd][data-sahd-theme=dark] .portal .avatar{background:#483026;color:#f4bd9f}
 html[data-sahd-division=fd][data-sahd-theme=dark] .portal button[data-variant=default]:hover:not(:disabled){background:#ad6844!important;color:#fff2e8!important;border-color:#d5916b!important}
+
+/* Login: editorial gallery with a focused Discord sign-in panel. */
+.portal.login-shell{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);background:#f8fbfa;min-height:100dvh}
+.portal .login-story{display:flex;padding:42px 48px;min-height:100dvh;isolation:isolate;background:#173b36}
+.portal .login-story:after{display:none}
+.portal .login-gallery{position:absolute;inset:0;z-index:-1;width:auto}
+.portal .login-gallery img{width:100%;height:100%;object-fit:cover;object-position:center}
+.login-gallery-previous{z-index:0}.login-gallery-current{z-index:1;animation:login-photo-fade 1.4s ease both}
+.login-gallery-shade{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(9,29,29,.45),rgba(9,29,29,.18) 25%,rgba(7,26,25,.88) 90%)}
+.portal .login-brand{position:relative;display:flex;align-items:center;gap:12px;color:white;width:fit-content}
+.login-brand-logo{width:57px;height:57px;position:relative;overflow:hidden;display:block}
+.portal .login-brand-logo img{position:absolute;max-width:none;width:94px;height:94px;left:50%;top:50%;transform:translate(-50%,-50%)}
+.portal .login-brand b{font-size:19px;letter-spacing:2px}.portal .login-brand small{display:block;font-size:11px;letter-spacing:1.4px;opacity:.8;margin-top:4px}
+.portal .login-story-copy{margin-top:auto;padding-top:110px;padding-bottom:55px;max-width:480px}
+.portal .login-eyebrow{font-size:10px;font-weight:700;letter-spacing:2.4px}
+.portal .login-story-copy h1{font-size:clamp(46px,5.3vw,76px);font-weight:650;line-height:1.07;letter-spacing:-3px;margin:24px 0}
+.portal .login-story-copy h1 em{font-family:Georgia,serif;font-weight:400;color:#b6ecd9}
+.portal .login-story-copy>p{max-width:330px;font-size:14px;line-height:1.8;color:#e4eee9}
+.portal .login-team{display:flex;align-items:center;gap:10px;margin-top:30px;font-size:11px;font-weight:500;color:#e0f0e8}
+.portal .login-story-footer{display:flex;justify-content:space-between;align-items:center;font-size:10px;gap:12px;color:#d0dfda}
+.portal .login-photo-indicator{font-size:10px;letter-spacing:.3px}
+.portal .login-form{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:52px clamp(28px,5vw,88px);position:relative;background:#f8fbfa;min-height:100dvh}
+.portal .login-form>div{width:100%;max-width:390px}
+.portal .login-back{display:flex;align-items:center;gap:8px;width:fit-content;font-size:12px;color:#6b7e77;margin-bottom:50px}
+.portal .login-back:hover{color:#24715e}
+.portal .login-welcome-icon{width:48px;height:48px;border-radius:15px;display:grid;place-items:center;background:#e6f1eb;color:#357662;margin-bottom:24px}
+.portal .login-form .login-eyebrow{color:#6d8378;font-size:9px;letter-spacing:1.7px}
+.portal .login-form h1{font-size:clamp(30px,3.5vw,42px);font-weight:650;letter-spacing:-1.5px;margin:13px 0 15px;color:#183f35}
+.portal .login-intro{font-size:14px;line-height:1.8;color:#7b8a83;margin-bottom:32px}
+.portal .oauth-options{display:block}
+.portal .oauth-options .discord-login{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:54px;padding:15px 18px;border:1px solid #5865f2;border-radius:12px;background:#5865f2;color:white;box-shadow:0 5px 15px #5865f224;font-size:13px;font-weight:600;transition:background .2s,transform .2s,box-shadow .2s}
+.portal .oauth-options .discord-login:hover{background:#4752c4;border-color:#4752c4;transform:translateY(-1px);box-shadow:0 7px 18px #5865f238}
+.portal .oauth-options .discord-login:disabled{opacity:.6;transform:none;cursor:not-allowed}
+.portal .oauth-options .discord-icon{display:block;flex-shrink:0;width:23px;height:23px;color:white;opacity:1}
+.portal .login-help{font-size:11px;line-height:1.8;text-align:center;color:#819087;margin-top:18px}
+.portal .login-feedback{font-size:12px;line-height:1.7;padding:13px 15px;border-radius:10px;background:#fff3db;color:#805b21;margin:18px 0}
+.portal .login-demo{border-top:1px solid #dfebe4;margin-top:28px;padding-top:24px;display:grid;gap:12px}
+.portal .login-demo>span{font-size:9px;letter-spacing:1.5px;color:#85938b}.portal .login-demo>p{font-size:10px;line-height:1.6;color:#85938b}
+.portal .login-form>.login-security{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:38px;font-size:10px;color:#8a9990}
+.portal .login-copyright{font-size:9px;color:#a3ada7;margin-top:16px}
+@keyframes login-photo-fade{from{opacity:0}to{opacity:1}}
+@media(max-width:1000px){.portal .login-story{padding:32px}.portal .login-form{padding:40px 30px}.portal .login-photo-indicator{display:none}}
+@media(max-width:800px){.portal.login-shell{grid-template-columns:1fr}.portal .login-story{display:flex;min-height:300px;padding:24px 28px}.portal .login-story-copy{padding:30px 0 0}.portal .login-story-copy h1{font-size:36px;letter-spacing:-1.3px;margin:14px 0}.portal .login-story-copy h1 br{display:none}.portal .login-story-copy h1 br:after{content:' '}.portal .login-story-copy>p,.portal .login-team,.portal .login-story-footer{display:none}.portal .login-form{min-height:calc(100dvh - 300px);padding:28px}.portal .login-back{margin-bottom:24px}.portal .login-welcome-icon{display:none}.portal .login-form h1{font-size:32px}.portal .login-intro{margin-bottom:24px}}
+@media(prefers-reduced-motion:reduce){.login-gallery-current{animation:none}.portal .discord-login{transition:none}}

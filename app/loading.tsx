@@ -1,0 +1,1 @@
+export default function Loading(){return <div className="page-loading" role="status" aria-label="Loading page"><div className="route-progress"><span/></div><span className="loading-label">Loading…</span></div>}

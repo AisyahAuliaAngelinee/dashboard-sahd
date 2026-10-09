@@ -1,8 +1,9 @@
 import 'server-only';
+import {localDemoAllowed} from '@/lib/demo-access';
 import {cookies} from 'next/headers';
 import {createServerClient} from '@supabase/ssr';
 import {canonicalOrigin,sessionCookieOptions} from '@/lib/auth-session';
-export function demoAllowed(){return process.env.NODE_ENV!=='production'||process.env.SAHD_ENABLE_DEMO==='true'}
+export function demoAllowed(){return localDemoAllowed(process.env.NODE_ENV,process.env.VERCEL)}
 export async function serverClient(){
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
  if(!url||!key)return null;

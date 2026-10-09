@@ -2,7 +2,7 @@ import {NextResponse,type NextRequest} from 'next/server';import {createServerCl
 import {canonicalOrigin,sessionCookieOptions,sessionCacheHeaders} from '@/lib/auth-session';
 export async function proxy(request:NextRequest){
  const noStore=(response:NextResponse)=>{Object.entries(sessionCacheHeaders).forEach(([name,value])=>response.headers.set(name,value));return response};
- if(request.nextUrl.pathname.startsWith('/api/cron/'))return noStore(NextResponse.next());
+ if(request.nextUrl.pathname==='/api/health'||request.nextUrl.pathname.startsWith('/api/cron/'))return noStore(NextResponse.next());
  // Start OAuth on the canonical host so the PKCE verifier and session cookies stay together.
  const canonical=process.env.NODE_ENV==='production'&&process.env.VERCEL_ENV!=='preview'?canonicalOrigin(process.env.SAHD_APP_URL,true):null;
  if(canonical&&request.method==='GET'&&request.nextUrl.origin!==canonical){const target=new URL(canonical);target.pathname=request.nextUrl.pathname;target.search=request.nextUrl.search;return noStore(NextResponse.redirect(target))}

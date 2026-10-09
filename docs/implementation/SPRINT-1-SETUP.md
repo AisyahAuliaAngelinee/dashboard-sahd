@@ -2,7 +2,7 @@
 
 ## Menjalankan
 `npm install`, kemudian `npm run dev -- --port 8766`. Buka http://127.0.0.1:8766/login.
-Local development menyediakan tombol workspace demo. Data demo terpisah dari akun sungguhan; endpoint data pribadi selalu membutuhkan sesi Supabase terverifikasi. Demo mati pada production kecuali SAHD_ENABLE_DEMO=true disetel secara eksplisit; jangan aktifkan pada deployment operasional.
+Local development menyediakan tombol workspace demo. Data demo terpisah dari akun sungguhan; endpoint data pribadi selalu membutuhkan sesi Supabase terverifikasi. Demo hanya aktif saat NODE_ENV=development di komputer lokal. Seluruh deployment Vercel dan production menolak akses demo; tidak ada environment flag untuk mengaktifkannya.
 
 ## Yang sudah dibangun
 Navbar/search shortcut ⌘K dan Ctrl+K, filter notification All/Mentioned/Janji Temu, mark read, link objek, account/logout. Sidebar, responsive drawer/focus trap. Dashboard: greeting WIB, announcement published terbaru, line chart 6 periode, minor/major cards, date filter/sort/pagination appointment. General: nama/foto, preferensi notifikasi, role/division read-only, change password untuk akun Register. Members: nama/avatar/role/divisi/provider, search/sort. Admin: assignment role/division dengan validasi server dan audit SQL.

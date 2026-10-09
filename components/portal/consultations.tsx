@@ -1,4 +1,5 @@
 'use client';
+import {useDraftCache} from '@/lib/use-draft-cache';
 import {LocalizedView} from '@/components/portal/localized-view';
 
 import {PageTitle} from './preferences';
@@ -20,6 +21,7 @@ const displayDate=(s:string)=>s?s.split('-').reverse().join('/'):'';
 const isoDate=(s:string)=>s.split(' ')[0].split('/').reverse().join('-');
 export default function Consultations({detailId}:{detailId?:string}){
  const {profile,members,mode,appointments}=usePortal(),router=useRouter();const [rows,setRows]=useState<ConsultationRow[]>([]),[loading,setLoading]=useState(true),[creating,setCreating]=useState(false),[input,setInput]=useState(fresh),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),[editId,setEditId]=useState<string>();
+ useDraftCache(`sahd-draft:consultation:${profile.id}`,{input,editId},saved=>{if(detailId||!saved?.input?.mentions||typeof saved.input.name!=='string')return;setInput(saved.input);setEditId(saved.editId);setCreating(true)},creating,!detailId);
  const storageKey=`sahd-consultations:${profile.id}`;
  useEffect(()=>{let live=true;async function load(){try{if(mode==='demo'){const saved:ConsultationRow[]=JSON.parse(localStorage.getItem(storageKey)||'[]');setRows([...saved,...demoAppointments.filter(a=>!saved.some(r=>r.id===a.id)).map(a=>({id:a.id,name:a.name,dob:'',date:a.date,contact:'',job:'',complaint:a.complaint,notes:'',mentions:{users:[],roles:[],divisions:[]},created_by:'demo-user',created_by_name:'Milleo Greenwood',created_at:a.createdAt,division:'Medical Service',status:a.status}))]);return}const r=await fetch('/api/consultations');const d=await r.json();if(!r.ok)throw Error(d.error);if(live)setRows(d.consultations)}catch(e){if(live)setMessage(e instanceof Error?e.message:'Consultation gagal dimuat.')}finally{if(live)setLoading(false)}}void load();return ()=>{live=false}},[mode,storageKey,appointments]);
  function field(k:Exclude<keyof ConsultationInput,'mentions'>,v:string){setInput(d=>({...d,[k]:v}));setMessage('')}

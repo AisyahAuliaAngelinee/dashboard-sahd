@@ -1,48 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowRight, LoaderCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { authConfigured, browserClient } from '@/lib/supabase/client';
-import { authFeedback } from '@/lib/auth-feedback';
-
-export default function LoginForm({ allowDemo }: { allowDemo: boolean }) {
-  const router = useRouter();
-  const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState('');
-  const configured = authConfigured();
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('error')) setMessage(authFeedback(params.get('error') || 'callback'));
-    if (params.get('success') === 'password') setMessage('Password berhasil diperbarui. Silakan masuk dengan password baru.');
-  }, []);
-  async function oauth() {
-    setBusy(true); setMessage('');
-    try {
-      const { error } = await browserClient().auth.signInWithOAuth({ provider: 'discord', options: { redirectTo: `${window.location.origin}/auth/callback` } });
-      if (error) throw new Error(authFeedback(error.code, 'Login provider gagal dimulai. Silakan coba lagi.'));
-    } catch (e) { setMessage(e instanceof Error ? e.message : 'Login gagal.'); setBusy(false); }
-  }
-  async function enterDemo() {
-    setBusy(true); setMessage('');
-    try {
-      const response = await fetch('/api/demo', { method: 'POST' });
-      if (!response.ok) throw new Error('Demo tidak tersedia.');
-      router.push('/dashboard'); router.refresh();
-    } catch (e) { setMessage(e instanceof Error ? e.message : 'Demo gagal dibuka.'); }
-    finally { setBusy(false); }
-  }
-  return <div>
-    <Link href="/" className="inline-flex items-center gap-2 mb-10 muted text-xs">← Website SAHD</Link>
-    <p className="label mb-2">WELCOME TO YOUR WORKSPACE</p><h1>Welcome back</h1>
-    <p className="muted text-sm mt-2 mb-7">Masuk untuk melanjutkan aktivitas Anda.</p>
-    {!configured && <p role="status" className="mb-5 p-3 bg-amber-50 rounded-lg text-xs text-amber-800">Login akun belum tersedia. Admin perlu menyelesaikan konfigurasi layanan akun.</p>}
-    <div className="oauth-options">
-      <Button variant="outline" disabled={busy || !configured} onClick={() => oauth()}><span className="font-bold text-indigo-500">◉</span>{busy?'Menghubungkan…':'Continue with Discord'}<ArrowRight size={16}/></Button>
-    </div>
-    <p className="muted text-xs mt-5 text-center">Masuk menggunakan akun Discord Anda untuk mengakses workspace SAHD.</p>
-    {message && <p role="status" className="text-xs p-3 rounded-lg bg-amber-50 text-amber-800 mt-5">{message}</p>}
-    {allowDemo && <div className="border-t border-slate-200 mt-8 pt-6"><Button variant="secondary" disabled={busy} className="w-full" onClick={enterDemo}>Buka workspace demo <ArrowRight size={15}/></Button><p className="muted text-[11px] text-center mt-3">Data contoh. Demo bukan login akun.</p></div>}
-  </div>;
+import {useEffect,useState} from 'react';import {useRouter} from 'next/navigation';import Link from 'next/link';import {ArrowLeft,ArrowRight,LoaderCircle,LockKeyhole} from 'lucide-react';import DiscordIcon from './discord-icon';
+import {Button} from '@/components/ui/button';import {authConfigured,browserClient} from '@/lib/supabase/client';import {loginFeedback} from '@/lib/login-feedback';
+export default function LoginForm({allowDemo}:{allowDemo:boolean}){const router=useRouter(),[busy,setBusy]=useState(false),[message,setMessage]=useState(''),configured=authConfigured();useEffect(()=>{const params=new URLSearchParams(window.location.search);if(params.has('error'))setMessage(loginFeedback(params.get('error')||'callback'))},[]);
+ async function oauth(){setBusy(true);setMessage('');try{const {error}=await browserClient().auth.signInWithOAuth({provider:'discord',options:{redirectTo:`${window.location.origin}/auth/callback`}});if(error)throw Error(loginFeedback(error.code))}catch(e){setMessage(e instanceof Error?e.message:'Unable to start sign-in. Please try again.');setBusy(false)}}
+ async function enterDemo(){setBusy(true);setMessage('');try{const r=await fetch('/api/demo',{method:'POST'});if(!r.ok)throw Error('The development workspace is unavailable.');router.push('/dashboard');router.refresh()}catch(e){setMessage(e instanceof Error?e.message:'Unable to open the development workspace.');setBusy(false)}}
+ return <div className="login-form-content"><Link href="/" className="login-back"><ArrowLeft size={15}/>Back to website</Link><span className="login-welcome-icon"><LockKeyhole size={23}/></span><p className="login-eyebrow">YOUR TEAM. YOUR WORKSPACE.</p><h1>Welcome back.</h1><p className="login-intro">Sign in to your SAHD workspace.<br/>Your next story starts here.</p>{!configured&&<p role="status" className="login-feedback">Sign-in is currently unavailable. Please contact an administrator.</p>}<div className="oauth-options"><Button className="discord-login" disabled={busy||!configured} onClick={oauth}><DiscordIcon/><span>{busy?'Connecting to Discord…':'Continue with Discord'}</span>{busy?<LoaderCircle size={18} className="animate-spin"/>:<ArrowRight size={18}/>}</Button></div><p className="login-help">Use the Discord account connected to your SAHD identity.</p>{message&&<p role="status" className="login-feedback">{message}</p>}{allowDemo&&<div className="login-demo"><span>LOCAL DEVELOPMENT</span><Button variant="outline" disabled={busy} onClick={enterDemo}>Open demo workspace<ArrowRight size={15}/></Button><p>Sample data only. This option is never available on Vercel.</p></div>}</div>
 }
