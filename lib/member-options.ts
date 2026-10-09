@@ -1,5 +1,5 @@
 export const divisions = ['Medical Service','Fire Department'] as const;
-export const organizationRoles = ['SAHD','Deputy','Chief','Advisor','Deputy Director','Director'] as const;
+export const organizationRoles = ['SAHD','Deputy','Chief','Advisor','Deputy Director','Director','Medical Student'] as const;
 export const memberTeams = ['Finance','Public Relation','Human Resource','Internal Affairs'] as const;
 export const positions:Record<string,string[]> = {
  'Medical Service':['General Practitioner','Doctor Resident','Doctor Attending','Trainee','Medical Student'],

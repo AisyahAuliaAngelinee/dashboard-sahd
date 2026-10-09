@@ -5,7 +5,7 @@ export const maxDuration=60;
 export async function POST(request:Request){
  if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});
  const client=await serverClient();const user=client?(await client.auth.getUser()).data.user:null;if(!client||!user)return Response.json({error:'Login Google atau Discord untuk menggunakan assistant.'},{status:401});
- const {data:profile}=await client.from('profiles').select('division').eq('id',user.id).single();if(profile?.division!=='Medical Service')return Response.json({error:'Akses Medical Service diperlukan.'},{status:403});
+ const {data:profile}=await client.from('profiles').select('division,role,job_title,access_role').eq('id',user.id).single();if(!profile)return Response.json({error:'Akses ditolak.'},{status:403});
  if(!process.env.GEMINI_API_KEY)return Response.json({error:'Admin perlu mengisi GEMINI_API_KEY di server.'},{status:503});
  try{const body=await request.json();if(typeof body.caseText!=='string'||body.caseText.trim().length<10||body.caseText.length>2000)return Response.json({error:'Kasus harus berisi 10–2000 karakter.'},{status:400});
  const {error}=await client.rpc('reserve_report_suggestion');if(error)return Response.json({error:'Kuota assistant tercapai atau migration 004 belum tersedia.'},{status:429});

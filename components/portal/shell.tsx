@@ -18,9 +18,9 @@ function ShellContent({children}:{children:React.ReactNode}){
  const {profile,notices,ready,markRead,logout,mode,appointments,error}=usePortal();const path=usePathname();const sidebarRef=useRef<HTMLElement>(null);const menuRef=useRef<HTMLButtonElement>(null);const [search,setSearch]=useState(false),[query,setQuery]=useState(''),[mobile,setMobile]=useState(false),[filter,setFilter]=useState('all'),[feed,setFeed]=useState(false);
  useEffect(()=>{const handler=(e:KeyboardEvent)=>{if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setSearch(v=>!v)}if(e.key==='Escape')setMobile(false)};window.addEventListener('keydown',handler);return()=>window.removeEventListener('keydown',handler)},[]);
  useEffect(()=>{setOpenMobile(false);setFeed(false);setSearch(false)},[path,setOpenMobile]);
- const reportPages=reportGroups.filter(g=>mode==='demo'||g.division===profile.division).flatMap(g=>g.children.map(n=>({...n,group:'Pages'})));
+ const reportPages=reportGroups.flatMap(g=>g.children.map(n=>({...n,group:'Pages'})));
  const results=[...reportPages,...navigation.filter(n=>!n.href.startsWith('/reports')).map(n=>({...n,group:'Pages'})),{label:'Account Settings',href:'/settings/account',group:'Account'},...appointments.map(a=>({label:`${a.name} · ${a.complaint}`,href:`/consultations/${a.id}`,group:'Consultation'}))].filter(r=>[r.label,t(r.label)].some(label=>label.toLowerCase().includes(query.toLowerCase())));
- const availableNavigation=navigation.filter(n=>mode==='demo'||!n.href.startsWith('/reports')||n.href==='/reports/medical'&&profile.division==='Medical Service'||n.href==='/reports/fire'&&profile.division==='Fire Department');
+ const availableNavigation=navigation;
  const accountBadges=[...new Set([profile.division,profile.position].flatMap(value=>Array.isArray(value)?value:[value]).map(value=>String(value||'').trim()).filter(value=>value&&value!=='Belum ditetapkan'))];
  const accountName=profile.accountName||profile.name;
  const unreadCount=notices.filter(n=>!n.read).length;
@@ -38,7 +38,7 @@ function ShellContent({children}:{children:React.ReactNode}){
  if(!ready)return <LocalizedView>{<div className="portal"><div className="empty" role="status">Menyiapkan workspace…</div></div>}</LocalizedView>;
  return <LocalizedView>{<>
  <Sidebar animateOnHover={false} collapsible="icon" className="sahd-sidebar"><SidebarHeader><Link href="/dashboard" className="brand portal-brand" aria-label="SAHD Medical Portal"><span className="sidebar-logo-crop"><img src="/sahd-logo.webp" alt="SAHD"/></span><small className="sidebar-label brand-subtitle">Medical Portal</small></Link></SidebarHeader><SidebarContent><SidebarGroup><SidebarGroupLabel>Workspace</SidebarGroupLabel><SidebarMenu>{availableNavigation.filter(n=>!n.href.startsWith('/reports')).map(n=>{const Icon=icons[n.icon];return <SidebarMenuItem key={n.href}><SidebarMenuButton asChild isActive={path.startsWith(n.href)} tooltip={t(n.label)}><Link href={n.href} aria-label={n.label} aria-current={path.startsWith(n.href)?'page':undefined}><Icon size={18}/><span>{t(n.label)}</span></Link></SidebarMenuButton></SidebarMenuItem>})}</SidebarMenu></SidebarGroup>
- <SidebarGroup><SidebarGroupLabel>{t('Reports')}</SidebarGroupLabel><SidebarMenu>{reportGroups.filter(g=>mode==='demo'||g.division===profile.division).map(group=>{
+ <SidebarGroup><SidebarGroupLabel>{t('Reports')}</SidebarGroupLabel><SidebarMenu>{reportGroups.map(group=>{
   const Icon=icons[group.icon];const open=expandedReports[group.href]??path.startsWith(group.href);const active=path.startsWith(group.href);
   return <SidebarMenuItem key={group.href}>
    <>
