@@ -473,3 +473,4 @@ html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {back
 .portal .plastic-reports .plastic-report-search input{width:100%;min-width:0;height:38px;margin:0;padding:0;border:0;background:transparent;box-shadow:none;font-size:13px;outline:none}
 .portal .plastic-report-search:focus-within{border-color:#087f83;box-shadow:0 0 0 2px #087f8322}
 @media(max-width:600px){.portal .plastic-reports label.plastic-report-search{width:100%}.plastic-reports .report-list-heading{align-items:stretch}}
+.portal .plastic-reports .plastic-report-search input{background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;padding:0!important}
