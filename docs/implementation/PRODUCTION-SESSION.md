@@ -1,7 +1,6 @@
 # Production login sessions
 
-Production domain discovered in Vercel: https://dashboard-sahd.clarishna.my.id
-Vercel production alias: https://dashboard-sahd.vercel.app
+Production domain selected by the user: https://dashboard-sahd.vercel.app
 
 ## Application behavior
 - Google/Discord start OAuth on the current login origin and return to `/auth/callback`.
@@ -14,21 +13,21 @@ Vercel production alias: https://dashboard-sahd.vercel.app
 
 ## Vercel Production environment
 `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` must match the configured Supabase project. These are public configuration, not the service_role secret.
-Set `SAHD_APP_URL=https://dashboard-sahd.clarishna.my.id`.
+Set `SAHD_APP_URL=https://dashboard-sahd.vercel.app`.
 Redeploy after environment changes. Keep production demo disabled.
 
 ## Supabase Authentication → URL Configuration
 Site URL:
 ```
-https://dashboard-sahd.clarishna.my.id
+https://dashboard-sahd.vercel.app
 ```
 Add exact Redirect URLs, retaining local callbacks:
 ```
-https://dashboard-sahd.clarishna.my.id/auth/callback
-https://dashboard-sahd.clarishna.my.id/auth/confirm
-https://dashboard-sahd.clarishna.my.id/auth/callback?recovery=1
+https://dashboard-sahd.vercel.app/auth/callback
+https://dashboard-sahd.vercel.app/auth/confirm
+https://dashboard-sahd.vercel.app/auth/callback?recovery=1
 ```
-Optional Vercel alias callbacks can be retained, but canonical login starts on the personal domain. Do not use a deployment-specific hash URL as the Site URL.
+Optional Vercel alias callbacks can be retained, but canonical login starts on the Vercel production domain. Do not use a deployment-specific hash URL as the Site URL.
 Google/Discord provider redirect URI remains the Supabase callback:
 ```
 https://hfcpsevrffbzqskfwnno.supabase.co/auth/v1/callback
@@ -40,3 +39,6 @@ Keep automatic token refresh enabled. Supabase default JWT expiry is suitable; c
 41 automated tests and production build passed. Validate provider login on production, reload, reopen the browser, expiry refresh, logout and callback error. Full live OAuth validation requires access to the Supabase dashboard and completing the provider login with the user's account.
 
 References: [Supabase SSR](https://supabase.com/docs/guides/auth/server-side/creating-a-client), [session refresh/cache headers](https://supabase.com/docs/guides/auth/server-side/advanced-guide).
+
+## Applied configuration — 9 October 2026
+Supabase Site URL and Vercel Production SAHD_APP_URL were changed to https://dashboard-sahd.vercel.app. The exact /auth/callback URL was already registered. Existing localhost callbacks were retained. Full provider login must still be tested using the user’s Google/Discord account.
