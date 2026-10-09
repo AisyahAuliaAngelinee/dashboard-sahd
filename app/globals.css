@@ -232,3 +232,13 @@ footer .gallery-button:hover,footer .footer-links>a:hover{background:transparent
 @keyframes runtime-spin{to{transform:rotate(360deg)}}@keyframes route-indeterminate{from{transform:translateX(-100%)}to{transform:translateX(350%)}}
 @media(max-width:760px){.site-header-actions{margin-left:auto;margin-right:12px;gap:6px}.site-header-actions .nav-cta{padding:10px 12px;font-size:10px;gap:5px}.site-header-actions .nav-cta svg{width:13px}.connection-card{padding:25px 0}.connection-card h1{font-size:28px}}
 @media(prefers-reduced-motion:reduce){.route-progress,.route-progress>span{transition:none}.page-loading .route-progress>span,.runtime-spin{animation:none}}
+
+.tutorial-layer {position:fixed;inset:0;z-index:10000;isolation:isolate}
+.tutorial-spotlights {position:absolute;inset:0;pointer-events:auto}
+.portal.tutorial-tooltip {position:absolute;width:min(400px,calc(100vw - 32px));max-height:calc(100dvh - 32px);overflow:auto;display:grid;background:var(--card,#fff);color:var(--foreground,#15252c);border:1px solid var(--border,#dce5e8);border-radius:20px;padding:24px;gap:16px;box-shadow:0 24px 70px #0005;outline:none;animation:tour-appear .2s ease-out}
+.tutorial-tooltip h2 {margin:0;font-size:23px;line-height:1.3}
+.tutorial-tooltip #tutorial-description {margin:0;font-size:14px;line-height:1.7;color:var(--muted-foreground,#60717a)}
+.tutorial-tooltip input {width:100%;border:1px solid var(--border);border-radius:9px;padding:10px;background:var(--background);color:inherit}
+@keyframes tour-appear {from{opacity:0;translate:0 6px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.portal.tutorial-tooltip{animation:none}}
+.portal.tutorial-tooltip {min-height:0;height:auto;align-content:start}

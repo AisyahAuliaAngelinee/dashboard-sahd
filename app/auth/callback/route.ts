@@ -1,6 +1,6 @@
 import {verifyDiscordLogin} from '@/lib/discord-access';
 import {NextResponse} from 'next/server';
-import {sessionCacheHeaders} from '@/lib/auth-session';
+import {sessionCacheHeaders,SESSION_MAX_AGE} from '@/lib/auth-session';
 import {serverClient,appOrigin} from '@/lib/supabase/server';
 import {cookies} from 'next/headers';
 function redirectNoStore(url:URL){const response=NextResponse.redirect(url);Object.entries(sessionCacheHeaders).forEach(([name,value])=>response.headers.set(name,value));return response}
@@ -16,7 +16,7 @@ export async function GET(request:Request){
  try{
   const code=url.searchParams.get('code');const client=await serverClient({oauthCallback:true});
   if(code&&client){const {data,error}=await client.auth.exchangeCodeForSession(code);
-   if(!error&&data.user){const access=await verifyDiscordLogin(data.user,data.session?.provider_token||undefined);if(!access.allowed){await client.auth.signOut({scope:'local'});return failure(access.reason)}(await cookies()).delete('sahd-demo');return redirectNoStore(new URL(url.searchParams.get('recovery')==='1'?'/reset-password':'/dashboard',appOrigin(request)))}
+   if(!error&&data.user){const access=await verifyDiscordLogin(data.user,data.session?.provider_token||undefined);if(!access.allowed){await client.auth.signOut({scope:'local'});return failure(access.reason)}(await cookies()).set('sahd-returning-login','1',{httpOnly:true,secure:process.env.NODE_ENV==='production',sameSite:'lax',path:'/',maxAge:SESSION_MAX_AGE});(await cookies()).delete('sahd-demo');return redirectNoStore(new URL(url.searchParams.get('recovery')==='1'?'/reset-password':'/dashboard',appOrigin(request)))}
   }
  }catch{/* Never expose OAuth codes, tokens or upstream error descriptions. */}
  return failure('callback');

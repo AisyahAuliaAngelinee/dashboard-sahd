@@ -1,12 +1,20 @@
 'use client';
 import { createContext,useContext,useEffect,useState,useRef } from 'react';import {useRouter} from 'next/navigation';
 import type {Profile,Notice,Appointment,Surgery} from '@/lib/portal-data';import type {Bootstrap} from '@/lib/portal-server';import {consultationAppointment,type ConsultationRow} from '@/lib/consultation';
+import {loginExpiresAt} from '@/lib/auth-session';
 import {browserClient} from '@/lib/supabase/client';
 type State={mode:'demo'|'live';profile:Profile;members:Profile[];notices:Notice[];appointments:Appointment[];surgeries:Surgery[];bigFires:Surgery[];announcements:Bootstrap['announcements'];error:string|null;ready:boolean;saveProfile:(p:Profile)=>Promise<void>;markRead:(id?:string)=>void;logout:()=>Promise<void>;uploadAvatar:(file:File)=>Promise<string>};
 const Context=createContext<State|null>(null);
 export function PortalProvider({children,initial}:{children:React.ReactNode;initial:Bootstrap}){
  const demoNoticeIds=useRef<Set<string>|null>(null);
  const router=useRouter();const [profile,setProfile]=useState(initial.profile),[notices,setNotices]=useState(initial.notices),[error,setError]=useState(initial.error),[appointments,setAppointments]=useState(initial.appointments),[announcements,setAnnouncements]=useState(initial.announcements),[surgeries,setSurgeries]=useState(initial.surgeries);
+ useEffect(()=>{
+  if(initial.mode!=='live')return;
+  let timer:ReturnType<typeof setTimeout>|undefined,cancelled=false;
+  const check=async()=>{const {data,error}=await browserClient().auth.getClaims();if(cancelled)return;if(error||!data)return;const remaining=loginExpiresAt(data.claims)-Date.now();clearTimeout(timer);if(remaining<=0){await browserClient().auth.signOut({scope:'local'});window.location.replace('/login');return;}timer=setTimeout(()=>void check(),Math.min(remaining,2147483647));};
+  void check();const onVisible=()=>{if(document.visibilityState==='visible')void check()};document.addEventListener('visibilitychange',onVisible);
+  return()=>{cancelled=true;clearTimeout(timer);document.removeEventListener('visibilitychange',onVisible)};
+ },[initial.mode]);
  useEffect(()=>{setProfile(initial.profile);setNotices(initial.notices);setError(initial.error);setAppointments(initial.appointments);setAnnouncements(initial.announcements);setSurgeries(initial.surgeries);if(initial.mode!=='demo')return;try{const raw=localStorage.getItem('sahd-demo-profile');if(raw){const saved=JSON.parse(raw);setProfile({...initial.profile,name:typeof saved.name==='string'?saved.name:initial.profile.name,avatar:typeof saved.avatar==='string'?saved.avatar:'',notifications:typeof saved.notifications==='boolean'?saved.notifications:true})}const read=JSON.parse(localStorage.getItem('sahd-demo-read')||'[]');if(Array.isArray(read))setNotices(n=>n.map(x=>({...x,read:read.includes(x.id)})))}catch{}},[initial]);
  useEffect(()=>{
   if(initial.mode!=='live')return;

@@ -1,5 +1,5 @@
 import {createHmac,timingSafeEqual} from 'node:crypto';
-export const DISCORD_TICKET_TTL=24*60*60;
+export const DISCORD_TICKET_TTL=7*24*60*60;
 export type DiscordTicketContext={userId:string;guildId:string;visitorRoleId:string};
 const sign=(payload:string,secret:string)=>createHmac('sha256',secret).update(payload).digest('base64url');
 /** Signed, expiring login proof; contains no provider token, credentials, or Discord roles. */

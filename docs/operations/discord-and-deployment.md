@@ -11,7 +11,7 @@ Set server-only environment variables in both local development and Vercel:
 - `DISCORD_VISITOR_ROLE_ID=1338835105841676322`: Visitor/Patient in SAHD EXE.
 - `DISCORD_VERIFICATION_SECRET`: at least 32 random characters; use the same value across instances of this deployment. Do not expose it using NEXT_PUBLIC.
 
-No bot is required. A 24-hour HttpOnly, signed cookie records successful login verification, bound to the Supabase user, guild ID, and Visitor role ID. Every portal server client checks that proof. The proof contains no Discord token and cannot be reused by another account. Role changes are checked on the next OAuth login; this is not continuous Discord membership monitoring. After 24 hours the user must sign in again. Changing the signing secret or role configuration invalidates existing proofs.
+No bot is required. A 7-day HttpOnly, signed cookie records successful login verification, bound to the Supabase user, guild ID, and Visitor role ID. Every portal server client checks that proof. The proof contains no Discord token and cannot be reused by another account. Role changes are checked on the next OAuth login; this is not continuous Discord membership monitoring. After 7 days the user must sign in again. Changing the signing secret or role configuration invalidates existing proofs.
 
 This application gate does not replace Supabase Auth or database RLS. Direct Supabase API clients must remain subject to database authorization; do not treat a callback check alone as a guild-based database policy. The Visitor/Patient ID is now configured. Enable the production gate only after the signing secret has been set in Vercel; changing an environment variable requires a new deployment. No Discord roles are automatically mapped to portal administrator privileges.
 
@@ -27,3 +27,11 @@ Two levels of separation are possible:
 Do not change the current production domain or OAuth callback during the presentation cleanup. Project separation remains a proposal until separate project URLs and routing are chosen.
 
 References: https://docs.discord.com/developers/resources/user#get-current-user-guild-member ; https://vercel.com/docs/skew-protection ; Next.js local guide `node_modules/next/dist/docs/01-app/02-guides/multi-zones.md`.
+
+
+## Seven-day portal sessions
+Apply `019_seven_day_sessions.sql`. Server requests verify the original OAuth authentication timestamp, and restrictive database/storage policies verify the authenticated session creation time. Refreshing an access token does not extend the seven-day window. The browser signs out when that window ends (and rechecks when the tab becomes visible).
+
+Logout revokes the local Supabase session and clears authorization proofs. A separate HttpOnly seven-day preference cookie requests Discord `prompt=none` on the next sign-in, so an existing Discord session can bypass the consent screen. This preference grants no portal access. Discord may still require login/MFA, or reject silent authorization; retry after an error uses the normal consent flow. A new successful OAuth sign-in starts a new seven-day portal session.
+
+Tutorial replays start at Dashboard and omit character-name onboarding. The welcome prompt is marked complete in the profile after Next or Skip, so it does not reappear on another device.
