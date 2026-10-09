@@ -199,7 +199,13 @@ function Sidebar({
   }
 
   if (isMobile) {
-    return (
+    return (<>
+      <div className="sahd-mobile-rail-gap" aria-hidden="true"/>
+      {!openMobile&&<div className="group sahd-mobile-rail" data-collapsible="icon" data-state="collapsed" data-sidebar="sidebar">
+       <Highlight enabled={false} hover controlledItems mode="parent" containerClassName="h-full">
+        <div data-slot="sidebar-inner" className="flex h-full w-full flex-col">{children}</div>
+       </Highlight>
+      </div>}
       <Sheet open={openMobile} onOpenChange={setOpenMobile} {...props}>
         <SheetContent
           data-sidebar="sidebar"
@@ -229,7 +235,7 @@ function Sidebar({
           </Highlight>
         </SheetContent>
       </Sheet>
-    );
+    </>);
   }
 
   return (
