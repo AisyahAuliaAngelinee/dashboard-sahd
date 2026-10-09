@@ -1,9 +1,9 @@
-export type Profile = { id:string; name:string; accountName?:string; role:string; division:string; providers:string[]; avatar:string; notifications:boolean };
+export type Profile = { id:string; name:string; accountName?:string; role:string; division:string; position?:string; teams?:string[]; providers:string[]; avatar:string; notifications:boolean };
 export type Appointment = { id:string; name:string; complaint:string; doctor:string; date:string; createdAt:string; status:string };
 export type Surgery = { id:string; category:'minor'|'major'; performedAt:string; status:'completed'; final:boolean };
 export type Notice = { id:string; title:string; body:string; type:'announcement'|'appointment'|'mention'; href:string; read:boolean; at:string };
-export const demoProfile:Profile = {id:'demo-user',name:'Milleo Greenwood',role:'General Doctor',division:'Medical Service',providers:['Register'],avatar:'',notifications:true};
-export const demoMembers:Profile[] = [demoProfile,{...demoProfile,id:'member-2',name:'Ivan B. Matter',role:'Specialist',providers:['Discord']},{...demoProfile,id:'member-3',name:'Clara Williams',role:'Pharmacist',providers:['Google']},{...demoProfile,id:'member-4',name:'James Walker',division:'Fire Department',role:'Firefighter',providers:['Discord']},{...demoProfile,id:'member-5',name:'Avery Jordan',division:'Belum ditetapkan',role:'Member',providers:['Register']}];
+export const demoProfile:Profile = {id:'demo-user',name:'Milleo Greenwood',role:'SAHD',division:'Medical Service',position:'General Practitioner',teams:['Human Resource'],providers:['Register'],avatar:'',notifications:true};
+export const demoMembers:Profile[] = [demoProfile,{...demoProfile,id:'member-2',name:'Ivan B. Matter',role:'Specialist',providers:['Discord']},{...demoProfile,id:'member-3',name:'Clara Williams',role:'Pharmacist',providers:['Google']},{...demoProfile,id:'member-4',name:'James Walker',division:'Fire Department',role:'SAHD',position:'Firefighter',teams:['Internal Affairs'],providers:['Discord']},{...demoProfile,id:'member-5',name:'Avery Jordan',division:'',role:'Member',position:'',teams:[],providers:['Register']}];
 export const demoAppointments:Appointment[] = [
  {id:'c-101',name:'Ryu Ji Kenedy',complaint:'Kontrol pascaoperasi tibia kiri',doctor:'Milleo Greenwood',date:'2026-10-08',createdAt:'2026-10-08T06:40:00Z',status:'Scheduled'},
  {id:'c-102',name:'Liam Anderson',complaint:'Konsultasi luka pada lengan',doctor:'Ivan B. Matter',date:'2026-10-09',createdAt:'2026-10-08T04:20:00Z',status:'Scheduled'},
@@ -28,6 +28,7 @@ export const reportGroups = [
   {label:'Surgery Report',href:'/reports/medical'},
   {label:'Forensics Report',href:'/reports/medical/forensics'},
   {label:'Pharmacy Report',href:'/reports/medical/pharmacy'},
+  {label:'Visum',href:'/reports/medical/visum'},
  ]},
  {label:'Fire Department',href:'/reports/fire',icon:'fire',division:'Fire Department',children:[
   {label:'Big Fire Report',href:'/reports/fire/big-fire'},
