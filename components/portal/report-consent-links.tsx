@@ -1,4 +1,5 @@
 'use client';
+import {useFeedbackState} from '@/components/runtime/feedback-toast';
 import {LocalizedView} from '@/components/portal/localized-view';
 
 import {useEffect,useMemo,useState} from 'react';
@@ -8,7 +9,7 @@ import type {ConsentRow} from '@/lib/consent-list';
 import type {MedicalDraft,ConsentLink} from '@/lib/medical-report';
 export default function ReportConsentLinks({draft,onChange}:{draft:MedicalDraft;onChange:(v:ConsentLink[])=>void}){
  const {mode,profile}=usePortal();
- const [rows,setRows]=useState<ConsentRow[]>([]),[message,setMessage]=useState(''),[loaded,setLoaded]=useState(false);
+ const [rows,setRows]=useState<ConsentRow[]>([]),[message,setMessage]=useFeedbackState('', 'notice'),[loaded,setLoaded]=useState(false);
  useEffect(()=>{let active=true;setLoaded(false);setMessage('');async function load(){try{
   let consents:ConsentRow[];
   if(mode==='demo')consents=JSON.parse(localStorage.getItem(`sahd-consents:${profile.id}`)||'[]');

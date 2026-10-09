@@ -242,3 +242,17 @@ footer .gallery-button:hover,footer .footer-links>a:hover{background:transparent
 @keyframes tour-appear {from{opacity:0;translate:0 6px}to{opacity:1;translate:0 0}}
 @media(prefers-reduced-motion:reduce){.portal.tutorial-tooltip{animation:none}}
 .portal.tutorial-tooltip {min-height:0;height:auto;align-content:start}
+
+.feedback-toasts {position:fixed;top:max(20px,env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:2147483646;width:min(460px,calc(100vw - 32px));display:grid;gap:10px;pointer-events:none}
+.feedback-toast {display:flex;align-items:center;gap:12px;padding:15px 16px;border-radius:14px;background:#fff;color:#25313e;border:1px solid #dce3e9;box-shadow:0 12px 38px #0003;font:500 13px/1.55 system-ui;pointer-events:auto;animation:feedback-in .2s ease-out}
+.feedback-toast[data-kind="error"] {border-color:#efb1b1}
+.feedback-toast[data-kind="error"]>svg {color:#c73440}
+.feedback-toast>svg {flex-shrink:0;color:#41748a}
+.feedback-toast span {flex:1;overflow-wrap:anywhere}
+.feedback-toast button {padding:6px;border:0;background:transparent;color:inherit;cursor:pointer;border-radius:6px}
+.feedback-toast button:hover {background:#eef1f4}
+html[data-sahd-theme="dark"] .feedback-toast {background:#1c2834;color:#eff4f8;border-color:#475569}
+html[data-sahd-theme="dark"] .feedback-toast[data-kind="error"] {border-color:#a74d58}
+html[data-sahd-theme="dark"] .feedback-toast button:hover {background:#324252}
+@keyframes feedback-in {from{opacity:0;translate:0 -10px}to{opacity:1;translate:0 0}}
+@media(prefers-reduced-motion:reduce){.feedback-toast{animation:none}}

@@ -1,4 +1,5 @@
 'use client';
+import {useFeedbackState} from '@/components/runtime/feedback-toast';
 import {LocalizedView} from './localized-view';
 import {createPortal} from 'react-dom';
 import {useEffect,useState,useRef} from 'react';import {Compass,ArrowLeft,ArrowRight,Check} from 'lucide-react';
@@ -13,7 +14,7 @@ const steps=[
  {title:['Trash & Account Settings','Trash & Account Settings'],body:['Data yang dihapus sementara dapat dipulihkan dari Trash selama 30 hari. Ubah profil di Account Settings dan klik Start Tutorial kapan pun untuk mengulang panduan.','Restore temporarily deleted items from Trash within 30 days. Update your profile in Account Settings and click Start Tutorial anytime to replay this guide.'],target:'/trash'}
 ];
 export default function TutorialTour(){
- const {profile,mode,saveProfile}=usePortal(),{language}=usePreferences(),[open,setOpen]=useState(false),[step,setStep]=useState(0),[name,setName]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[firstStep,setFirstStep]=useState(0),[rects,setRects]=useState<{x:number;y:number;width:number;height:number}[]>([]),[placement,setPlacement]=useState({left:20,top:100});const cardRef=useRef<HTMLDivElement>(null);const profileRef=useRef(profile);profileRef.current=profile;const key=`sahd-tutorial:${profile.id}`,l=language==='id'?0:1;
+ const {profile,mode,saveProfile}=usePortal(),{language}=usePreferences(),[open,setOpen]=useState(false),[step,setStep]=useState(0),[name,setName]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useFeedbackState(''),[firstStep,setFirstStep]=useState(0),[rects,setRects]=useState<{x:number;y:number;width:number;height:number}[]>([]),[placement,setPlacement]=useState({left:20,top:100});const cardRef=useRef<HTMLDivElement>(null);const profileRef=useRef(profile);profileRef.current=profile;const key=`sahd-tutorial:${profile.id}`,l=language==='id'?0:1;
  useEffect(()=>{const start=(replay=false)=>{setFirstStep(replay?1:0);setStep(replay?1:0);setName(profileRef.current.name);setError('');setOpen(true)};const replay=()=>start(true);window.addEventListener('sahd-start-tutorial',replay);if((mode==='demo'||profile.tutorialCompleted===false)&&!localStorage.getItem(key))start();return()=>window.removeEventListener('sahd-start-tutorial',replay)},[profile.id,profile.tutorialCompleted,mode,key]);
  useEffect(()=>{
   if(!open)return;

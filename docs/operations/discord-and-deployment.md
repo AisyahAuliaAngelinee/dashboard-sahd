@@ -32,6 +32,6 @@ References: https://docs.discord.com/developers/resources/user#get-current-user-
 ## Seven-day portal sessions
 Apply `019_seven_day_sessions.sql`. Server requests verify the original OAuth authentication timestamp, and restrictive database/storage policies verify the authenticated session creation time. Refreshing an access token does not extend the seven-day window. The browser signs out when that window ends (and rechecks when the tab becomes visible).
 
-Logout revokes the local Supabase session and clears authorization proofs. A separate HttpOnly seven-day preference cookie requests Discord `prompt=none` on the next sign-in, so an existing Discord session can bypass the consent screen. This preference grants no portal access. Discord may still require login/MFA, or reject silent authorization; retry after an error uses the normal consent flow. A new successful OAuth sign-in starts a new seven-day portal session.
+Logout revokes the local Supabase session and clears authorization proofs. Every sign-in uses Discord `prompt=consent`, so users explicitly click Authorize and can switch Discord accounts. No silent authorization is requested. A new successful OAuth sign-in starts a new seven-day portal session.
 
 Tutorial replays start at Dashboard and omit character-name onboarding. The welcome prompt is marked complete in the profile after Next or Skip, so it does not reappear on another device.
