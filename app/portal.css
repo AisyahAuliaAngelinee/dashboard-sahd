@@ -474,3 +474,5 @@ html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {back
 .portal .plastic-report-search:focus-within{border-color:#087f83;box-shadow:0 0 0 2px #087f8322}
 @media(max-width:600px){.portal .plastic-reports label.plastic-report-search{width:100%}.plastic-reports .report-list-heading{align-items:stretch}}
 .portal .plastic-reports .plastic-report-search input{background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;padding:0!important}
+
+.medical-reports .report-heading-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
