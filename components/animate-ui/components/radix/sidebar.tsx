@@ -28,6 +28,7 @@ import {
 import {
   Highlight,
   HighlightItem,
+  useHighlight,
 } from '@/components/animate-ui/primitives/effects/highlight';
 import { getStrictContext } from '@/lib/get-strict-context';
 
@@ -588,10 +589,8 @@ function SidebarMenuButton({
   const Comp = asChild ? Slot.Root : 'button';
   const { isMobile, state } = useSidebar();
 
-  const button = (
-    <HighlightItem
-      activeClassName={sidebarMenuButtonActiveVariants({ variant })}
-    >
+  const {enabled: hoverHighlightEnabled} = useHighlight();
+  const content = (
       <Comp
         data-slot="sidebar-menu-button"
         data-sidebar="menu-button"
@@ -600,8 +599,8 @@ function SidebarMenuButton({
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
         {...props}
       />
-    </HighlightItem>
   );
+  const button = hoverHighlightEnabled ? <HighlightItem activeClassName={sidebarMenuButtonActiveVariants({variant})}>{content}</HighlightItem> : content;
 
   if (!tooltip) {
     return button;
@@ -616,7 +615,7 @@ function SidebarMenuButton({
   return (
     <Tooltip side="right" align="center">
       <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent hidden={state !== 'collapsed' || isMobile} {...tooltip} />
+      <TooltipContent hidden={state !== 'collapsed' || isMobile} {...tooltip} className={cn('sahd-sidebar-tooltip',tooltip.className)} />
     </Tooltip>
   );
 }
