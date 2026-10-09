@@ -459,3 +459,4 @@ html[data-sahd-theme=dark] .portal .fire-reports .badge.fire-status-resolved {ba
 .fire-position-tags button:hover {background:rgba(128,128,128,.2)}
 .portal .fire-reports label.report-search {display:flex!important;flex-direction:row!important;align-items:center!important;gap:9px!important}
 .portal .fire-reports label.report-search input {height:38px!important;line-height:38px;padding:0!important;margin:0!important;border:0!important}
+html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {background:#22343e;color:#dce6eb;border-color:#405965}
