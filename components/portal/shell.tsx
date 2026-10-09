@@ -1,4 +1,5 @@
 'use client';
+import {highestPosition} from '@/lib/position-rank';
 import TutorialTour from './tutorial-tour';
 import {notificationBell} from '@/lib/notification-sound';
 import {canManageMembers} from '@/lib/member-directory';
@@ -23,7 +24,7 @@ function ShellContent({children}:{children:React.ReactNode}){
  const reportPages=reportGroups.flatMap(g=>g.children.map(n=>({...n,group:'Pages'})));
  const results=[...reportPages,...navigation.filter(n=>!n.href.startsWith('/reports')).map(n=>({...n,group:'Pages'})),{label:'Account Settings',href:'/settings/account',group:'Account'},...appointments.map(a=>({label:`${a.name} · ${a.complaint}`,href:`/consultations/${a.id}`,group:'Consultation'}))].filter(r=>[r.label,t(r.label)].some(label=>label.toLowerCase().includes(query.toLowerCase())));
  const availableNavigation=navigation;
- const accountBadges=[...new Set([profile.division,profile.position].flatMap(value=>Array.isArray(value)?value:[value]).map(value=>String(value||'').trim()).filter(value=>value&&value!=='Belum ditetapkan'))];
+ const accountBadges=[profile.division,highestPosition(profile.position)].filter(value=>value&&value!=='Belum ditetapkan');
  const accountName=`${profile.accountName||profile.name} - ${profile.badgeNumber||'-'}`;
  const unreadCount=notices.filter(n=>!n.read).length;
  const filteredNotices=notices.filter(n=>filter==='all'||filter==='mentioned'&&n.type==='mention'||filter==='appointment'&&(n.type==='appointment'||n.type==='mention'&&n.href.startsWith('/consultations/')));

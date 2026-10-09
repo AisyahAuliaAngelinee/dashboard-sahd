@@ -1,0 +1,4 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import ts from 'typescript';
+const js=ts.transpileModule(readFileSync(new URL('../lib/position-rank.ts',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.ES2022}}).outputText;
+const {highestPosition}=await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
+test('account shows highest assigned position regardless of selection order',()=>{assert.equal(highestPosition('Doctor Resident, Director, Deputy, Chief, Advisor, Deputy Director'),'Director');assert.equal(highestPosition('Trainee, Doctor Resident'),'Doctor Resident');assert.equal(highestPosition('Captain, Firefighter'),'Captain');assert.equal(highestPosition(''), '');assert.equal(highestPosition('Doctor Resident'),'Doctor Resident')});

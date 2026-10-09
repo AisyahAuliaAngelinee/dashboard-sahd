@@ -478,3 +478,16 @@ html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {back
 .medical-reports .report-heading-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .portal .member-position-picker{background:var(--surface,#fff);color:inherit;border-color:var(--border,#dce6eb);min-height:42px;height:auto}
 html[data-sahd-theme=dark] .portal .member-position-picker{background:#22343f;color:#e4edf3;border-color:#40525e}
+/* Constrain account identity and allow operational tables to wrap. */
+.portal-shell .account-copy{flex:1;min-width:0;overflow:hidden}
+.portal-shell .account-badges{display:flex;flex-wrap:wrap;gap:4px;min-width:0;max-width:100%;overflow:hidden}
+.portal-shell .account-badges .badge{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.portal .data-table,.portal .table-wrap table{width:100%;min-width:0!important;max-width:100%;table-layout:fixed}
+.portal :is(.data-table,.table-wrap table) :is(th,td){min-width:0!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal}
+.portal :is(.data-table,.table-wrap table) :is(th,td)>*{max-width:100%;min-width:0}
+.portal :is(.data-table,.table-wrap table) :is(th,td) :is(b,span,a,button){white-space:normal;overflow-wrap:anywhere}
+.portal :is(.data-table,.table-wrap table) :is(th,td):has(>input[type=checkbox]){width:42px}
+.portal .data-table td:last-child:has([aria-haspopup=menu]){width:64px}
+.portal :is(.data-table,.table-wrap table) td .flex{flex-wrap:wrap}
+.portal :is(.panel,.overflow-auto,.overflow-x-auto,.table-wrap){min-width:0;max-width:100%}
+.portal .report-case-cell{min-width:0!important}
