@@ -22,3 +22,11 @@ export function surgeryAnalytics(rows:Surgery[],period:Period,anchor:string,from
  for(const r of included){const k=key(new Date(r.performedAt));bucket.set(k,(bucket.get(k)||0)+1)}
  return {total:included.length,minor:included.filter(r=>r.category==='minor').length,major:included.filter(r=>r.category==='major').length,points:[...bucket].sort(([a],[b])=>a.localeCompare(b)).map(([date,total])=>({date,label:mode==='hour'?`${date}:00`:mode==='month'?new Date(`${date}-01T00:00:00Z`).toLocaleDateString('id-ID',{month:'short',year:'2-digit',timeZone:'UTC'}):new Date(`${date}T00:00:00Z`).toLocaleDateString('id-ID',{day:'numeric',month:'short',timeZone:'UTC'}),total}))};
 }
+
+export function reportOverview(surgeries:Surgery[],bigFires:Surgery[],period:Period,anchor:string,from:string,to:string){
+ const surgery=surgeryAnalytics(surgeries,period,anchor,from,to),fire=surgeryAnalytics(bigFires,period,anchor,from,to);
+ const axis=surgeryAnalytics([...surgeries.map(r=>({...r,id:`surgery:${r.id}`})),...bigFires.map(r=>({...r,id:`fire:${r.id}`}))],period,anchor,from,to);
+ const surgeryCounts=new Map(surgery.points.map(p=>[p.date,p.total])),fireCounts=new Map(fire.points.map(p=>[p.date,p.total]));
+ return {surgery,fire,points:axis.points.map(p=>({date:p.date,label:p.label,surgery:surgeryCounts.get(p.date)||0,bigFire:fireCounts.get(p.date)||0}))};
+}
+export function sortAppointments<T extends {id:string;createdAt:string;date:string;name:string;status:string}>(rows:T[],sort:string){return [...rows].sort((a,b)=>{const cmp=sort==='newest'?b.createdAt.localeCompare(a.createdAt):sort==='oldest'?a.createdAt.localeCompare(b.createdAt):sort==='soon'?a.date.localeCompare(b.date):sort==='late'?b.date.localeCompare(a.date):sort==='statusAsc'?a.status.localeCompare(b.status):sort==='statusDesc'?b.status.localeCompare(a.status):sort==='az'?a.name.localeCompare(b.name):b.name.localeCompare(a.name);return cmp||a.id.localeCompare(b.id)})}

@@ -263,3 +263,10 @@ html[data-sahd-theme=dark] .portal [data-slot=dropdown-menu-item]:hover,html[dat
 .portal .workspace h1{text-transform:capitalize}.portal .consent-paper h1{text-transform:none}
 
 .portal [data-sidebar=menu-button],.portal [data-sidebar=menu-sub-button]{background:transparent}
+
+@keyframes notification-blink{0%,100%{opacity:1;box-shadow:0 0 0 2px #fee2e2}50%{opacity:.45;box-shadow:0 0 0 4px #fee2e280}}
+.portal .unread{animation:notification-blink 1.6s ease-in-out infinite}
+@media(prefers-reduced-motion:reduce){.portal .unread{animation:none}}
+.portal .dashboard-sort{padding:0;border:0;background:transparent;color:inherit;display:inline-flex;gap:6px;align-items:center}.portal .dashboard-sort:hover{color:#087f83}
+
+html[data-sahd-theme=dark] .portal .announcement .label{color:#a5e2ce!important}
