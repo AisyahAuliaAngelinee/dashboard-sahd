@@ -482,18 +482,26 @@ html[data-sahd-theme=dark] .portal .member-position-picker{background:#22343f;co
 .portal-shell .account-copy{flex:1;min-width:0;overflow:hidden}
 .portal-shell .account-badges{display:flex;flex-wrap:wrap;gap:4px;min-width:0;max-width:100%;overflow:hidden}
 .portal-shell .account-badges .badge{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere}
-.portal .data-table,.portal .table-wrap table{width:100%;min-width:0!important;max-width:100%;table-layout:fixed}
-.portal :is(.data-table,.table-wrap table) :is(th,td){min-width:0!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal}
-.portal :is(.data-table,.table-wrap table) :is(th,td)>*{max-width:100%;min-width:0}
-.portal :is(.data-table,.table-wrap table) :is(th,td) :is(b,span,a,button){white-space:normal;overflow-wrap:anywhere}
-.portal :is(.data-table,.table-wrap table) :is(th,td):has(>input[type=checkbox]){width:42px}
-.portal .data-table td:last-child:has([aria-haspopup=menu]){width:64px}
-.portal :is(.data-table,.table-wrap table) td .flex{flex-wrap:wrap}
 .portal :is(.panel,.overflow-auto,.overflow-x-auto,.table-wrap){min-width:0;max-width:100%}
-.portal .report-case-cell{min-width:0!important}
 /* Member identity stays on one line; overflow belongs to this table only. */
 .portal .workspace-members-scroll{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
-.portal .data-table.workspace-members-table{table-layout:auto;min-width:980px!important;max-width:none}
+.portal .data-table.workspace-members-table{table-layout:fixed;max-width:none}
 .portal .workspace-members-table tbody td:first-child,.portal .workspace-members-table tbody td:first-child :is(b,span,small){white-space:nowrap!important;overflow-wrap:normal;word-break:normal}
 .portal .workspace-members-table tbody td:first-child>.flex{flex-wrap:nowrap;max-width:none}
 .portal .workspace-members-table tbody td:first-child .avatar{flex-shrink:0}
+
+/* Shared single-line, bounded columns; scrolling is scoped to each table. */
+.portal .portal-table-scroll{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.portal .portal-table-scroll table{width:100%;max-width:none;table-layout:fixed}
+.portal .portal-table-scroll :is(th,td){min-width:0!important;max-width:280px;white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;overflow-wrap:normal;word-break:normal}
+.portal .portal-table-scroll :is(th,td)>*{min-width:0;max-width:100%}
+.portal .portal-table-scroll td :is(b,span,a,p){white-space:nowrap!important;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.portal .portal-table-scroll td>.flex{flex-wrap:nowrap;overflow:hidden}
+.portal .portal-table-scroll td .avatar,.portal .portal-table-scroll td .access-badge{flex-shrink:0}
+.portal .portal-table-scroll td b{min-width:0;flex:0 1 auto}
+.portal .portal-table-scroll :is(th,td):has(>input[type=checkbox]){width:44px}
+.portal .portal-table-scroll th:last-child:has(> :is(button)),.portal .portal-table-scroll td:last-child:has([aria-haspopup=menu]){max-width:80px}
+.portal .portal-table-scroll .report-title-link{display:block;width:100%;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.portal .portal-table-scroll .report-case-cell{min-width:0!important;max-width:280px;white-space:nowrap}
+.portal .portal-table-scroll td>.flex.flex-wrap{flex-wrap:nowrap}
+.portal .workspace-members-table :is(th,td):first-child{width:280px;max-width:280px}
