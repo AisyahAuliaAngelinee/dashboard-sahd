@@ -1,0 +1,15 @@
+'use client';
+import {useCallback,useEffect,useState} from 'react';
+import {Vote,Clock} from 'lucide-react';
+import {usePortal} from './provider';
+import {useFeedbackState} from '@/components/runtime/feedback-toast';
+import {Button} from '@/components/animate-ui/components/buttons/button';
+import type {PollConfig} from '@/lib/announcement-poll';
+export function AnnouncementPoll({config,announcementId}:{config:PollConfig;announcementId:string}){
+ const {mode,profile}=usePortal();const [counts,setCounts]=useState<number[]>(config.options.map(()=>0)),[selected,setSelected]=useState<number|null>(null),[busy,setBusy]=useState(false),[loading,setLoading]=useState(true),[now,setNow]=useState(Date.now()),[,setError]=useFeedbackState('');
+ const closed=now>=Date.parse(config.closesAt),total=counts.reduce((a,b)=>a+b,0),key=`sahd-demo-votes:${announcementId}:${config.id}`;
+ const load=useCallback(async()=>{try{if(mode==='demo'){const votes=JSON.parse(localStorage.getItem(key)||'{}') as Record<string,number>;setCounts(config.options.map((_,i)=>Object.values(votes).filter(v=>v===i).length));setSelected(votes[profile.id]??null)}else{const r=await fetch(`/api/announcements/votes?announcement=${announcementId}&poll=${config.id}`);const b=await r.json();if(!r.ok)throw Error(b.error);setCounts(b.counts);setSelected(b.selected);if(b.closed)setNow(Date.parse(config.closesAt))}}catch(e){setError(e instanceof Error?e.message:'Voting gagal dimuat.')}finally{setLoading(false)}},[mode,key,profile.id,announcementId,config.id,config.closesAt,config.options,setError]);
+ useEffect(()=>{void load();const timer=setInterval(()=>{setNow(Date.now());void load()},15000);return()=>clearInterval(timer)},[load]);
+ async function vote(option:number){setBusy(true);try{if(mode==='demo'){const votes=JSON.parse(localStorage.getItem(key)||'{}');votes[profile.id]=option;localStorage.setItem(key,JSON.stringify(votes))}else{const r=await fetch('/api/announcements/votes',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({announcement:announcementId,poll:config.id,option})});if(!r.ok)throw Error((await r.json()).error)}await load()}catch(e){setError(e instanceof Error?e.message:'Vote gagal.')}finally{setBusy(false)}}
+ return <section className="announcement-poll" data-no-translate><h3><Vote size={18}/>{config.question}</h3><p className="muted poll-deadline"><Clock size={14}/>{closed?'Voting ditutup':'Berakhir'} · {new Date(config.closesAt).toLocaleString('en-GB',{timeZone:'Asia/Jakarta'})} GMT+7</p><div className="poll-options">{config.options.map((option,i)=><Button key={i} variant="outline" disabled={closed||busy||loading} aria-pressed={selected===i} onClick={()=>void vote(i)}><span>{selected===i?'✓ ':''}{option}</span><span>{counts[i]||0} · {total?Math.round((counts[i]||0)/total*100):0}%</span><span aria-hidden="true" className="poll-result-bar" style={{width:`${total?(counts[i]||0)/total*100:0}%`}}/></Button>)}</div><small className="muted">{total} vote · Satu pilihan per anggota. Pilihan dapat diubah sebelum voting berakhir.</small></section>
+}

@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';import fs from 'node:fs';import ts from 'typescript';
+function load(path,deps={}){const m={exports:{}};new Function('exports','module','require',ts.transpileModule(fs.readFileSync(new URL(path,import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText)(m.exports,m,n=>deps[n]);return m.exports}
+const poll=load('../lib/announcement-poll.ts'),{validDocument}=load('../lib/announcement.ts',{'./announcement-poll':poll,'./analytics':{}});
+const config={id:'94a54084-416a-4dac-ab7f-955d0f35a76b',question:'Meeting day?',options:['Monday','Tuesday'],closesAt:'2026-10-12T10:00:00+07:00'};
+test('voting supports custom dates and requires distinct nonempty options',()=>{assert.equal(poll.validPoll(config),true);for(const change of [{options:['one']},{options:['Yes',' yes ']},{options:['A','']},{closesAt:'invalid'},{question:''},{id:'invalid'},{options:Array(11).fill('A')}])assert.equal(poll.validPoll({...config,...change}),false)});
+test('polls are accepted only at document level with unique IDs',()=>{const node={type:'poll',attrs:config};assert.equal(validDocument({type:'doc',content:[node]}),true);assert.equal(validDocument({type:'doc',content:[node,node]}),false);assert.equal(validDocument({type:'doc',content:[{type:'paragraph',content:[node]}]}),false)});
