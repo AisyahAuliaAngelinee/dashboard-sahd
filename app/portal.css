@@ -447,3 +447,15 @@ html[data-sahd-theme=dark] .portal .fire-status-resolved {background:#23483f;col
 .portal .fire-reports .badge.fire-status-resolved {background:#dcf5e5;color:#17633c}
 html[data-sahd-theme=dark] .portal .fire-reports .badge.fire-status-pending {background:#49381e;color:#f4d08d}
 html[data-sahd-theme=dark] .portal .fire-reports .badge.fire-status-resolved {background:#23483f;color:#a7e7d0}
+.fire-reports .report-list-heading {display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.fire-reports .report-search {display:flex;align-items:center;gap:9px;width:min(100%,420px);height:40px;padding:0 12px}
+.fire-reports .report-search input {min-width:0;width:100%;height:100%;padding:0;border:0;background:transparent;box-shadow:none}
+.fire-reports .report-search svg {flex-shrink:0}
+.fire-reports .report-table-filters {display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fire-position-tags {display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px;border:1px solid var(--border);border-radius:12px}
+.fire-position-tags input {flex:1;min-width:170px;border:0!important;box-shadow:none!important;background:transparent!important}
+.fire-position-tags .report-member-badge {display:inline-flex;align-items:center;gap:6px}
+.fire-position-tags button {padding:2px;border-radius:4px}
+.fire-position-tags button:hover {background:rgba(128,128,128,.2)}
+.portal .fire-reports label.report-search {display:flex!important;flex-direction:row!important;align-items:center!important;gap:9px!important}
+.portal .fire-reports label.report-search input {height:38px!important;line-height:38px;padding:0!important;margin:0!important;border:0!important}

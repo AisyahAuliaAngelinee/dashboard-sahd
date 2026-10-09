@@ -1,5 +1,5 @@
 import type {Profile} from './portal-data';
-export type MemberSortKey='name'|'role'|'division'|'position'|'teams';
+export type MemberSortKey='name'|'badgeNumber'|'role'|'division'|'position'|'teams';
 export const assignmentValue=(value?:string)=>!value||['Belum ditetapkan','Belum Ditentukan'].includes(value)?'':value;
 export function sortMembers(members:Profile[],key:MemberSortKey,direction:'asc'|'desc'){
  const value=(member:Profile)=>key==='teams'?(member.teams||[]).slice().sort().join(', '):assignmentValue(member[key]);
