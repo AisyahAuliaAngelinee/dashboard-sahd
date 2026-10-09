@@ -10,17 +10,30 @@ export function bounds(period:Period, anchor:string, from:string, to:string) {
  else end.setTime(d.getTime()+86400000);
  return {start,end};
 }
+/** Overview granularity differs from the date filters used in announcement lists. */
+export function overviewBounds(period:Period,anchor:string,from:string,to:string){
+ if(period==='week')return bounds('month',anchor,from,to);
+ if(period==='month')return bounds('year',anchor,from,to);
+ if(period==='year')return {start:new Date(`${Number(anchor.slice(0,4))-3}-01-01T00:00:00+07:00`),end:new Date(`${Number(anchor.slice(0,4))+1}-01-01T00:00:00+07:00`)};
+ return bounds(period,anchor,from,to);
+}
 export function surgeryAnalytics(rows:Surgery[],period:Period,anchor:string,from:string,to:string){
- const {start,end}=bounds(period,anchor,from,to);const unique=[...new Map(rows.filter(r=>r.status==='completed'&&r.final).map(r=>[r.id,r])).values()];const included=unique.filter(r=>period==='all'||(new Date(r.performedAt)>=start&&new Date(r.performedAt)<end));
- const mode=period==='day'?'hour':period==='all'||period==='year'?'month':'day';
- const key=(d:Date)=>mode==='hour'?new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',hour:'2-digit',hourCycle:'h23'}).format(d):mode==='month'?wibDate(d).slice(0,7):wibDate(d);
+ const {start,end}=overviewBounds(period,anchor,from,to);
+ const unique=[...new Map(rows.filter(r=>r.status==='completed'&&r.final&&Number.isFinite(Date.parse(r.performedAt))).map(r=>[r.id,r])).values()];
+ const included=unique.filter(r=>period==='all'||(new Date(r.performedAt)>=start&&new Date(r.performedAt)<end));
+ const mode=period==='day'?'hour':period==='week'?'week':period==='year'?'year':period==='all'||period==='month'?'month':'day';
+ // Week 1 is days 1–7; Week 2 is days 8–14, including the final partial week.
+ const key=(d:Date)=>{const date=wibDate(d);return mode==='hour'?new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Jakarta',hour:'2-digit',hourCycle:'h23'}).format(d):mode==='week'?`${date.slice(0,7)}-W${Math.ceil(Number(date.slice(8,10))/7)}`:mode==='year'?date.slice(0,4):mode==='month'?date.slice(0,7):date};
  const bucket=new Map<string,number>();
  if(period==='day'){for(let i=0;i<24;i++)bucket.set(String(i).padStart(2,'0'),0)}
- else if(period==='year'){for(let i=1;i<=12;i++)bucket.set(`${anchor.slice(0,4)}-${String(i).padStart(2,'0')}`,0)}
+ else if(period==='week'){const days=new Date(Date.UTC(Number(anchor.slice(0,4)),Number(anchor.slice(5,7)),0)).getUTCDate();for(let i=1;i<=Math.ceil(days/7);i++)bucket.set(`${anchor.slice(0,7)}-W${i}`,0)}
+ else if(period==='month'){for(let i=1;i<=12;i++)bucket.set(`${anchor.slice(0,4)}-${String(i).padStart(2,'0')}`,0)}
+ else if(period==='year'){for(let y=Number(anchor.slice(0,4))-3;y<=Number(anchor.slice(0,4));y++)bucket.set(String(y),0)}
  else if(period==='all'&&included.length){const dates=included.map(r=>wibDate(new Date(r.performedAt)).slice(0,7)).sort();let cursor=new Date(`${dates[0]}-01T00:00:00Z`);const last=dates.at(-1)!;while(cursor.toISOString().slice(0,7)<=last){bucket.set(cursor.toISOString().slice(0,7),0);cursor.setUTCMonth(cursor.getUTCMonth()+1)}}
  else if(period!=='all'){for(let t=start.getTime();t<end.getTime();t+=86400000)bucket.set(key(new Date(t)),0)}
  for(const r of included){const k=key(new Date(r.performedAt));bucket.set(k,(bucket.get(k)||0)+1)}
- return {total:included.length,minor:included.filter(r=>r.category==='minor').length,major:included.filter(r=>r.category==='major').length,points:[...bucket].sort(([a],[b])=>a.localeCompare(b)).map(([date,total])=>({date,label:mode==='hour'?`${date}:00`:mode==='month'?new Date(`${date}-01T00:00:00Z`).toLocaleDateString('id-ID',{month:'short',year:'2-digit',timeZone:'UTC'}):new Date(`${date}T00:00:00Z`).toLocaleDateString('id-ID',{day:'numeric',month:'short',timeZone:'UTC'}),total}))};
+ const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+ return {total:included.length,minor:included.filter(r=>r.category==='minor').length,major:included.filter(r=>r.category==='major').length,points:[...bucket].sort(([a],[b])=>a.localeCompare(b)).map(([date,total])=>({date,label:mode==='hour'?`${date}:00`:mode==='week'?`Week ${date.split('-W')[1]}`:mode==='year'?date:mode==='month'?`${months[Number(date.slice(5,7))-1]}${period==='all'?` ${date.slice(2,4)}`:''}`:new Date(`${date}T00:00:00Z`).toLocaleDateString('id-ID',{day:'numeric',month:'short',timeZone:'UTC'}),total}))};
 }
 
 export function reportOverview(surgeries:Surgery[],bigFires:Surgery[],period:Period,anchor:string,from:string,to:string){

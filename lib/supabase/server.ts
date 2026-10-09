@@ -1,10 +1,11 @@
 import 'server-only';
+import {hasDiscordAccess} from '@/lib/discord-access';
 import {localDemoAllowed} from '@/lib/demo-access';
 import {cookies} from 'next/headers';
 import {createServerClient} from '@supabase/ssr';
 import {canonicalOrigin,sessionCookieOptions} from '@/lib/auth-session';
 export function demoAllowed(){return localDemoAllowed(process.env.NODE_ENV,process.env.VERCEL)}
-export async function serverClient(){
+export async function serverClient(options:{oauthCallback?:boolean}={}){
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
  if(!url||!key)return null;
  const jar=await cookies();
@@ -12,7 +13,7 @@ export async function serverClient(){
   getAll:()=>jar.getAll(),
   setAll:(values)=>{try{values.forEach(({name,value,options})=>jar.set(name,value,options))}catch{/* Server Component cookies are refreshed in proxy. */}},
  }});
- const {data:{user}}=await client.auth.getUser();if(user){const active=await client.rpc('is_active_member');if(!active.error&&active.data===false)return null;}
+ const {data:{user}}=await client.auth.getUser();if(user){if(!options.oauthCallback&&!(await hasDiscordAccess(user)))return null;const active=await client.rpc('is_active_member');if(!active.error&&active.data===false)return null;}
  return client;
 }
 export function appOrigin(request:Request){

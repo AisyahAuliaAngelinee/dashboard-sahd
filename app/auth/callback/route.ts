@@ -1,3 +1,4 @@
+import {verifyDiscordLogin} from '@/lib/discord-access';
 import {NextResponse} from 'next/server';
 import {sessionCacheHeaders} from '@/lib/auth-session';
 import {serverClient,appOrigin} from '@/lib/supabase/server';
@@ -13,9 +14,9 @@ export async function GET(request:Request){
   return failure(url.searchParams.get('error')==='access_denied'?'access_denied':'callback');
  }
  try{
-  const code=url.searchParams.get('code');const client=await serverClient();
-  if(code&&client){const {error}=await client.auth.exchangeCodeForSession(code);
-   if(!error){(await cookies()).delete('sahd-demo');return redirectNoStore(new URL(url.searchParams.get('recovery')==='1'?'/reset-password':'/dashboard',appOrigin(request)))}
+  const code=url.searchParams.get('code');const client=await serverClient({oauthCallback:true});
+  if(code&&client){const {data,error}=await client.auth.exchangeCodeForSession(code);
+   if(!error&&data.user){const access=await verifyDiscordLogin(data.user,data.session?.provider_token||undefined);if(!access.allowed){await client.auth.signOut({scope:'local'});return failure(access.reason)}(await cookies()).delete('sahd-demo');return redirectNoStore(new URL(url.searchParams.get('recovery')==='1'?'/reset-password':'/dashboard',appOrigin(request)))}
   }
  }catch{/* Never expose OAuth codes, tokens or upstream error descriptions. */}
  return failure('callback');

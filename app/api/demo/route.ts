@@ -1,3 +1,3 @@
 import {cookies} from 'next/headers';import {demoAllowed,validOrigin} from '@/lib/supabase/server';
 export async function POST(request:Request){if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});if(!demoAllowed())return Response.json({error:'Demo tidak aktif pada lingkungan ini.'},{status:403});(await cookies()).set('sahd-demo','active',{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',path:'/',maxAge:3600});return Response.json({ok:true})}
-export async function DELETE(request:Request){if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});(await cookies()).delete('sahd-demo');return Response.json({ok:true})}
+export async function DELETE(request:Request){if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});(await cookies()).delete('sahd-demo');(await cookies()).delete('sahd-discord-membership');return Response.json({ok:true})}
