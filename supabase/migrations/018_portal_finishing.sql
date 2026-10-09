@@ -52,4 +52,11 @@ declare a jsonb;begin
 create trigger announcement_files_removed after delete or update of attachments on public.announcements for each row execute function public.queue_announcement_files();
 create function public.ready_announcement_storage_cleanup() returns table(path text) language sql stable security definer set search_path='' as $$select q.path from public.announcement_storage_cleanup q where not exists(select 1 from public.announcements a where a.attachments @> jsonb_build_array(jsonb_build_object('path',q.path))) order by q.queued_at limit 500$$;
 revoke all on function public.ready_announcement_storage_cleanup() from public,anon,authenticated;grant execute on function public.ready_announcement_storage_cleanup() to service_role;
+-- Keep consent deletion aligned with full consent access for every active member.
+create or replace function public.trash_patient_consents(consent_ids uuid[]) returns void language plpgsql security definer set search_path='' as $$
+declare found_count integer;begin
+ if not public.portal_can('consent_write') or coalesce(cardinality(consent_ids),0) not between 1 and 1000 or (select count(distinct x) from unnest(consent_ids) x)<>cardinality(consent_ids) then raise exception 'Invalid selection';end if;
+ perform 1 from public.patient_consents where id=any(consent_ids) and deleted_at is null order by id for update;get diagnostics found_count=row_count;
+ if found_count<>cardinality(consent_ids) then raise exception 'Unavailable selection';end if;
+ update public.patient_consents set deleted_at=now(),deleted_by=auth.uid(),purge_after=now()+interval '30 days',updated_at=now() where id=any(consent_ids);end;$$;
 commit;
