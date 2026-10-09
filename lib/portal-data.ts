@@ -24,6 +24,7 @@ export const navigation = [
 
 export const reportGroups = [
  {label:'Medical Service',href:'/reports/medical',icon:'report',division:'Medical Service',children:[
+  {label:'Plastic Surgery Report',href:'/reports/medical/plastic-surgery'},
   {label:'Psychiatrist Report',href:'/reports/medical/psychiatrist'},
   {label:'Surgery Report',href:'/reports/medical'},
   {label:'Forensics Report',href:'/reports/medical/forensics'},
