@@ -476,3 +476,5 @@ html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {back
 .portal .plastic-reports .plastic-report-search input{background:transparent!important;border:0!important;border-radius:0;box-shadow:none!important;padding:0!important}
 
 .medical-reports .report-heading-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.portal .member-position-picker{background:var(--surface,#fff);color:inherit;border-color:var(--border,#dce6eb);min-height:42px;height:auto}
+html[data-sahd-theme=dark] .portal .member-position-picker{background:#22343f;color:#e4edf3;border-color:#40525e}
