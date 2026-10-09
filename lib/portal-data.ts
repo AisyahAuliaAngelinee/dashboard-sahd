@@ -21,3 +21,15 @@ export const demoNotices:Notice[] = [
 export const navigation = [
  {label:'Dashboard',href:'/dashboard',icon:'dashboard'}, {label:'Medical Service',href:'/reports/medical',icon:'report'}, {label:'Fire Department',href:'/reports/fire',icon:'fire'}, {label:'Patient Consent',href:'/patient-consents',icon:'consent'}, {label:'Case Assistant',href:'/case-assistant',icon:'assistant'}, {label:'Consultation',href:'/consultations',icon:'calendar'}, {label:'Announcement',href:'/announcements',icon:'announcement'}, {label:'Trash',href:'/trash',icon:'trash'},
 ];
+
+export const reportGroups = [
+ {label:'Medical Service',href:'/reports/medical',icon:'report',division:'Medical Service',children:[
+  {label:'Psychiatrist Report',href:'/reports/medical/psychiatrist'},
+  {label:'Surgery Report',href:'/reports/medical'},
+  {label:'Forensics Report',href:'/reports/medical/forensics'},
+  {label:'Pharmacy Report',href:'/reports/medical/pharmacy'},
+ ]},
+ {label:'Fire Department',href:'/reports/fire',icon:'fire',division:'Fire Department',children:[
+  {label:'Big Fire Report',href:'/reports/fire/big-fire'},
+ ]},
+];

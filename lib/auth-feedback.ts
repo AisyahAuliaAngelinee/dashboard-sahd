@@ -8,6 +8,7 @@ export function authFeedback(code: string | undefined, fallback = 'Permintaan be
     case 'weak_password': return 'Password belum memenuhi kebijakan keamanan akun. Gunakan password yang lebih kuat.';
     case 'same_password': return 'Password baru harus berbeda dari password sebelumnya.';
     case 'signup_disabled': return 'Pendaftaran sedang dinonaktifkan. Hubungi admin SAHD.';
+    case 'discord_only': return 'Login SAHD hanya tersedia melalui Discord. Silakan masuk dengan akun Discord Anda.';
     case 'provider_disabled': return 'Metode login ini belum diaktifkan oleh admin.';
     case 'provider_exchange': return 'Supabase gagal menyelesaikan login dengan provider. Admin perlu memeriksa Client ID, Client Secret, dan Auth Logs di Supabase.';
     case 'callback': return 'Login tidak selesai atau tautan sudah kedaluwarsa. Silakan mulai login kembali.';

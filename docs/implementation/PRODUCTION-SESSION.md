@@ -42,3 +42,15 @@ References: [Supabase SSR](https://supabase.com/docs/guides/auth/server-side/cre
 
 ## Applied configuration — 9 October 2026
 Supabase Site URL and Vercel Production SAHD_APP_URL were changed to https://dashboard-sahd.vercel.app. The exact /auth/callback URL was already registered. Existing localhost callbacks were retained. Full provider login must still be tested using the user’s Google/Discord account.
+
+## Discord-only login — 9 October 2026
+
+Discord is the sole enabled Supabase authentication provider. Google and Email providers were disabled in the Supabase dashboard; their credentials were retained. New user signups remain enabled for Discord. Existing profiles and reports remain associated with their original user IDs. Email confirmation/recovery links redirect to the Discord login page.
+
+The login page exposes only Discord. Provider restrictions are enforced by Supabase rather than inferring the current sign-in provider from an account's original provider metadata, which can differ for linked identities.
+
+## Report navigation and notification popups
+
+Medical Service expands to Psychiatrist Report, Surgery Report, Forensics Report, and Pharmacy Report. Fire Department expands to Big Fire Report. Surgery continues using `/reports/medical` to preserve existing links and data. Other types have separate empty tables using the Surgery table component; their document formats and persistence are pending.
+
+Collapsed sidebar report icons open a menu of child reports. Realtime notification inserts display a dismissible, clickable popup for eight seconds when account notifications are enabled. Existing notification history does not generate popups on page load. The notification indicator is larger and red.
