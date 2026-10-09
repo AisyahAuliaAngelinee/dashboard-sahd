@@ -464,3 +464,12 @@ html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {back
 .profile-identity-fields .field {margin:0;min-width:0}
 .portal .fire-reports .report-table-filters [data-slot=select-trigger],.portal .fire-reports .report-table-filters .report-range-trigger {height:38px;min-height:38px;padding:8px 12px;font-size:12px;border-radius:9px;box-sizing:border-box}
 @media(max-width:540px){.profile-identity-fields{grid-template-columns:1fr}}
+
+/* Report draft cancellation and responsive Plastic Surgery search. */
+.portal .medical-reports .report-cancel{background:transparent;color:#dc5252;border:1px solid #dc525266}
+.portal .medical-reports .report-cancel:hover:not(:disabled){background:#dc525218;border-color:#dc5252}
+.portal .plastic-reports label.plastic-report-search{display:flex;flex-direction:row;align-items:center;gap:10px;width:min(100%,380px);height:40px;padding:0 12px;border:1px solid var(--border,#dce6eb);border-radius:10px;background:var(--input-bg,transparent);margin:0}
+.portal .plastic-report-search svg{flex-shrink:0;color:#8997a5}
+.portal .plastic-reports .plastic-report-search input{width:100%;min-width:0;height:38px;margin:0;padding:0;border:0;background:transparent;box-shadow:none;font-size:13px;outline:none}
+.portal .plastic-report-search:focus-within{border-color:#087f83;box-shadow:0 0 0 2px #087f8322}
+@media(max-width:600px){.portal .plastic-reports label.plastic-report-search{width:100%}.plastic-reports .report-list-heading{align-items:stretch}}
