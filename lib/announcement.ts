@@ -1,7 +1,7 @@
 import type {AnnouncementAttachment} from './announcement-attachments';
 import {bounds,wibDate,type Period} from './analytics';
 export type RichNode={type:string;text?:string;attrs?:Record<string,unknown>;marks?:{type:string;attrs?:Record<string,unknown>}[];content?:RichNode[]};
-export type AnnouncementRow={id:string;title:string;subtitle:string;body_json:RichNode;body_text:string;created_by:string;created_by_name:string;created_at:string;published_at:string;deleted_at?:string|null;purge_after?:string|null;attachments?:AnnouncementAttachment[]};
+export type AnnouncementRow={id:string;title:string;subtitle:string;body_json:RichNode;body_text:string;created_by:string;created_by_name:string;created_at:string;published_at:string;deleted_at?:string|null;purge_after?:string|null;attachments?:AnnouncementAttachment[];is_pinned?:boolean};
 export const emptyDocument:RichNode={type:'doc',content:[{type:'paragraph'}]};
 const nodes=new Set(['doc','paragraph','heading','text','hardBreak','bulletList','orderedList','listItem','blockquote','horizontalRule','table','tableRow','tableCell','tableHeader']);
 export function validDocument(value:unknown):value is RichNode{
@@ -9,4 +9,4 @@ export function validDocument(value:unknown):value is RichNode{
 }
 export function documentText(n:RichNode):string{return n.type==='text'?n.text||'':n.type==='hardBreak'?'\n':(n.content||[]).map(documentText).join(['doc','bulletList','orderedList','table','tableRow'].includes(n.type)?'\n':'')}
 export function validAnnouncement(b:unknown):b is {title:string;subtitle:string;body:RichNode;attachments?:AnnouncementAttachment[]}{if(!b||typeof b!=='object')return false;const v=b as {title:string;subtitle:string;body:RichNode};return typeof v.title==='string'&&v.title.trim().length>0&&v.title.length<=200&&typeof v.subtitle==='string'&&v.subtitle.length<=500&&validDocument(v.body)}
-export function filterAnnouncements(rows:AnnouncementRow[],query:string,period:Period,from:string,to:string,now=new Date()) {const {start,end}=bounds(period,wibDate(now),from,to||from);return rows.filter(r=>!r.deleted_at&&`${r.title} ${r.subtitle} ${r.created_by_name}`.toLowerCase().includes(query.trim().toLowerCase())&&(period==='all'||period==='range'&&!from||new Date(r.created_at)>=start&&new Date(r.created_at)<end)).sort((a,b)=>b.created_at.localeCompare(a.created_at))}
+export function filterAnnouncements(rows:AnnouncementRow[],query:string,period:Period,from:string,to:string,now=new Date()) {const {start,end}=bounds(period,wibDate(now),from,to||from);return rows.filter(r=>!r.deleted_at&&`${r.title} ${r.subtitle} ${r.created_by_name}`.toLowerCase().includes(query.trim().toLowerCase())&&(period==='all'||period==='range'&&!from||new Date(r.created_at)>=start&&new Date(r.created_at)<end)).sort((a,b)=>Number(!!b.is_pinned)-Number(!!a.is_pinned)||b.created_at.localeCompare(a.created_at))}

@@ -505,3 +505,4 @@ html[data-sahd-theme=dark] .portal .member-position-picker{background:#22343f;co
 .portal .portal-table-scroll .report-case-cell{min-width:0!important;max-width:280px;white-space:nowrap}
 .portal .portal-table-scroll td>.flex.flex-wrap{flex-wrap:nowrap}
 .portal .workspace-members-table :is(th,td):first-child{width:280px;max-width:280px}
+.portal .announcement-pin{display:inline-block;vertical-align:middle;margin-right:6px;color:#07868a;flex-shrink:0}
