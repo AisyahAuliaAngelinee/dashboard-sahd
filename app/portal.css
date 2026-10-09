@@ -460,3 +460,7 @@ html[data-sahd-theme=dark] .portal .fire-reports .badge.fire-status-resolved {ba
 .portal .fire-reports label.report-search {display:flex!important;flex-direction:row!important;align-items:center!important;gap:9px!important}
 .portal .fire-reports label.report-search input {height:38px!important;line-height:38px;padding:0!important;margin:0!important;border:0!important}
 html[data-sahd-theme=dark] .portal .fire-reports .report-assistant-trigger {background:#22343e;color:#dce6eb;border-color:#405965}
+.profile-identity-fields {display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:20px;max-width:720px;align-items:start}
+.profile-identity-fields .field {margin:0;min-width:0}
+.portal .fire-reports .report-table-filters [data-slot=select-trigger],.portal .fire-reports .report-table-filters .report-range-trigger {height:38px;min-height:38px;padding:8px 12px;font-size:12px;border-radius:9px;box-sizing:border-box}
+@media(max-width:540px){.profile-identity-fields{grid-template-columns:1fr}}
