@@ -1,4 +1,6 @@
 'use client';
+import TutorialTour from './tutorial-tour';
+import {notificationBell} from '@/lib/notification-sound';
 import {canManageMembers} from '@/lib/member-directory';
 import {LocalizedView} from '@/components/portal/localized-view';
 
@@ -28,15 +30,16 @@ function ShellContent({children}:{children:React.ReactNode}){
  const [expandedReports,setExpandedReports]=useState<Record<string,boolean>>({});
  const [popups,setPopups]=useState<Notice[]>([]);
  useEffect(()=>{
-  const incoming=(event:Event)=>{const notice=(event as CustomEvent<Notice>).detail;if(profile.notifications&&notice)setPopups(previous=>[notice,...previous.filter(n=>n.id!==notice.id)].slice(0,3))};
+  const bell=notificationBell();const unlock=()=>bell.unlock();window.addEventListener('pointerdown',unlock);window.addEventListener('keydown',unlock);
+  const incoming=(event:Event)=>{const notice=(event as CustomEvent<Notice>).detail;if(profile.notifications&&notice){bell.play();setPopups(previous=>[notice,...previous.filter(n=>n.id!==notice.id)].slice(0,3))}};
   window.addEventListener('sahd-notification-arrived',incoming);
   if(!profile.notifications)setPopups([]);
-  return()=>window.removeEventListener('sahd-notification-arrived',incoming);
+  return()=>{window.removeEventListener('sahd-notification-arrived',incoming);window.removeEventListener('pointerdown',unlock);window.removeEventListener('keydown',unlock);bell.close()};
  },[profile.notifications]);
  useEffect(()=>{if(!popups.length)return;const timer=setTimeout(()=>setPopups([]),8000);return()=>clearTimeout(timer)},[popups]);
  const current=reportPages.find(n=>path===n.href)?.label||navigation.find(n=>path.startsWith(n.href))?.label||(path.startsWith('/settings')?'Account Settings':'Workspace');
  if(!ready)return <LocalizedView>{<div className="portal"><div className="empty" role="status">Menyiapkan workspace…</div></div>}</LocalizedView>;
- return <LocalizedView>{<>
+ return <LocalizedView>{<><TutorialTour/>
  <Sidebar animateOnHover={false} collapsible="icon" className="sahd-sidebar"><SidebarHeader><Link href="/dashboard" className="brand portal-brand" aria-label="SAHD Medical Portal"><span className="sidebar-logo-crop"><img src="/sahd-logo.webp" alt="SAHD"/></span><small className="sidebar-label brand-subtitle">Medical Portal</small></Link></SidebarHeader><SidebarContent><SidebarGroup><SidebarGroupLabel>Workspace</SidebarGroupLabel><SidebarMenu>{availableNavigation.filter(n=>!n.href.startsWith('/reports')).map(n=>{const Icon=icons[n.icon];return <SidebarMenuItem key={n.href}><SidebarMenuButton asChild isActive={path.startsWith(n.href)} tooltip={t(n.label)}><Link href={n.href} aria-label={n.label} aria-current={path.startsWith(n.href)?'page':undefined}><Icon size={18}/><span>{t(n.label)}</span></Link></SidebarMenuButton></SidebarMenuItem>})}</SidebarMenu></SidebarGroup>
  <SidebarGroup><SidebarGroupLabel>{t('Reports')}</SidebarGroupLabel><SidebarMenu>{reportGroups.map(group=>{
   const Icon=icons[group.icon];const open=expandedReports[group.href]??path.startsWith(group.href);const active=path.startsWith(group.href);

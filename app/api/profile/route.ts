@@ -1,7 +1,7 @@
 import {serverClient,validOrigin} from '@/lib/supabase/server';
 export async function PATCH(request:Request){
  if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});const client=await serverClient();if(!client)return Response.json({error:'Layanan akun belum dikonfigurasi.'},{status:503});const {data:{user}}=await client.auth.getUser();if(!user)return Response.json({error:'Sesi berakhir.'},{status:401});
- const body=await request.json().catch(()=>null);if(!body||typeof body.name!=='string'||!body.name.trim()||body.name.trim().length>100||typeof body.notifications!=='boolean')return Response.json({error:'Profil tidak valid.'},{status:400});
+ const body=await request.json().catch(()=>null);if(body?.action==='complete_tutorial'){const {error}=await client.from('profiles').update({tutorial_completed_at:new Date().toISOString()}).eq('id',user.id);return error?Response.json({error:'Tutorial belum dapat disimpan. Periksa migration 018.'},{status:500}):Response.json({ok:true})}if(!body||typeof body.name!=='string'||!body.name.trim()||body.name.trim().length>100||typeof body.notifications!=='boolean')return Response.json({error:'Profil tidak valid.'},{status:400});
  const {error}=await client.from('profiles').update({display_name:body.name.trim(),notifications_enabled:body.notifications}).eq('id',user.id);if(error)return Response.json({error:'Profil gagal disimpan.'},{status:500});return Response.json({ok:true});
 }
 export async function POST(request:Request){
