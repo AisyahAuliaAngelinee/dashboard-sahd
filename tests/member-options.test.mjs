@@ -2,12 +2,12 @@ import test from 'node:test';import assert from 'node:assert/strict';import {rea
 const source=readFileSync(new URL('../lib/member-options.ts',import.meta.url),'utf8');
 const js=ts.transpileModule(source,{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText;
 const {validAssignment}=await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
-test('positions are restricted to their division and unassigned members have no position',()=>{
+test('positions are restricted to their division and unassigned members only allow Trainee',()=>{
  assert.equal(validAssignment('SAHD','Medical Service','General Practitioner',['Finance']),true);
  assert.equal(validAssignment('Chief','Fire Department','Captain',[]),true);
  assert.equal(validAssignment('Director','Fire Department','Medical Student',[]),false);
  assert.equal(validAssignment('SAHD',null,'General Practitioner',[]),false);
- assert.equal(validAssignment('SAHD',null,null,[]),true);
+ assert.equal(validAssignment('SAHD',null,null,[]),true);assert.equal(validAssignment('SAHD',null,'Trainee',[]),true);assert.equal(validAssignment('SAHD','Fire Department','Trainee',[]),true);
 });
 test('unknown roles and teams and duplicate teams cannot be assigned',()=>{
  assert.equal(validAssignment('Owner','Medical Service',null,[]),false);

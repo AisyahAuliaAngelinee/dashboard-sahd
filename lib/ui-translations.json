@@ -2510,5 +2510,45 @@
   [
     "Status payment",
     "Status Pembayaran"
+  ],
+  [
+    "Show rows",
+    "Tampilkan baris"
+  ],
+  [
+    "Rows per page",
+    "Baris per halaman"
+  ],
+  [
+    "Edit Member",
+    "Edit Anggota"
+  ],
+  [
+    "Remove Member",
+    "Hapus Anggota"
+  ],
+  [
+    "Admin Access",
+    "Akses Admin"
+  ],
+  [
+    "Yes, remove member",
+    "Ya, hapus anggota"
+  ],
+  [
+    "Contact HR, Admin, or Superadmin to change your role and assignments.",
+    "Hubungi tim HR, Admin, atau Superadmin untuk mengubah role dan penugasan."
+  ],
+  [
+    "Are you sure you want to remove this member’s access? Report history is preserved.",
+    "Apakah Anda yakin ingin menghapus akses member ini? Riwayat report tetap tersimpan."
+  ],
+  [
+    "Manage the member’s identity, assignments, and web access.",
+    "Atur identitas, penugasan, dan akses web anggota."
+  ],
+  [
+    "Member management is available only for live accounts.",
+    "Pengelolaan member hanya tersedia pada akun live."
   ]
 ]

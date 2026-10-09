@@ -1,0 +1,18 @@
+import {serverClient,validOrigin} from '@/lib/supabase/server';
+import {organizationRoles,validAssignment} from '@/lib/member-options';
+export async function PATCH(request:Request){
+ if(!validOrigin(request))return Response.json({error:'Origin tidak valid.'},{status:403});
+ const client=await serverClient();const user=client?(await client.auth.getUser()).data.user:null;
+ if(!client||!user)return Response.json({error:'Sesi berakhir.'},{status:401});
+ const {data:actor}=await client.from('profiles').select('access_role,is_active').eq('id',user.id).single();
+ if(!actor?.is_active||!['Admin','Superadmin'].includes(actor.access_role))return Response.json({error:'Akses ditolak.'},{status:403});
+ const body=await request.json().catch(()=>null);
+ if(!body||! /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i.test(body.id||'')||body.id===user.id||typeof body.remove!=='boolean')return Response.json({error:'Input tidak valid.'},{status:400});
+ const {data:target}=await client.from('profiles').select('display_name,role,division,job_title,teams,access_role').eq('id',body.id).single();
+ if(!target)return Response.json({error:'Member tidak ditemukan.'},{status:404});
+ if(target.access_role==='Superadmin')return Response.json({error:'Superadmin tidak dapat diubah di sini.'},{status:403});
+ const data=body.remove?{name:target.display_name,role:target.role,division:target.division,position:target.job_title,teams:target.teams,access:target.access_role}:body;
+ if(!body.remove&&(typeof data.name!=='string'||!data.name.trim()||data.name.trim().length>100||!organizationRoles.includes(data.role)||!['Member','Admin'].includes(data.access)||!(data.division===null||typeof data.division==='string')||!(data.position===null||typeof data.position==='string')||!Array.isArray(data.teams)||!validAssignment(data.role,data.division,data.position,data.teams)))return Response.json({error:'Lengkapi data member dengan pilihan yang valid.'},{status:400});
+ const {error}=await client.rpc('manage_portal_member',{target_user:body.id,new_name:data.name,new_role:data.role,new_division:data.division,new_position:data.position,new_teams:data.teams,new_access:data.access,remove_member:body.remove});
+ return error?Response.json({error:'Perubahan gagal. Periksa izin dan migration 016.'},{status:400}):Response.json({ok:true});
+}

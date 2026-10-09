@@ -1,4 +1,5 @@
 'use client';
+import {canManageMembers} from '@/lib/member-directory';
 import {LocalizedView} from '@/components/portal/localized-view';
 
 import {usePreferences} from './preferences';
@@ -9,7 +10,7 @@ import { navigation,reportGroups } from '@/lib/portal-data';import {usePortal,Av
 import {SidebarProvider,Sidebar,SidebarHeader,SidebarContent,SidebarFooter,SidebarGroup,SidebarGroupLabel,SidebarMenu,SidebarMenuItem,SidebarMenuButton,SidebarMenuSub,SidebarMenuSubItem,SidebarMenuSubButton,useSidebar} from '@/components/animate-ui/components/radix/sidebar';
 import {Command,CommandInput,CommandList,CommandEmpty,CommandGroup,CommandItem} from '@/components/ui/command';
 const icons:Record<string,typeof Search>={dashboard:LayoutDashboard,report:FileText,fire:Flame,consent:ClipboardCheck,assistant:Sparkles,calendar:CalendarDays,announcement:Megaphone,trash:Trash2};
-export default function Shell({children}:{children:React.ReactNode}){return <LocalizedView>{<SidebarProvider className="portal portal-shell"><ShellContent>{children}</ShellContent></SidebarProvider>}</LocalizedView>}
+export default function Shell({children}:{children:React.ReactNode}){const {profile}=usePortal();useEffect(()=>{document.documentElement.dataset.sahdDivision=profile.division==='Fire Department'?'fd':'ms';return()=>{delete document.documentElement.dataset.sahdDivision}},[profile.division]);return <LocalizedView>{<SidebarProvider className="portal portal-shell"><ShellContent>{children}</ShellContent></SidebarProvider>}</LocalizedView>}
 function ShellContent({children}:{children:React.ReactNode}){
  const {t,language,theme,toggleLanguage,toggleTheme}=usePreferences();
  const router=useRouter();const {toggleSidebar,setOpen,setOpenMobile,openMobile,isMobile,state}=useSidebar();
@@ -45,7 +46,7 @@ function ShellContent({children}:{children:React.ReactNode}){
     <AnimatePresence initial={false}>{open&&<motion.div id={`report-menu-${group.icon}`} initial={reducedMotion?false:{height:0,opacity:0}} animate={{height:'auto',opacity:1}} exit={{height:0,opacity:0}} transition={{duration:.2}} className="report-submenu-wrap"><SidebarMenuSub>{group.children.map(child=><SidebarMenuSubItem key={child.href}><SidebarMenuSubButton asChild isActive={path===child.href}><Link href={child.href} aria-current={path===child.href?'page':undefined}><span>{t(child.label)}</span></Link></SidebarMenuSubButton></SidebarMenuSubItem>)}</SidebarMenuSub></motion.div>}</AnimatePresence>
    </>
   </SidebarMenuItem>
- })}</SidebarMenu></SidebarGroup></SidebarContent><SidebarFooter><div className="flex items-center gap-3 p-2"><Avatar profile={profile}/><div className="sidebar-label"><b className="text-xs"><span data-no-translate>{profile.name}</span></b><p className="muted text-[10px]">{profile.role}</p></div></div>{profile.role==='Admin'&&<SidebarMenuButton asChild tooltip="Admin Panel"><Link href="/admin"><Settings size={17}/><span>Admin Panel</span></Link></SidebarMenuButton>}</SidebarFooter></Sidebar>
+ })}</SidebarMenu></SidebarGroup></SidebarContent><SidebarFooter><div className="flex items-center gap-3 p-2"><Avatar profile={profile}/><div className="sidebar-label"><b className="text-xs"><span data-no-translate>{profile.name}</span></b><p className="muted text-[10px]">{profile.role}</p></div></div>{canManageMembers(profile)&&<SidebarMenuButton asChild tooltip="Admin Panel"><Link href="/admin"><Settings size={17}/><span>Admin Panel</span></Link></SidebarMenuButton>}</SidebarFooter></Sidebar>
  <div className="portal-body">
  <header className="topbar"><button aria-label="Buka atau tutup sidebar" aria-expanded={isMobile?openMobile:state==='expanded'} className="iconbutton" onClick={toggleSidebar}><PanelLeft size={19}/></button><span className="text-xs muted hidden lg:block">Workspace <span className="mx-3 text-slate-300">/</span> <b className="text-slate-600">{t(current)}</b></span><button aria-label="Cari workspace" className="searchtrigger" onClick={()=>{setQuery('');setSearch(true)}}><Search size={15}/><span>{t('Search anything…')}</span><kbd className="ml-auto">⌘K / Ctrl K</kbd></button><div className="ml-auto flex items-center gap-3">{mode==='demo'&&<span className="demo-note"><Info size={13}/>Demo · data contoh</span>}
  <button type="button" className="iconbutton preference-toggle" aria-label={language==='en'?'Switch to Indonesian':'Ganti ke Bahasa Inggris'} title={language==='en'?'Bahasa Indonesia':'English'} onClick={toggleLanguage}><Languages size={18}/><small>{language==='en'?'ENG':'IDN'}</small></button>

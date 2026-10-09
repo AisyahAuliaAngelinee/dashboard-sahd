@@ -1,4 +1,4 @@
-export type Profile = { id:string; name:string; accountName?:string; role:string; division:string; position?:string; teams?:string[]; providers:string[]; avatar:string; notifications:boolean };
+export type Profile = { id:string; name:string; accountName?:string; role:string; accessRole?:'Member'|'Admin'|'Superadmin'; division:string; position?:string; teams?:string[]; providers:string[]; avatar:string; notifications:boolean };
 export type Appointment = { id:string; name:string; complaint:string; doctor:string; date:string; createdAt:string; status:string };
 export type Surgery = { id:string; category:'minor'|'major'; performedAt:string; status:'completed'; final:boolean };
 export type Notice = { id:string; title:string; body:string; type:'announcement'|'appointment'|'mention'; href:string; read:boolean; at:string };

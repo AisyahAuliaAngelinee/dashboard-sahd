@@ -48,6 +48,7 @@ type ButtonProps = ButtonPrimitiveProps & VariantProps<typeof buttonVariants>;
 function Button({ className, variant, size, ...props }: ButtonProps) {
   return (
     <ButtonPrimitive
+      data-variant={variant || 'default'}
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
