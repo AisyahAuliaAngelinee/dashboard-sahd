@@ -491,3 +491,9 @@ html[data-sahd-theme=dark] .portal .member-position-picker{background:#22343f;co
 .portal :is(.data-table,.table-wrap table) td .flex{flex-wrap:wrap}
 .portal :is(.panel,.overflow-auto,.overflow-x-auto,.table-wrap){min-width:0;max-width:100%}
 .portal .report-case-cell{min-width:0!important}
+/* Member identity stays on one line; overflow belongs to this table only. */
+.portal .workspace-members-scroll{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+.portal .data-table.workspace-members-table{table-layout:auto;min-width:980px!important;max-width:none}
+.portal .workspace-members-table tbody td:first-child,.portal .workspace-members-table tbody td:first-child :is(b,span,small){white-space:nowrap!important;overflow-wrap:normal;word-break:normal}
+.portal .workspace-members-table tbody td:first-child>.flex{flex-wrap:nowrap;max-width:none}
+.portal .workspace-members-table tbody td:first-child .avatar{flex-shrink:0}
