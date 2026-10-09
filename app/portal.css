@@ -199,3 +199,5 @@
 .portal [data-collapsible=icon] .sidebar-logo-crop{width:40px;height:40px}
 .portal [data-collapsible=icon] [data-slot=sidebar-header] .portal-brand .sidebar-logo-crop img{width:76px;height:76px}
 .portal [data-collapsible=icon] [data-slot=sidebar-group]{padding-left:0;padding-right:0}
+.portal .collapsed-report-trigger{display:flex;align-items:center;justify-content:center;margin:3px auto!important;padding:0!important;width:44px!important;height:44px!important}
+.portal .collapsed-report-trigger>span{display:none!important}.portal .collapsed-report-trigger>svg{width:19px;height:19px}
