@@ -1,7 +1,7 @@
 import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import ts from 'typescript';
 const js=ts.transpileModule(readFileSync(new URL('../lib/discord-membership.ts',import.meta.url),'utf8'),{compilerOptions:{target:ts.ScriptTarget.ES2022,module:ts.ModuleKind.ES2022}}).outputText;
 const {checkDiscordMembership}=await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
-const user='123456789012345678',config={required:true,guildId:'234567890123456789',visitorRoleId:'345678901234567890',providerToken:'test-token'};
+const user='123456789012345678',config={required:true,guildId:'1329133647852343356',visitorRoleId:'1338835105841676322',providerToken:'test-token'};
 const request=(body,status=200)=>async()=>Response.json(body,{status});
 test('member with no visitor role is allowed; Visitor is denied even with additional roles',async()=>{assert.deepEqual(await checkDiscordMembership(user,config,request({user:{id:user},roles:[]})),{allowed:true});assert.deepEqual(await checkDiscordMembership(user,config,request({user:{id:user},roles:['other',config.visitorRoleId]})),{allowed:false,reason:'discord_visitor'})});
 test('only unknown member means non-member, unknown guild is denied as non-member',async()=>{assert.equal((await checkDiscordMembership(user,config,request({code:10007},404))).reason,'discord_not_member');assert.equal((await checkDiscordMembership(user,config,request({code:10004},404))).reason,'discord_not_member')});

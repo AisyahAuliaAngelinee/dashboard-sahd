@@ -8,12 +8,12 @@ Set server-only environment variables in both local development and Vercel:
 
 - `DISCORD_MEMBERSHIP_REQUIRED=true` only after configuration and a real login test are ready.
 - `DISCORD_GUILD_ID=1329133647852343356`
-- `DISCORD_VISITOR_ROLE_ID`: the actual Visitor role ID, never the role name or a user ID.
+- `DISCORD_VISITOR_ROLE_ID=1338835105841676322`: Visitor/Patient in SAHD EXE.
 - `DISCORD_VERIFICATION_SECRET`: at least 32 random characters; use the same value across instances of this deployment. Do not expose it using NEXT_PUBLIC.
 
 No bot is required. A 24-hour HttpOnly, signed cookie records successful login verification, bound to the Supabase user, guild ID, and Visitor role ID. Every portal server client checks that proof. The proof contains no Discord token and cannot be reused by another account. Role changes are checked on the next OAuth login; this is not continuous Discord membership monitoring. After 24 hours the user must sign in again. Changing the signing secret or role configuration invalidates existing proofs.
 
-This application gate does not replace Supabase Auth or database RLS. Direct Supabase API clients must remain subject to database authorization; do not treat a callback check alone as a guild-based database policy. The current rollout keeps the gate disabled until Visitor configuration is provided. No Discord roles are automatically mapped to portal administrator privileges.
+This application gate does not replace Supabase Auth or database RLS. Direct Supabase API clients must remain subject to database authorization; do not treat a callback check alone as a guild-based database policy. The Visitor/Patient ID is now configured. Enable the production gate only after the signing secret has been set in Vercel; changing an environment variable requires a new deployment. No Discord roles are automatically mapped to portal administrator privileges.
 
 ## Landing page versus portal deployments
 
