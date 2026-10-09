@@ -506,3 +506,16 @@ html[data-sahd-theme=dark] .portal .member-position-picker{background:#22343f;co
 .portal .portal-table-scroll td>.flex.flex-wrap{flex-wrap:nowrap}
 .portal .workspace-members-table :is(th,td):first-child{width:280px;max-width:280px}
 .portal .announcement-pin{display:inline-block;vertical-align:middle;margin-right:6px;color:#07868a;flex-shrink:0}
+
+/* Portalled announcement menu carries .portal on the menu itself. */
+.portal.announcement-action-menu{min-width:220px;padding:7px;border:1px solid #dce5ed;border-radius:12px;background:#fff;box-shadow:0 8px 24px #18334918}
+.portal.announcement-action-menu [role=menuitem]{display:flex;align-items:center;gap:10px;min-height:38px;margin:3px 0;padding:9px 11px;border-radius:7px;font-size:14px;line-height:20px;cursor:pointer;color:#263e50}
+.portal.announcement-action-menu [role=menuitem] svg{width:16px;height:16px;flex-shrink:0;color:inherit}
+.portal.announcement-action-menu [role=menuitem]:is(:hover,[data-highlighted]){background:#edf7f6;color:#087e81}
+.portal.announcement-action-menu .delete-menu-item{color:#c72c3c}
+.portal.announcement-action-menu .delete-menu-item:is(:hover,[data-highlighted]){background:#fff0f2;color:#ad1e30}
+html[data-sahd-theme=dark] .portal.announcement-action-menu{background:#17252d;border-color:#344750}
+html[data-sahd-theme=dark] .portal.announcement-action-menu [role=menuitem]{color:#e4edf2}
+html[data-sahd-theme=dark] .portal.announcement-action-menu [role=menuitem]:is(:hover,[data-highlighted]){background:#243c43;color:#8cdbd1}
+html[data-sahd-theme=dark] .portal.announcement-action-menu .delete-menu-item{color:#ff8795}
+html[data-sahd-theme=dark] .portal.announcement-action-menu .delete-menu-item:is(:hover,[data-highlighted]){background:#472b34;color:#ffa5af}
