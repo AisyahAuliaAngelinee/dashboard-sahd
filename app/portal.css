@@ -418,3 +418,11 @@ html[data-sahd-division=fd][data-sahd-theme=dark] .portal button[data-variant=de
 .admin-page>.page-heading h1 {margin-top:8px;margin-bottom:10px}
 .admin-heading-icon {flex-shrink:0}
 html[data-sahd-theme=dark] .admin-heading-icon {background:#23483f;color:#a7e7d0}
+
+.portal .admin-section-heading {display:grid;grid-template-columns:24px minmax(0,1fr);align-items:start;gap:12px;padding:0 0 20px;margin:0}
+.portal .admin-section-heading>svg {width:22px;height:22px;margin:1px 0 0}
+.portal .admin-section-heading h2 {margin:0;padding:0;font-size:17px;line-height:24px}
+.portal .admin-section-heading p {margin:6px 0 0;padding:0;font-size:12px;line-height:1.65}
+.portal .admin-form-footer {display:flex;justify-content:flex-end;align-items:center;gap:12px;width:100%;margin:0;padding:20px 0 0;min-height:0;background:transparent;border:0;border-top:1px solid var(--color-border,#e6ebf1);text-align:initial}
+.portal .admin-save-button {display:inline-flex;align-items:center;justify-content:center;gap:9px;min-width:178px;height:42px;padding:0 18px;margin:0;font-size:13px;line-height:1;border-radius:10px}
+@media(max-width:640px){.portal .admin-save-button{width:100%}}

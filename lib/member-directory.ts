@@ -8,3 +8,6 @@ export function sortMembers(members:Profile[],key:MemberSortKey,direction:'asc'|
 export function accountAccess(profile:Pick<Profile,'role'|'accessRole'>){return profile.accessRole||(profile.role==='Admin'?'Admin':'Member')}
 
 export function canManageMembers(profile:Pick<Profile,'role'|'accessRole'>){return ['Admin','Superadmin'].includes(accountAccess(profile))}
+
+export function canEditMember(actor:Profile,target:Profile){return accountAccess(actor)==='Superadmin'||accountAccess(actor)==='Admin'&&actor.id!==target.id&&accountAccess(target)!=='Superadmin'}
+export function canRemoveMember(actor:Profile,target:Profile,members:Profile[]){return canEditMember(actor,target)&&(accountAccess(target)!=='Superadmin'||members.some(m=>m.id!==target.id&&accountAccess(m)==='Superadmin'))}
