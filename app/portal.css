@@ -528,3 +528,7 @@ html[data-sahd-theme=dark] .portal.announcement-action-menu .delete-menu-item:is
 .portal .portal-table-scroll .workspace-members-table .member-position-cell{width:260px;max-width:260px;vertical-align:middle}
 .portal .portal-table-scroll .workspace-members-table .member-position-badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px;overflow:visible;white-space:normal}
 .portal .portal-table-scroll .workspace-members-table .member-position-badges .badge{flex:0 0 auto;max-width:100%;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.portal .member-edit-fields input:disabled{opacity:1;cursor:not-allowed;background:var(--muted,#f1f5f9);color:var(--muted-foreground,#64748b)}
+.portal .member-readonly-positions{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;min-height:44px;border:1px solid var(--border,#dce6eb);border-radius:9px;background:var(--muted,#f1f5f9);cursor:not-allowed}
+.portal .member-edit-fields fieldset:disabled{color:var(--muted-foreground,#64748b)}
