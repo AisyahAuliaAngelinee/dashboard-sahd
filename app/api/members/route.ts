@@ -12,9 +12,11 @@ export async function PATCH(request:Request){
  if(!target)return Response.json({error:'Member tidak ditemukan.'},{status:404});
  if((target.access_role==='Superadmin'||body.id===user.id)&&actor.access_role!=='Superadmin')return Response.json({error:'Superadmin tidak dapat diubah di sini.'},{status:403});
  const nameOnly=body.nameOnly===true&&!body.remove;
- if(nameOnly&&(typeof body.name!=='string'||!body.name.trim()||body.name.trim().length>100))return Response.json({error:'Nama member wajib diisi, maksimal 100 karakter.'},{status:400});
- const data=body.remove||body.accessOnly===true||nameOnly?{name:nameOnly?body.name.trim():target.display_name,role:target.role,division:target.division,position:target.job_title,teams:target.teams,access:body.remove||nameOnly?target.access_role:body.access}:normalizeMemberEdit(body);
- if(!body.remove&&!nameOnly){const validationError=memberEditError(data,actor.access_role==='Superadmin'&&target.access_role==='Superadmin');if(validationError)return Response.json({error:validationError},{status:400})}
+ const identityOnly=body.identityOnly===true&&!body.remove&&!nameOnly;
+ if(identityOnly&&(!['Member','Admin'].includes(body.access)||target.access_role==='Superadmin'))return Response.json({error:'Pilihan akses akun tidak valid.'},{status:400});
+ if((nameOnly||identityOnly)&&(typeof body.name!=='string'||!body.name.trim()||body.name.trim().length>100))return Response.json({error:'Nama member wajib diisi, maksimal 100 karakter.'},{status:400});
+ const data=body.remove||body.accessOnly===true||nameOnly||identityOnly?{name:nameOnly||identityOnly?body.name.trim():target.display_name,role:target.role,division:target.division,position:target.job_title,teams:target.teams,access:body.remove||nameOnly?target.access_role:body.access}:normalizeMemberEdit(body);
+ if(!body.remove&&!nameOnly&&!identityOnly){const validationError=memberEditError(data,actor.access_role==='Superadmin'&&target.access_role==='Superadmin');if(validationError)return Response.json({error:validationError},{status:400})}
  const {error}=await client.rpc('manage_portal_member',{target_user:body.id,new_name:data.name,new_role:data.role,new_division:data.division,new_position:data.position,new_teams:data.teams,new_access:data.access,remove_member:body.remove});
  if(error){const messages:Record<string,string>={'Last Superadmin protected':'Superadmin terakhir tidak dapat dihapus atau diturunkan aksesnya.','Forbidden':'Anda tidak memiliki izin untuk mengubah anggota ini.','Self management disabled':'Hanya Superadmin yang dapat mengubah akun sendiri.','Superadmin cannot be changed here':'Hanya Superadmin yang dapat mengubah akun Superadmin.','Invalid assignment':'Periksa jabatan dan divisi yang dipilih.','Member not found':'Anggota tidak ditemukan.'};return Response.json({error:messages[error.message]||'Perubahan gagal disimpan. Silakan coba kembali.'},{status:400})}return Response.json({ok:true});
 }

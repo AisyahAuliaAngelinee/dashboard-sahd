@@ -16,3 +16,15 @@ test('name-only edits preserve server assignments and access despite submitted c
  assert.equal(response.status,200);assert.equal(sent.new_name,'Updated Character');assert.equal(sent.new_access,'Admin');assert.equal(sent.new_role,'SAHD');assert.equal(sent.new_division,'Medical Service');assert.equal(sent.new_position,'Chief');assert.deepEqual(sent.new_teams,['Human Resource']);
  reads=0;sent=null;const invalid=await PATCH(new Request('https://example.com/api/members',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:'aa5f56fb-6d36-4165-996f-e46aeab0a17d',remove:false,nameOnly:true,name:' '})}));assert.equal(invalid.status,400);assert.equal(sent,null);
 });
+test('Admin and Superadmin can grant Admin to another member without changing assignments',async()=>{
+ for(const actorRole of ['Admin','Superadmin','Member']){
+ let sent,reads=0;const target={display_name:payload.name,role:'SAHD',division:'Medical Service',job_title:'Chief',teams:['Human Resource'],access_role:'Member'};
+ const client={auth:{getUser:async()=>({data:{user:{id:'94a54084-416a-4dac-ab7f-955d0f35a76b'}}})},from:()=>({select:()=>({eq:()=>({single:async()=>({data:++reads===1?{access_role:actorRole,is_active:true}:target})})})}),rpc:async(_,args)=>{sent=args;return {error:null}}};
+ const {PATCH}=load('../app/api/members/route.ts',{'@/lib/supabase/server':{serverClient:async()=>client,validOrigin:()=>true},'@/lib/member-edit':{normalizeMemberEdit,memberEditError}});
+ const request=access=>new Request('https://example.com/api/members',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:'aa5f56fb-6d36-4165-996f-e46aeab0a17d',remove:false,identityOnly:true,name:'Updated Name',access,role:'Unknown',division:'Fire Department',position:'Captain',teams:[]})});
+ const response=await PATCH(request('Admin'));assert.equal(response.status,actorRole==='Member'?403:200);
+ if(actorRole==='Member'){assert.equal(sent,undefined);continue}
+ assert.equal(sent.new_access,'Admin');assert.equal(sent.new_name,'Updated Name');assert.equal(sent.new_position,'Chief');assert.equal(sent.new_division,'Medical Service');assert.deepEqual(sent.new_teams,['Human Resource']);
+ reads=0;sent=undefined;assert.equal((await PATCH(request('Superadmin'))).status,400);assert.equal(sent,undefined);
+ }
+});
