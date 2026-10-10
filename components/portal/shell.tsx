@@ -7,13 +7,14 @@ import {LocalizedView} from '@/components/portal/localized-view';
 
 import {usePreferences} from './preferences';
 import { useEffect,useState,useRef } from 'react';import {AnimatePresence,motion,useReducedMotion} from 'framer-motion';import Link from 'next/link';import {usePathname,useRouter} from 'next/navigation';
+import DemoPreviewBar from './demo-preview-bar';
 import { Hash,PanelLeft,LayoutDashboard,FileText,Flame,ClipboardCheck,Sparkles,CalendarDays,Megaphone,Trash2,Search,Bell,ChevronDown,LogOut,Settings,Menu,X,ArrowUpRight,Info,Languages,Sun,Moon } from 'lucide-react';
 import { Button } from '@/components/ui/button';import { Dialog,DialogContent,DialogTitle,DialogDescription } from '@/components/ui/dialog';import {DropdownMenu,DropdownMenuTrigger,DropdownMenuContent,DropdownMenuItem} from '@/components/ui/dropdown-menu';
 import { navigation,reportGroups } from '@/lib/portal-data';import {usePortal,Avatar} from './provider';import type {Notice} from '@/lib/portal-data';
 import {SidebarProvider,Sidebar,SidebarHeader,SidebarContent,SidebarFooter,SidebarGroup,SidebarGroupLabel,SidebarMenu,SidebarMenuItem,SidebarMenuButton,SidebarMenuSub,SidebarMenuSubItem,SidebarMenuSubButton,useSidebar} from '@/components/animate-ui/components/radix/sidebar';
 import {Command,CommandInput,CommandList,CommandEmpty,CommandGroup,CommandItem} from '@/components/ui/command';
 const icons:Record<string,typeof Search>={dashboard:LayoutDashboard,report:FileText,fire:Flame,consent:ClipboardCheck,assistant:Sparkles,calendar:CalendarDays,announcement:Megaphone,trash:Trash2};
-export default function Shell({children}:{children:React.ReactNode}){const {profile}=usePortal();useEffect(()=>{document.documentElement.dataset.sahdDivision=profile.division==='Fire Department'?'fd':'ms';return()=>{delete document.documentElement.dataset.sahdDivision}},[profile.division]);return <LocalizedView>{<SidebarProvider className="portal portal-shell"><ShellContent>{children}</ShellContent></SidebarProvider>}</LocalizedView>}
+export default function Shell({children}:{children:React.ReactNode}){const {profile,mode}=usePortal();useEffect(()=>{document.documentElement.dataset.sahdDivision=profile.division==='Fire Department'?'fd':'ms';return()=>{delete document.documentElement.dataset.sahdDivision}},[profile.division]);return <LocalizedView>{<div className={mode==='demo'?'demo-preview-layout':undefined}><DemoPreviewBar/><SidebarProvider className="portal portal-shell"><ShellContent>{children}</ShellContent></SidebarProvider></div>}</LocalizedView>}
 function ShellContent({children}:{children:React.ReactNode}){
  const {t,language,theme,toggleLanguage,toggleTheme}=usePreferences();
  const router=useRouter();const {toggleSidebar,setOpen,setOpenMobile,openMobile,isMobile,state}=useSidebar();
