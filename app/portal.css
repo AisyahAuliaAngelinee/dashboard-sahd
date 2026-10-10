@@ -529,6 +529,10 @@ html[data-sahd-theme=dark] .portal.announcement-action-menu .delete-menu-item:is
 .portal .portal-table-scroll .workspace-members-table .member-position-badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px;overflow:visible;white-space:normal}
 .portal .portal-table-scroll .workspace-members-table .member-position-badges .badge{flex:0 0 auto;max-width:100%;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.portal .member-edit-fields input:disabled{opacity:1;cursor:not-allowed;background:var(--muted,#f1f5f9);color:var(--muted-foreground,#64748b)}
-.portal .member-readonly-positions{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;min-height:44px;border:1px solid var(--border,#dce6eb);border-radius:9px;background:var(--muted,#f1f5f9);cursor:not-allowed}
-.portal .member-edit-fields fieldset:disabled{color:var(--muted-foreground,#64748b)}
+.portal .member-edit-fields input:disabled{opacity:1;cursor:not-allowed;background:#eef2f6;color:#475569;-webkit-text-fill-color:#475569;border-color:#d5dee8}
+.portal .member-readonly-positions{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;min-height:44px;border:1px solid #d5dee8;border-radius:9px;background:#eef2f6;color:#475569;cursor:not-allowed}
+.portal .member-edit-fields fieldset:disabled{color:#475569}
+
+html[data-sahd-theme=dark] .portal .member-edit-fields input:disabled{background:#263944;color:#cbd8e2;-webkit-text-fill-color:#cbd8e2;border-color:#405461}
+html[data-sahd-theme=dark] .portal .member-readonly-positions{background:#263944;color:#cbd8e2;border-color:#405461}
+html[data-sahd-theme=dark] .portal .member-edit-fields fieldset:disabled{color:#cbd8e2}
