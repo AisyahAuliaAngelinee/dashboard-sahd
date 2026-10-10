@@ -1,3 +1,5 @@
+self.addEventListener('install',event=>event.waitUntil(self.skipWaiting()));
+self.addEventListener('activate',event=>event.waitUntil(clients.claim()));
 self.addEventListener('push',event=>{
  let message={};try{message=event.data?.json()||{}}catch{}
  const path=typeof message.url==='string'&&/^\/announcements\/[a-f0-9-]{36}$/i.test(message.url)?message.url:'/announcements';
