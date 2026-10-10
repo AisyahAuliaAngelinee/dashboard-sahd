@@ -13,3 +13,10 @@ export function loginExpiresAt(claims:{amr?:unknown}){
 export function loginIsCurrent(claims:{amr?:unknown},now=Date.now()){
  const expires=loginExpiresAt(claims);return expires>now&&expires<=now+SESSION_MAX_AGE*1000;
 }
+
+/** Keep OAuth and host-only cookies on either supported production domain. */
+export function portalOrigin(requestOrigin:string,canonical:string|null){
+ const origin=new URL(requestOrigin).origin;
+ const allowed=new Set(['https://clarishna.my.id','https://dashboard-sahd.clarishna.my.id','https://dashboard-sahd.vercel.app',...(canonical?[canonical]:[])]);
+ return allowed.has(origin)?origin:canonical||origin;
+}

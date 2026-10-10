@@ -3,7 +3,7 @@ import {hasDiscordAccess} from '@/lib/discord-access';
 import {localDemoAllowed} from '@/lib/demo-access';
 import {cookies} from 'next/headers';
 import {createServerClient} from '@supabase/ssr';
-import {canonicalOrigin,sessionCookieOptions,loginIsCurrent} from '@/lib/auth-session';
+import {canonicalOrigin,portalOrigin,sessionCookieOptions,loginIsCurrent} from '@/lib/auth-session';
 export function demoAllowed(){return localDemoAllowed(process.env.NODE_ENV,process.env.VERCEL)}
 export async function serverClient(options:{oauthCallback?:boolean}={}){
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -23,7 +23,7 @@ export async function serverClient(options:{oauthCallback?:boolean}={}){
 }
 export function appOrigin(request:Request){
  const canonical=process.env.VERCEL_ENV==='preview'?null:canonicalOrigin(process.env.SAHD_APP_URL,process.env.NODE_ENV==='production');
- if(process.env.NODE_ENV==='production'&&canonical)return canonical;
+ if(process.env.NODE_ENV==='production'&&canonical)return portalOrigin(new URL(request.url).origin,canonical);
  const host=request.headers.get('host');const parsed=new URL(request.url);
  if(process.env.NODE_ENV!=='production'&&host&&/^(localhost|127\.0\.0\.1)(:\d+)?$/.test(host))return `http://${host}`;
  return parsed.origin;
