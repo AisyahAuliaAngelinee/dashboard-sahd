@@ -2,15 +2,15 @@
 import {useFeedbackState} from '@/components/runtime/feedback-toast';
 import { createContext,useContext,useEffect,useState,useRef } from 'react';import {useRouter} from 'next/navigation';
 import type {Profile,Notice,Appointment,Surgery} from '@/lib/portal-data';import type {Bootstrap} from '@/lib/portal-server';import {consultationAppointment,type ConsultationRow} from '@/lib/consultation';
-import {demoPreviewProfile,demoPreviews} from '@/lib/demo-preview';
+import {demoPreviewProfile,validDemoPreview} from '@/lib/demo-preview';
 import {loginExpiresAt} from '@/lib/auth-session';
 import {browserClient} from '@/lib/supabase/client';
 type State={demoPreview:string;setDemoPreview:(value:string)=>void;mode:'demo'|'live';profile:Profile;members:Profile[];notices:Notice[];appointments:Appointment[];surgeries:Surgery[];bigFires:Surgery[];announcements:Bootstrap['announcements'];error:string|null;ready:boolean;saveProfile:(p:Profile)=>Promise<void>;markRead:(id?:string)=>void;logout:()=>Promise<void>;uploadAvatar:(file:File)=>Promise<string>};
 const Context=createContext<State|null>(null);
 export function PortalProvider({children,initial}:{children:React.ReactNode;initial:Bootstrap}){
  const [demoPreview,setPreview]=useState('');
- useEffect(()=>{if(initial.mode==='demo')try{const saved=localStorage.getItem('sahd-demo-preview')||'';if(demoPreviews.some(p=>p.id===saved))setPreview(saved)}catch{}},[initial.mode]);
- function setDemoPreview(value:string){if(initial.mode!=='demo')return;const next=demoPreviews.some(p=>p.id===value)?value:'';setPreview(next);try{localStorage.setItem('sahd-demo-preview',next)}catch{}}
+ useEffect(()=>{if(initial.mode==='demo')try{const saved=localStorage.getItem('sahd-demo-preview')||'';if(validDemoPreview(saved))setPreview(saved)}catch{}},[initial.mode]);
+ function setDemoPreview(value:string){if(initial.mode!=='demo')return;const next=validDemoPreview(value)?value:'';setPreview(next);try{localStorage.setItem('sahd-demo-preview',next)}catch{}}
  const demoNoticeIds=useRef<Set<string>|null>(null);
  const router=useRouter();const [demoFires,setDemoFires]=useState(initial.bigFires);const [profile,setProfile]=useState(initial.profile),[notices,setNotices]=useState(initial.notices),[error,setError]=useFeedbackState(initial.error||''),[appointments,setAppointments]=useState(initial.appointments),[announcements,setAnnouncements]=useState(initial.announcements),[surgeries,setSurgeries]=useState(initial.surgeries);
  useEffect(()=>{
