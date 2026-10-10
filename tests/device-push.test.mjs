@@ -1,0 +1,9 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import ts from 'typescript';
+import vm from 'node:vm';
+const source=ts.transpile(fs.readFileSync('lib/push-validation.ts','utf8'),{module:ts.ModuleKind.ES2022});
+const {validPushSubscription}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+test('push subscriptions reject SSRF and invalid encryption keys',()=>{const keys={p256dh:'a'.repeat(87),auth:'b'.repeat(22)};for(const host of ['fcm.googleapis.com','web.push.apple.com','updates.push.services.mozilla.com','wns2.notify.windows.com'])assert.equal(validPushSubscription({endpoint:`https://${host}/push`,keys}),true);for(const endpoint of ['http://fcm.googleapis.com/push','https://localhost/push','https://fcm.googleapis.com.evil.test/push','https://user:pass@fcm.googleapis.com/push','https://fcm.googleapis.com:444/push'])assert.equal(validPushSubscription({endpoint,keys}),false);assert.equal(validPushSubscription({endpoint:'https://fcm.googleapis.com/push',keys:{...keys,auth:'invalid'}}),false)});
+test('service worker displays an announcement and rejects external navigation',async()=>{const handlers={},notifications=[];let opened;const context={self:{addEventListener:(name,handler)=>handlers[name]=handler,registration:{showNotification:async(...args)=>notifications.push(args)},location:{origin:'https://portal.test'}},clients:{matchAll:async()=>[],openWindow:async path=>{opened=path}},URL};vm.runInNewContext(fs.readFileSync('public/announcement-sw.js','utf8'),context);let work;handlers.push({data:{json:()=>({title:'SAHD Announcement',body:'New briefing',url:'https://evil.test'})},waitUntil:p=>work=p});await work;assert.equal(notifications[0][1].data.url,'/announcements');handlers.notificationclick({notification:{close(){},data:notifications[0][1].data},waitUntil:p=>work=p});await work;assert.equal(opened,'/announcements')});

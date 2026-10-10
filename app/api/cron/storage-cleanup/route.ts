@@ -1,3 +1,5 @@
+import {after} from 'next/server';
+import {dispatchAnnouncementPush} from '@/lib/announcement-push';
 import {timingSafeEqual} from 'node:crypto';
 import {createClient} from '@supabase/supabase-js';
 export const runtime='nodejs';
@@ -9,6 +11,7 @@ export async function GET(r:Request){
  if(expected.length!==provided.length||!timingSafeEqual(expected,provided))return Response.json({error:'Unauthorized'},{status:401});
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;
  if(!url||!key)return Response.json({error:'Storage cleanup belum dikonfigurasi.'},{status:503});
+ after(()=>dispatchAnnouncementPush(20000));
  const c=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
  const {data,error}=await c.rpc('ready_storage_cleanup');if(error)return Response.json({error:'Cleanup queue tidak tersedia.'},{status:503});
  let removed=0;const paths=(data||[]).map((i:{path:string})=>i.path).filter((p:unknown):p is string=>typeof p==='string');
