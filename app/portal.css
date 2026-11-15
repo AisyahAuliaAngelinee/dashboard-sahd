@@ -551,3 +551,49 @@ html[data-sahd-theme=dark] .portal .member-edit-fields fieldset:disabled{color:#
 .demo-preview-layout [data-slot=sidebar-container],.demo-preview-layout .sahd-mobile-rail{top:var(--demo-preview-height);height:calc(100svh - var(--demo-preview-height))}
 @media(max-width:1100px){.demo-preview-layout{--demo-preview-height:150px}.demo-preview-controls{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px}.demo-preview-field{justify-content:space-between}.demo-preview-controls .report-select-trigger{width:180px;max-width:60%}}
 @media(max-width:767px){.demo-preview-layout{--demo-preview-height:160px}.demo-preview-bar{grid-template-columns:1fr auto;gap:6px 8px;padding:7px 10px;font-size:10px}.demo-preview-status{display:none}.demo-preview-controls{gap:8px}.demo-preview-field{flex-direction:column;align-items:stretch;gap:2px}.demo-preview-controls .report-select-trigger,.demo-preview-role{width:100%;max-width:100%;font-size:10px}.demo-preview-bar a,.demo-preview-bar>button{padding:5px 8px}}
+
+.report-list-tools{display:flex;align-items:center;justify-content:flex-end;gap:.65rem;flex-wrap:wrap;min-width:0}
+.portal .member-performance-filters {
+ display: flex;
+ flex-wrap: wrap;
+ align-items: center;
+ gap: 10px;
+ margin: 12px 0 16px;
+}
+.portal .member-performance-filters > :is(button, input) {
+ height: 40px;
+ min-height: 40px;
+ max-width: 100%;
+ box-sizing: border-box;
+ font-size: 13px;
+}
+.portal .member-performance-filters > .report-select-trigger { width: min(100%, 190px); min-width: 0; }
+.portal .member-performance-filters > input { width: min(100%, 190px); }
+@media (max-width: 540px) {
+ .portal .member-performance-filters > :is(.report-select-trigger, .report-range-trigger, input) {
+  flex: 1 1 145px;
+  min-width: 0;
+ }
+}
+.portal .medical-reports .report-search input,
+.portal .medical-reports .plastic-report-search input{font-weight:400}
+.portal .medical-reports .report-search input::placeholder,
+.portal .medical-reports .plastic-report-search input::placeholder{font-weight:400}
+.portal .report-table-filters>button{flex-shrink:0}
+/* Shared table search width and filter control alignment. */
+.portal .table-search,
+.portal .medical-reports .report-search,
+.portal .plastic-reports label.plastic-report-search {
+ width: min(100%, 360px);
+ max-width: 100%;
+ box-sizing: border-box;
+}
+.portal .report-list-tools { width: min(100%, 360px); }
+.portal .medical-reports .report-table-filters {
+ align-items: center;
+}
+.portal .medical-reports .report-table-filters :is(.report-template-trigger, .report-range-trigger, [data-slot=select-trigger]) {
+ height: 38px;
+ min-height: 38px;
+ box-sizing: border-box;
+}

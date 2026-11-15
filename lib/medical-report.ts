@@ -8,9 +8,10 @@ export const sections=[
  {title:'FOLLOW UP CARE',fields:['Follow Up Care','Status']},
 ];
 export type ConsentLink={id:string;token:string;name:string};
-export type MedicalDraft={consentLinks?:ConsentLink[];caseText:string;caseHtml?:string;richFields?:Record<string,string>;previewHtml?:string;title?:string;paymentStatus?:'paid'|'unpaid';category:'minor'|'major';fields:Record<string,string>;times:Record<string,string>;preview:string;attachments?:{path:string;url?:string;name:string}[];radiology?:{path:string;url?:string;modality:string}};
+export type MedicalDraft={template?:string;doctorId?:string;consentLinks?:ConsentLink[];caseText:string;caseHtml?:string;richFields?:Record<string,string>;previewHtml?:string;title?:string;paymentStatus?:'paid'|'unpaid';category:'minor'|'major';fields:Record<string,string>;times:Record<string,string>;preview:string;attachments?:{path:string;url?:string;name:string}[];radiology?:{path:string;url?:string;modality:string}};
 export function timestamp(){return new Date().toLocaleString('en-GB',{timeZone:'Asia/Jakarta',hour12:false}).replace(',','')+' GMT+7'}
 export function reportText(draft:MedicalDraft,author:string){
+ if(draft.template)return renderReportTemplate(draft.template,{...draft.fields,Title:draft.title||'',Doctor:draft.fields['Head Operation (Surgeon)']||''});
  const divider='='.repeat(90);const get=(key:string)=>draft.fields[key]||'';
  const lines=[`Report Created by : ${author}`,divider,...patientFields.map(f=>`${f} : ${get(f)}`),divider,'Medical Teams & Operation :',`Head Operation (Surgeon) : ${get('Head Operation (Surgeon)')}`,'Assistant Operation',...get('Assistant Operation').split('\n').filter(Boolean).map(v=>`- ${v}`),divider];
  const vitalLabels=[['BP','Blood Pressure (BP)','mmHg'],['HR','Heart Rate (HR)','x/menit'],['RR','Respiratory Rate (RR)','x/menit'],['Temperature','Temperature','°C'],['SpO₂','SpO₂','%'],['GCS','Glasgow Coma Scale (GCS)','']];
@@ -20,3 +21,28 @@ export function reportText(draft:MedicalDraft,author:string){
  lines.push(divider)}if(draft.consentLinks?.length){lines.push('PATIENT CONSENT',...draft.consentLinks.map(c=>`${c.name} : /share/consent/${c.token}`),divider)}return lines.join('\n')
 }
 export function radiologySvg(modality:string,caseText:string){const safe=caseText.replace(/[<>&"']/g,'').slice(0,80);return `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="680" viewBox="0 0 900 680"><rect width="900" height="680" fill="#101923"/><text x="36" y="50" fill="#fff" font-family="Arial" font-size="24">SAHD · ${modality} · ROLEPLAY ILLUSTRATION</text><ellipse cx="450" cy="320" rx="210" ry="220" fill="#374553" stroke="#a6b4bf" stroke-width="4"/><ellipse cx="365" cy="320" rx="65" ry="135" fill="#17232d"/><ellipse cx="535" cy="320" rx="65" ry="135" fill="#17232d"/><path d="M450 130V510M420 175H480M420 225H480M420 275H480M420 325H480M420 375H480M420 425H480" stroke="#cbd5df" stroke-width="14"/><text x="36" y="590" fill="#b6c5d2" font-family="Arial" font-size="17">Case: ${safe}</text><text x="36" y="628" fill="#f5c77b" font-family="Arial" font-size="16">Generic torso schematic · Not a scan or case-specific finding</text></svg>`}
+
+/** Import a plain-text layout without executing markup or replacing unknown tokens. */
+export function fillReportTemplate(template:string,draft:MedicalDraft){
+ const values={...draft.fields,Title:draft.title||'',Doctor:draft.fields['Head Operation (Surgeon)']||''};
+ const output=renderReportTemplate(template,values);
+ if(!output.trim()||output.length>100000)throw new Error('Template kosong atau hasilnya terlalu panjang.');
+ return output;
+}
+
+export function validReportTemplate(template:unknown){return template===undefined||typeof template==='string'&&template.length<=64000&&!!template.trim()&&!template.includes('\0')}
+export function renderReportTemplate(template:string,values:Record<string,unknown>){
+ const pieces:string[]=[];
+ let end=0,size=0;
+ for(const match of Array.from(template.matchAll(/\{\{([^{}]+)\}\}/g))){
+  const key=match[1].trim(),value=Object.hasOwn(values,key)?values[key]:undefined;
+  const replacement=typeof value==='string'||typeof value==='number'?String(value):match[0];
+  const literal=template.slice(end,match.index);
+  size+=literal.length+replacement.length;
+  if(size>100000)return ' '.repeat(100001);
+  pieces.push(literal,replacement);
+  end=match.index+match[0].length;
+ }
+ const rest=template.slice(end);
+ return size+rest.length>100000?' '.repeat(100001):pieces.join('')+rest;
+}

@@ -7,3 +7,10 @@ const module={exports:{}};new Function('exports','module',compiled)(module.expor
 const {reportText,sections,radiologySvg}=module.exports;
 test('report retains supplied facts, all sections and vital units without inventing findings',()=>{const text=reportText({caseText:'RP case',fields:{'Patient Name':'Demo RP','Anamnesis':'User supplied observation','Before Surgery — BP':'120/80','Assistant Operation':'A\nB','Anesthetic Medications':'User supplied drug','Follow Up Care':'- One\n- Two\n- Three\n- Four'},times:{},category:'minor',preview:''},'Author');for(const section of sections)assert.ok(text.includes(section.title));assert.ok(text.includes('Blood Pressure (BP) : 120/80 mmHg'));assert.ok(text.includes('- A\n- B'));assert.ok(text.includes('- Four'));assert.ok(text.includes('User supplied observation'));assert.ok(!text.includes('Supportive Medications'));assert.ok(!text.includes('normal'))});
 test('radiology schematic escapes user input and labels its limitation',()=>{const svg=radiologySvg('MRI','<script>alert(1)</script>');assert.ok(!svg.includes('<script>'));assert.ok(svg.includes('Not a scan or case-specific finding'))});
+test('uploaded text layout fills known fields once and leaves unknown tokens intact',()=>{
+ const {fillReportTemplate}=module.exports;
+ const draft={title:'RP report',fields:{'Head Operation (Surgeon)':'Dr. Demo','Patient Name':'{{Doctor}}'}};
+ assert.equal(fillReportTemplate('{{Title}}\n{{Doctor}}\n{{Patient Name}}\n{{Unknown}}',draft),'RP report\nDr. Demo\n{{Doctor}}\n{{Unknown}}');
+ assert.throws(()=>fillReportTemplate(' '.repeat(10),draft));
+ assert.throws(()=>fillReportTemplate('{{Title}}'.repeat(20000),draft));
+});

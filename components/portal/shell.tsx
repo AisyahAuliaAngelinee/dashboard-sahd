@@ -26,7 +26,7 @@ function ShellContent({children}:{children:React.ReactNode}){
  const results=[...reportPages,...navigation.filter(n=>!n.href.startsWith('/reports')).map(n=>({...n,group:'Pages'})),{label:'Account Settings',href:'/settings/account',group:'Account'},...appointments.map(a=>({label:`${a.name} · ${a.complaint}`,href:`/consultations/${a.id}`,group:'Consultation'}))].filter(r=>[r.label,t(r.label)].some(label=>label.toLowerCase().includes(query.toLowerCase())));
  const availableNavigation=navigation;
  const accountBadges=[profile.division,highestPosition(profile.position)].filter(value=>value&&value!=='Belum ditetapkan');
- const accountName=`${profile.accountName||profile.name} - ${profile.badgeNumber||'-'}`;
+ const accountName=`${profile.name||profile.accountName} - ${profile.badgeNumber?.trim()&&profile.badgeNumber.trim()!=='-'?profile.badgeNumber.trim():t('No badge number')}`;
  const unreadCount=notices.filter(n=>!n.read).length;
  const filteredNotices=notices.filter(n=>filter==='all'||filter==='mentioned'&&n.type==='mention'||filter==='appointment'&&(n.type==='appointment'||n.type==='mention'&&n.href.startsWith('/consultations/')));
  const [expandedReports,setExpandedReports]=useState<Record<string,boolean>>({});
