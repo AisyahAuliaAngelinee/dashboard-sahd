@@ -8,7 +8,7 @@ export const sections=[
  {title:'FOLLOW UP CARE',fields:['Follow Up Care','Status']},
 ];
 export type ConsentLink={id:string;token:string;name:string};
-export type MedicalDraft={template?:string;doctorId?:string;consentLinks?:ConsentLink[];caseText:string;caseHtml?:string;richFields?:Record<string,string>;previewHtml?:string;title?:string;paymentStatus?:'paid'|'unpaid';category:'minor'|'major';fields:Record<string,string>;times:Record<string,string>;preview:string;attachments?:{path:string;url?:string;name:string}[];radiology?:{path:string;url?:string;modality:string}};
+export type MedicalDraft={assistantIds?:string[];template?:string;doctorId?:string;consentLinks?:ConsentLink[];caseText:string;caseHtml?:string;richFields?:Record<string,string>;previewHtml?:string;title?:string;paymentStatus?:'paid'|'unpaid';category:'minor'|'major';fields:Record<string,string>;times:Record<string,string>;preview:string;attachments?:{path:string;url?:string;name:string}[];radiology?:{path:string;url?:string;modality:string}};
 export function timestamp(){return new Date().toLocaleString('en-GB',{timeZone:'Asia/Jakarta',hour12:false}).replace(',','')+' GMT+7'}
 export function reportText(draft:MedicalDraft,author:string){
  if(draft.template)return renderReportTemplate(draft.template,{...draft.fields,Title:draft.title||'',Doctor:draft.fields['Head Operation (Surgeon)']||''});

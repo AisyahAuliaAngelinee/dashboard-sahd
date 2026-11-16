@@ -19,7 +19,7 @@ export const demoNotices:Notice[] = [
  {id:'n3',title:'Janji temu baru',body:'Liam Anderson mengajukan consultation.',type:'appointment',href:'/consultations/c-102',read:false,at:'8 Okt · 11.20 WIB'},
 ];
 export const navigation = [
- {label:'Dashboard',href:'/dashboard',icon:'dashboard'}, {label:'Medical Service',href:'/reports/medical',icon:'report'}, {label:'Fire Department',href:'/reports/fire',icon:'fire'}, {label:'Patient Consent',href:'/patient-consents',icon:'consent'}, {label:'Case Assistant',href:'/case-assistant',icon:'assistant'}, {label:'Consultation',href:'/consultations',icon:'calendar'}, {label:'Announcement',href:'/announcements',icon:'announcement'}, {label:'Trash',href:'/trash',icon:'trash'},
+ {label:'Dashboard',href:'/dashboard',icon:'dashboard'}, {label:'Medical Service',href:'/reports/medical',icon:'report'}, {label:'Fire Department',href:'/reports/fire',icon:'fire'}, {label:'Patient Consent',href:'/patient-consents',icon:'consent'}, {label:'Case Assistant',href:'/case-assistant',icon:'assistant'}, {label:'3D Anatomy',href:'/anatomy',icon:'anatomy'}, {label:'Consultation',href:'/consultations',icon:'calendar'}, {label:'Announcement',href:'/announcements',icon:'announcement'}, {label:'Trash',href:'/trash',icon:'trash'},
 ];
 
 export const reportGroups = [

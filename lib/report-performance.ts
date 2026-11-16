@@ -15,7 +15,7 @@ export function reportPerformance(members:Profile[],surgeries:Surgery[],fires:Su
  const categories={surgery:surgeries,bigFire:fires,others} as const;
  for(const key of ['surgery','bigFire','others'] as const){
   for(const report of categories[key]){
-   const ids=new Set([report.createdBy,report.doctorId,...report.participantIds||[]]);
+   const ids=new Set([key!=='surgery'?report.createdBy:undefined,report.doctorId,...report.participantIds||[]]);
    for(const name of [!report.doctorId?report.doctorName:undefined,...report.assistantNames||[]]){
     const id=name&&names.get(name.trim().toLowerCase());
     if(id)ids.add(id);

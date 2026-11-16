@@ -21,4 +21,4 @@ export async function proxy(request:NextRequest){
  }});
  await client.auth.getClaims();return response;
 }
-export const config={matcher:['/login','/reset-password','/dashboard/:path*','/settings/:path*','/reports/:path*','/patient-consents/:path*','/case-assistant/:path*','/consultations/:path*','/announcements/:path*','/trash/:path*','/admin/:path*','/auth/:path*','/api/:path*']};
+export const config={matcher:['/login','/reset-password','/dashboard/:path*','/settings/:path*','/reports/:path*','/patient-consents/:path*','/case-assistant/:path*','/anatomy/:path*','/consultations/:path*','/announcements/:path*','/trash/:path*','/admin/:path*','/auth/:path*','/api/:path*']};

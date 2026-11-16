@@ -1,0 +1,563 @@
+diff --git a/app/anatomy.ts b/app/anatomy.ts
+index 031d084..b9c9ade 100644
+--- a/app/anatomy.ts
++++ b/app/anatomy.ts
+@@ -1,4 +1,4 @@
+-export type SystemId = 'skeletal'|'muscular'|'arterial'|'venous'|'nervous'|'digestive'|'respiratory'|'urinary'|'reproductive'|'lymphatic'|'endocrine'|'integumentary'|'connective'|'sensory'|'cardiac';
++export type SystemId = 'skeletal'|'muscular'|'arterial'|'venous'|'nervous'|'digestive'|'respiratory'|'urinary'|'reproductive'|'lymphatic'|'endocrine'|'integumentary'|'connective'|'sensory'|'cardiac'|'mammary';
+ export const SYSTEMS: {id:SystemId;name:string;color:string;description:string}[] = [
+  {id:'skeletal',name:'Skeleton',color:'#e2d9ba',description:'Bones form the supporting framework of the body, protect organs, and provide attachment points for muscles. Their internal tissue also stores minerals and produces blood cells.'},
+  {id:'muscular',name:'Muscles',color:'#a85b50',description:'Skeletal muscles generate movement by pulling on their attachments. Together with tendons, they move joints, stabilize posture, and produce heat.'},
+@@ -12,16 +12,17 @@ export const SYSTEMS: {id:SystemId;name:string;color:string;description:string}[
+  {id:'urinary',name:'Urinary',color:'#b47961',description:'The kidneys filter blood and regulate fluid, electrolyte, and acid–base balance. Urine travels through the ureters to the bladder and exits through the urethra.'},
+  {id:'lymphatic',name:'Lymphatic',color:'#879f7c',description:'Lymphatic vessels return excess tissue fluid to the circulation. Lymph nodes and other lymphoid organs support immune surveillance and responses.'},
+  {id:'endocrine',name:'Endocrine',color:'#c5a09a',description:'Endocrine organs release hormones into the blood to coordinate processes such as metabolism, growth, stress responses, and reproduction.'},
+- {id:'reproductive',name:'Reproductive',color:'#bda098',description:'The male reproductive structures represented here contribute to sperm production, maturation, transport, and the production of sex hormones.'},
++ {id:'mammary',name:'Breast tissue',color:'#cc91a5',description:'Experimental reference for the breast tissue represented in this study model.'},
++ {id:'reproductive',name:'Reproductive',color:'#bda098',description:'Explore the structures of the reproductive system represented in the selected study model.'},
+  {id:'integumentary',name:'Body surface',color:'#ba9b7d',description:'The body surface provides an outer anatomical reference. The integumentary system forms a protective barrier and contributes to sensation and temperature regulation.'},
+  {id:'connective',name:'Connective tissue',color:'#aec3bb',description:'Cartilage, ligaments, and other connective tissues support, connect, and separate structures. Their roles include stabilizing joints and distributing mechanical loads.'},
+ ];
+ export interface Part {id:string;name:string;conceptId:string;system:SystemId;chunk:number;positions:number;normals:number;indices:number;vertexCount:number;indexCount:number;bounds:[number[],number[]]}
+ export interface Concept {id:string;name:string;elements:string[]}
+-export interface Atlas {version:string;sex?:'male';source?:string;scope?:string;parts:Part[];concepts:Concept[];chunks:{url:string;bytes:number;gzip?:string;gzipBytes?:number}[];triangles:number}
++export interface Atlas {version:string;sex?:'male'|'female';source?:string;scope?:string;parts:Part[];concepts:Concept[];chunks:{url:string;bytes:number;gzip?:string;gzipBytes?:number}[];triangles:number}
+ export type View = 'three-quarter'|'front'|'back'|'side';
+-export interface SceneState {inspectorOpen?:boolean;explode:number;visible:SystemId[];selected:string[];isolate:boolean;view:View;rotate:boolean;reset:number}
+-export const DEFAULT_VISIBLE:SystemId[] = ['cardiac','sensory','skeletal','muscular','arterial','venous','nervous','respiratory','digestive','urinary','lymphatic','endocrine','reproductive','connective'];
++export interface SceneState {lesson?:boolean;zoomCommand?:{direction:1|-1};inspectorOpen?:boolean;rotationSpeed?:number;hidden?:string[];scope?:string[];explode:number;visible:SystemId[];selected:string[];isolate:boolean;view:View;rotate:boolean;reset:number}
++export const DEFAULT_VISIBLE:SystemId[] = ['cardiac','sensory','skeletal','muscular','arterial','venous','nervous','respiratory','digestive','urinary','lymphatic','endocrine','reproductive','connective','mammary'];
+ export const EXPLANATIONS:Record<string,string> = {
+  'heart':'A muscular pump in the chest. Its right side sends blood to the lungs; its left side sends blood through the systemic circulation.',
+  'liver':'A large organ beneath the right side of the diaphragm. It processes absorbed nutrients, produces bile, and synthesizes many proteins carried in the blood.',
+diff --git a/app/globals.css b/app/globals.css
+index 91cbe15..74fd310 100644
+--- a/app/globals.css
++++ b/app/globals.css
+@@ -86,3 +86,41 @@ h1 .edition{font-family:inherit;font-weight:500;font-size:10px;letter-spacing:.0
+ @media(max-width:767px){body:has(.detail-sheet) .view-controls{visibility:hidden}}
+ 
+ @media(max-height:600px) and (orientation:landscape){body:has(.detail-sheet) .bottom-dock{left:12px;right:324px;width:auto;transform:none;max-width:none;margin:0}}
++.discovery-panel{width:min(390px,calc(100vw - 24px));max-height:calc(100dvh - 132px);display:flex;flex-direction:column;gap:10px}
++.discovery-tabs,.discovery-actions,.discovery-filters{display:flex;gap:6px;flex-wrap:wrap}
++.discovery-tabs button,.discovery-actions button{font-size:12px}
++.discovery-filters input,.discovery-filters select{min-width:0;flex:1 1 135px;border:1px solid #dce5ee;border-radius:8px;background:white;color:#203349;padding:8px}
++.discovery-list{min-height:0;overflow:auto;overscroll-behavior:contain;display:grid;gap:4px}
++.discovery-list>button:not([data-slot]){display:flex;align-items:center;justify-content:space-between;gap:8px;text-align:left;padding:9px;border-radius:7px;font-size:13px}
++.discovery-list small{color:#657584;white-space:nowrap}
++@media(max-width:767px){.discovery-panel{top:108px;width:auto;max-height:calc(100dvh - 130px)}}
++.scene canvas{filter:brightness(var(--atlas-brightness,100%)) contrast(var(--atlas-contrast,100%))}
++.display-panel label{display:grid;grid-template-columns:1fr minmax(95px,1fr);align-items:center;gap:8px;font-size:12px}
++.display-panel input{width:100%;accent-color:#087f83}
++.hidden-pieces{max-height:150px;border-bottom:1px solid #dce5ee;padding-bottom:6px}
++.explode-label>button{margin-left:auto;margin-right:6px}
++@media(max-width:540px){.top-actions{flex-wrap:wrap;justify-content:flex-end;max-width:145px}.top-actions button{min-width:36px;min-height:36px;padding:8px}.identity h1{max-width:calc(100vw - 165px)}}
++.slider-endpoints{position:relative}
++.slider-endpoints .systems-stop{position:absolute;left:30%;transform:translateX(-50%);white-space:nowrap}
++.discovery-selects{display:grid;gap:12px}
++.discovery-selects label{display:grid;gap:5px;color:#657584;font-size:12px;letter-spacing:.06em}
++.discovery-selects select{width:100%;min-height:44px;padding:0 12px;border:1px solid #dce5ee;border-radius:10px;background:#fff;color:#203349;font-size:14px;letter-spacing:normal;box-shadow:0 2px 4px #20334912}
++.discovery-panel{overflow:auto}
++:root{font-family:Arial,Helvetica,sans-serif;--font-sans:Arial,Helvetica,sans-serif}
++body,button,input,select,textarea,kbd,output{font-family:inherit}
++.fullscreen-notice{position:absolute;right:20px;top:92px;z-index:41;border-radius:10px;padding:9px 12px;font-size:12px}
++.atlas-workspace-tabs{display:inline-flex;align-items:center;gap:3px;padding:4px;border-radius:13px;background:#e6ebef}
++.top-actions .atlas-workspace-tabs button{white-space:nowrap;padding:8px 10px;min-height:32px;font-size:12px;border-radius:9px}
++.top-actions .atlas-workspace-tabs button[aria-pressed=true]{background:white;color:#203349;box-shadow:0 2px 4px #20334918}
++@media(max-width:960px){.top-actions:has(.atlas-workspace-tabs){flex-wrap:wrap;justify-content:flex-end;max-width:min(330px,calc(100vw - 24px))}.top-actions .atlas-workspace-tabs{flex-basis:auto}.identity{top:92px}.search-panel,.discovery-panel{top:108px}}
++
++.studio[data-lesson=true] .identity,
++.studio[data-lesson=true] .top-actions,
++.studio[data-lesson=true] .layers-panel,
++.studio[data-lesson=true] .bottom-dock,
++.studio[data-lesson=true] .studio-footer,
++.studio[data-lesson=true] .scene-caption{display:none}
++.studio[data-lesson=true] .view-controls{right:12px;top:50%;bottom:auto;left:auto;transform:translateY(-50%);display:flex;flex-direction:column}
++body:has(.studio[data-lesson=true] .detail-sheet) .view-controls{visibility:hidden}
++.studio[data-lesson=true] .view-controls{box-shadow:none;border-radius:12px;padding:4px;gap:2px}
++.studio[data-lesson=true] .view-controls button{width:32px;height:32px;min-height:32px}
+diff --git a/app/page.tsx b/app/page.tsx
+index 5b59ba1..2cd5ba0 100644
+--- a/app/page.tsx
++++ b/app/page.tsx
+@@ -1,7 +1,5 @@
+-import {flushSync} from 'react-dom';
+-import {registerAtlasTools} from './agent-tools';
+ import {useEffect,useMemo,useRef,useState} from 'react';
+-import {Activity,ArrowUpRight,ChevronRight,Focus,Info,Layers3,Pause,RotateCcw,RotateCw,Search,X} from 'lucide-react';
++import {Activity,ArrowUpRight,ChevronRight,Focus,Info,Layers3,Pause,RotateCcw,RotateCw,Search,X,Shuffle,Play,SlidersHorizontal} from 'lucide-react';
+ import {Button} from '@/components/ui/button';
+ import {Badge} from '@/components/ui/badge';
+ import {Slider} from '@/components/ui/slider';
+@@ -9,44 +7,183 @@ import {Switch} from '@/components/ui/switch';
+ import {Sheet,SheetContent,SheetTitle,SheetDescription} from '@/components/ui/sheet';
+ import {Combobox,ComboboxInput,ComboboxContent,ComboboxList,ComboboxItem,ComboboxEmpty} from '@/components/ui/combobox';
+ import AnatomyScene from './scene';
++import {indonesian} from './portal-language';
++const params=new URLSearchParams(window.location.search);
++const lesson=params.get('lesson')==='1'&&window.parent!==window;
++const focus=params.get('focus')?.toLowerCase();
++const inPortal=params.get('portal')==='1'&&window.parent!==window;
++import {SYSTEM_SEPARATION_END,explosionPlaybackAmount,explosionPlaybackDuration} from './portal-explode-playback';
+ import {DEFAULT_VISIBLE,SYSTEMS,EXPLANATIONS,explanation,type Atlas,type Concept,type SceneState,type SystemId,type View} from './anatomy';
++const female=new URLSearchParams(window.location.search).get('model')==='female';
++const modelLabel=female?'Female study model':'Male reference';
++const catalogue=female?'atlas-female.json':'atlas.json';
++type Discovery={regions:Concept[];areas:Concept[]};
+ const initial:SceneState={explode:0,visible:DEFAULT_VISIBLE,selected:[],isolate:false,view:'three-quarter',rotate:false,reset:0};
+ export default function Home(){
++ function focusedGroup(data:Atlas):Concept|null{
++  if(!focus)return null;
++  const concept=data.concepts.find(item=>item.name.toLowerCase()===focus);
++  if(concept)return concept;
++  const system=SYSTEMS.find(item=>item.id===focus)||SYSTEMS.find(item=>item.id===params.get('system'));
++  if(!system)return null;
++  const elements=data.parts.filter(part=>part.system===system.id).map(part=>part.id);
++  return elements.length?{id:system.id,name:system.name,elements}:null;
++ }
++ function applyFocus(data:Atlas,reset:number){
++  const group=focusedGroup(data),context=lesson&&params.get('context')==='true';
++  setChosen(group);
++  setState({...initial,reset,scope:context?undefined:group?.elements,selected:group?.elements||[],isolate:Boolean(group)&&!context});
++ }
++ const [language,setLanguage]=useState<'en'|'id'>('en');
++ const t=(label:string)=>language==='id'?indonesian[label]||label:label;
++ useEffect(()=>{
++  const sync=(event:MessageEvent)=>{
++   if(event.origin!==window.location.origin||event.source!==window.parent||event.data?.type!=='sahd-anatomy-language')return;
++   if(event.data.language==='en'||event.data.language==='id')setLanguage(event.data.language);
++  };
++  window.addEventListener('message',sync);
++  return()=>window.removeEventListener('message',sync);
++ },[]);
++ useEffect(()=>{document.documentElement.lang=language},[language]);
+  const detailTitle=useRef<HTMLHeadingElement>(null);
+- const [atlas,setAtlas]=useState<Atlas|null>(null),[state,setState]=useState(initial),[progress,setProgress]=useState(0),[error,setError]=useState(''),[panel,setPanel]=useState<'layers'|'search'|null>(null),[details,setDetails]=useState(false),[about,setAbout]=useState(false),[query,setQuery]=useState(''),[chosen,setChosen]=useState<Concept|null>(null);
+- useEffect(()=>{const abort=new AbortController();setProgress(0);setError('');setAtlas(null);setChosen(null);setDetails(false);setState({...initial,visible:DEFAULT_VISIBLE});fetch('/models/atlas.json',{signal:abort.signal}).then(r=>{if(!r.ok)throw new Error('The anatomy catalogue could not be loaded.');return r.json();}).then(data=>setAtlas(data as Atlas)).catch(e=>{if(e.name!=='AbortError')setError(e.message);});return()=>abort.abort();},[]);
++ const [atlas,setAtlas]=useState<Atlas|null>(null),[state,setState]=useState(initial),[progress,setProgress]=useState(0),[error,setError]=useState(''),[panel,setPanel]=useState<'layers'|'search'|'browse'|'display'|null>(null),[details,setDetails]=useState(false),[about,setAbout]=useState(false),[query,setQuery]=useState(''),[chosen,setChosen]=useState<Concept|null>(null);
++ const [discovery,setDiscovery]=useState<Discovery|null>(null),[showStructures,setShowStructures]=useState(false),[groupId,setGroupId]=useState(''),[browseQuery,setBrowseQuery]=useState(''),[systemFilter,setSystemFilter]=useState(''),[browseLimit,setBrowseLimit]=useState(40);
++ const [brightness,setBrightness]=useState(100),[contrast,setContrast]=useState(100),[playing,setPlaying]=useState(false),[showHidden,setShowHidden]=useState(false);
++ const playback=useRef<number|null>(null);
++ const reducedMotion=useRef(window.matchMedia('(prefers-reduced-motion: reduce)'));
++ function stopPlayback(){if(playback.current!==null)cancelAnimationFrame(playback.current);playback.current=null;setPlaying(false)}
++ useEffect(()=>()=>{if(playback.current!==null)cancelAnimationFrame(playback.current)},[]);
++ function playExplosion(){
++  if(playback.current!==null){stopPlayback();return}
++  const to=SYSTEM_SEPARATION_END;
++  if(state.explode===to)return;
++  if(reducedMotion.current.matches){setState(s=>({...s,explode:to,rotate:false}));return}
++  const from=state.explode;
++  const duration=explosionPlaybackDuration(from,to,1800,activeSystems.length),begin=performance.now();
++  setPlaying(true);
++  const frame=(time:number)=>{
++   const progress=explosionPlaybackAmount(from,to,time-begin,duration);
++   setState(s=>({...s,explode:progress,rotate:false}));
++   if(time-begin<duration)playback.current=requestAnimationFrame(frame);
++   else stopPlayback();
++  };
++  playback.current=requestAnimationFrame(frame);
++ }
++ useEffect(()=>{const abort=new AbortController();fetch('/human-atlas/models/discovery-'+(female?'female':'male')+'.json',{signal:abort.signal}).then(r=>{if(!r.ok)throw Error();return r.json()}).then(data=>{if(!abort.signal.aborted)setDiscovery(data as Discovery)}).catch(()=>{});return()=>abort.abort()},[]);
++ useEffect(()=>{const abort=new AbortController();setProgress(0);setError('');setAtlas(null);setChosen(null);setDetails(false);setState({...initial,visible:DEFAULT_VISIBLE});fetch('/human-atlas/models/'+catalogue,{signal:abort.signal}).then(r=>{if(!r.ok)throw new Error('The anatomy catalogue could not be loaded.');return r.json();}).then(result=>{if(!abort.signal.aborted){const data=result as Atlas;applyFocus(data,0);setAtlas(data);}}).catch(e=>{if(e.name!=='AbortError')setError(e.message);});return()=>abort.abort();},[]);
+  useEffect(()=>{const key=(e:KeyboardEvent)=>{if(e.key==='/'&&!(e.target instanceof HTMLInputElement)&&!(e.target instanceof HTMLTextAreaElement)){e.preventDefault();setPanel('search');setDetails(false);}};window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[]);
++ useEffect(()=>{
++  if(!lesson)return;
++  function receive(event:MessageEvent){
++   if(event.origin!==window.location.origin||event.source!==window.parent||event.data?.type!=='sahd-anatomy-lesson')return;
++   const {action,value}=event.data;
++   if(action==='inspect'&&atlas){
++    const group=chosen||focusedGroup(atlas);
++    if(group){setChosen(group);if(!chosen)setState(s=>({...s,selected:group.elements}));setDetails(open=>!open);}
++   }
++   if(action==='hide'){hideSelected();}
++   if(action==='restore'){setState(s=>({...s,hidden:[]}));}
++   if(action==='clear'){setDetails(false);setChosen(null);setState(s=>({...s,selected:[]}));}
++   if(action==='reset'&&atlas){setDetails(false);applyFocus(atlas,state.reset+1);}
++   if(action==='isolate'&&atlas){setState(s=>({...s,scope:s.isolate?undefined:s.selected,isolate:!s.isolate,explode:0}));}
++   if(action==='explode'&&typeof value==='number'&&Number.isFinite(value)){setState(s=>({...s,explode:Math.max(0,Math.min(.3,value)),isolate:false}));}
++   if(action==='zoom'&&(value===1||value===-1)){setState(s=>({...s,zoomCommand:{direction:value}}));}
++
++  }
++  window.addEventListener('message',receive);
++  return()=>window.removeEventListener('message',receive);
++ },[atlas,chosen,state.reset]);
+  const parts=useMemo(()=>new Map(atlas?.parts.map(p=>[p.id,p])),[atlas]);
+  const counts=useMemo(()=>Object.fromEntries(SYSTEMS.map(s=>[s.id,atlas?.parts.filter(p=>p.system===s.id).length??0])),[atlas]);
+  const activeSystems=SYSTEMS.filter(s=>counts[s.id]>0);
+  const selectedParts=state.selected.map(id=>parts.get(id)).filter(p=>!!p),selected=selectedParts[0],system=SYSTEMS.find(s=>s.id===selected?.system);
+- const visibleCount=atlas?.parts.filter(p=>state.isolate?state.selected.includes(p.id):state.visible.includes(p.system)||state.selected.includes(p.id)).length??0;
++ useEffect(()=>{
++  if(!lesson)return;
++  window.parent.postMessage({type:'sahd-anatomy-inspector',open:details&&!!chosen,name:chosen?.name,
++   description:chosen&&selected?explanation(chosen.name,selected.system):'',
++   count:selectedParts.length,hidden:state.hidden?.length??0,isolated:state.isolate},window.location.origin);
++ },[details,chosen,selected,state.selected,state.hidden,state.isolate]);
++ const scope=useMemo(()=>state.scope?new Set(state.scope):null,[state.scope]);
++ const hidden=useMemo(()=>new Set(state.hidden),[state.hidden]);
++ const visibleCount=atlas?.parts.filter(p=>!hidden.has(p.id)&&(state.isolate?state.selected.includes(p.id):scope?scope.has(p.id):state.visible.includes(p.system)||state.selected.includes(p.id))).length??0;
++ const browsable=useMemo(()=>{
++  const term=browseQuery.trim().toLowerCase();
++  return (atlas?.parts||[]).filter(p=>(!scope||scope.has(p.id))&&(!systemFilter||p.system===systemFilter)&&(!term||[p.name,p.id,p.conceptId].some(value=>value.toLowerCase().includes(term)))).sort((a,b)=>a.name.localeCompare(b.name));
++ },[atlas,scope,systemFilter,browseQuery]);
++ function focusGroup(group:Concept){stopPlayback();setState(s=>({...s,scope:group.elements,selected:group.elements,isolate:true,explode:0,rotate:false}));setChosen(group);setDetails(false);setGroupId(group.id);setShowStructures(false);setBrowseQuery('');setSystemFilter('');setBrowseLimit(40);}
++ function clearScope(){setGroupId('');setState(s=>({...s,scope:undefined,selected:[],isolate:false,reset:s.reset+1}));setChosen(null);setDetails(false);}
++ function hideSelected(){setState(s=>({...s,hidden:[...new Set([...(s.hidden||[]),...s.selected])],selected:[],isolate:false}));setChosen(null);setDetails(false);}
++ 
+  const results=useMemo(()=>{if(!atlas)return[];const term=query.toLowerCase().trim();if(!term)return ['heart','brain','liver','stomach','spleen','pancreas','urinary bladder','trachea'].map(name=>atlas.concepts.find(c=>c.name.toLowerCase()===name)).filter((x):x is Concept=>!!x);return atlas.concepts.filter(c=>c.name.toLowerCase().includes(term)||c.id.toLowerCase().includes(term)).sort((a,b)=>a.name.length-b.name.length).slice(0,80);},[atlas,query]);
+  const choose=(c:Concept)=>{setChosen(c);setState(s=>({...s,selected:c.elements,isolate:false,rotate:false}));setDetails(true);setPanel(null);};
+- useEffect(()=>{if(!atlas)return;return registerAtlasTools(atlas,c=>flushSync(()=>choose(c)));},[atlas]);
+- const choosePart=(id:string)=>{const p=parts.get(id);if(!p)return;setChosen({id:p.conceptId,name:p.name,elements:[id]});setState(s=>({...s,selected:[id],isolate:false,rotate:false}));setDetails(true);setPanel(null);};
+- const toggle=(id:SystemId)=>{setDetails(false);setState(s=>({...s,selected:[],isolate:false,visible:s.visible.includes(id)?s.visible.filter(x=>x!==id):[...s.visible,id]}));};
+- const reset=()=>{setState(s=>({...initial,visible:DEFAULT_VISIBLE,reset:s.reset+1}));setChosen(null);setDetails(false);setPanel(null);};
+- const openPanel=(next:'layers'|'search')=>{setDetails(false);setPanel(p=>p===next?null:next);};
+- return <main className="studio">
+-  {atlas&&<AnatomyScene atlas={atlas} state={{...state,inspectorOpen:details&&selectedParts.length>0}} onSelect={choosePart} onProgress={n=>{setProgress(n);if(n===100)setError('');}} onError={setError}/>}
++ const choosePart=(id:string)=>{const p=parts.get(id);if(!p)return;setChosen({id:p.conceptId,name:p.name,elements:[id]});setState(s=>({...s,selected:[id],isolate:lesson?s.isolate:false,rotate:false}));setDetails(true);setPanel(null);};
++ function randomAnatomy(){
++  if(!atlas)return;
++  const candidates=atlas.concepts.filter(c=>c.id!==chosen?.id&&c.elements.length>0&&c.elements.every(id=>parts.has(id)&&!hidden.has(id)&&(!scope||scope.has(id))));
++  const concept=candidates[Math.floor(Math.random()*candidates.length)];
++  if(!concept)return;
++  stopPlayback();choose(concept);setState(s=>({...s,isolate:true,explode:0}));
++ }
++ const toggle=(id:SystemId)=>{setDetails(false);setState(s=>({...s,selected:[],isolate:false,scope:undefined,visible:s.visible.includes(id)?s.visible.filter(x=>x!==id):[...s.visible,id]}));};
++ const reset=()=>{setGroupId('');stopPlayback();setShowHidden(false);if(lesson&&atlas)applyFocus(atlas,state.reset+1);else{setState(s=>({...initial,reset:s.reset+1}));setChosen(null);}setDetails(false);setPanel(null);};
++ const openPanel=(next:'layers'|'search'|'browse'|'display')=>{setDetails(false);setPanel(p=>p===next?null:next);};
++ return <main className="studio" data-lesson={lesson} style={{"--atlas-brightness":brightness+"%","--atlas-contrast":contrast+"%"} as React.CSSProperties}>
++  {atlas&&<AnatomyScene atlas={atlas} state={{...state,lesson,inspectorOpen:!lesson&&details&&selectedParts.length>0}} onSelect={choosePart} onProgress={n=>{setProgress(n);if(n===100)setError('');}} onError={setError}/>}
+   <div className="vignette"/>
+-  <header className="identity"><div className="eyebrow"><span className="status-dot"/> INTERACTIVE ANATOMY</div><h1>Human Atlas<Badge variant="outline" className="edition">3D</Badge></h1><div className="identity-meta">{atlas?atlas.parts.length.toLocaleString():'2,234'} modeled pieces <span>·</span> BodyParts3D</div></header>
+-  <nav className="top-actions" aria-label="Explorer panels"><Button variant="ghost" className={panel==='search'?'active':''} onClick={()=>openPanel('search')} aria-label="Search anatomy"><Search size={18}/><span>Find a structure</span><kbd>/</kbd></Button><Button variant="ghost" className="icon-button" aria-label="About this atlas" onClick={()=>{setDetails(false);setPanel(null);setAbout(true);}}><Info size={18}/></Button></nav>
+-  <section className={`layers-panel glass ${panel==='layers'?'mobile-open':''}`} aria-label="Anatomical layers">
+-   <div className="panel-heading"><span>Systems</span><Button variant="ghost" className="mobile-only icon-button" onClick={()=>setPanel(null)} aria-label="Close systems"><X size={18}/></Button><Badge variant="secondary" className="desktop-only small-number">{activeSystems.length}</Badge></div>
+-   <div className="layer-presets"><Button variant="ghost" aria-pressed={activeSystems.every(x=>state.visible.includes(x.id))} onClick={()=>setState(s=>({...s,selected:[],isolate:false,visible:activeSystems.map(x=>x.id)}))}>All</Button><Button variant="ghost" aria-pressed={state.visible.length===1&&state.visible[0]==='skeletal'} onClick={()=>setState(s=>({...s,selected:[],isolate:false,visible:['skeletal']}))}>Skeleton</Button><Button variant="ghost" aria-pressed={state.visible.length===6&&['cardiac','respiratory','digestive','urinary','endocrine','reproductive'].every(id=>state.visible.includes(id as SystemId))} onClick={()=>setState(s=>({...s,selected:[],isolate:false,visible:['cardiac','respiratory','digestive','urinary','endocrine','reproductive']}))}>Organs</Button></div>
+-   <div className="system-list">{activeSystems.map(s=><div className={`system-row ${state.visible.includes(s.id)?'enabled':''}`} key={s.id}><Button variant="ghost" className="system-name" title={`Show only ${s.name.toLowerCase()}`} onClick={()=>setState(v=>({...v,visible:[s.id],isolate:false,selected:[]}))}><span className="system-dot" style={{background:s.color}}/>{s.name}<span className="system-count">{counts[s.id]}</span></Button><Switch checked={state.visible.includes(s.id)} onCheckedChange={()=>toggle(s.id)} aria-label={`Show ${s.name.toLowerCase()}`} /></div>)}</div>
+-   <div className="panel-foot"><span>{visibleCount.toLocaleString()} pieces visible</span><Button variant="ghost" onClick={()=>setState(s=>({...s,visible:[],selected:[],isolate:false}))}>Hide all</Button></div>
++  <header className="identity"><div className="eyebrow"><span className="status-dot"/> {t("INTERACTIVE ANATOMY")}</div><h1>Human Atlas<Badge variant="outline" className="edition">3D</Badge></h1><div className="identity-meta">{atlas?atlas.parts.length.toLocaleString():(female?'2,245':'2,234')} {t("modeled pieces")} <span>·</span> {t(modelLabel)}</div></header>
++  <nav className="top-actions" aria-label={t("Explorer panels")}>{inPortal&&<div className="atlas-workspace-tabs">
++   {([['explore','Explore'],['learn','Learn']] as const).map(([tab,label])=><button type="button" key={tab} aria-pressed={tab==='explore'} onClick={()=>window.parent.postMessage({type:'sahd-anatomy-tab',tab},window.location.origin)}>{t(label)}</button>)}
++  </div>}<Button variant="ghost" className={panel==='search'?'active':''} onClick={()=>openPanel('search')} aria-label={t("Search anatomy")}><Search size={18}/><span>{t("Find a structure")}</span><kbd>/</kbd></Button><Button variant="ghost" onClick={()=>openPanel('browse')} aria-label={t("Browse anatomy")}><Layers3 size={18}/><span>{t("Browse")}</span></Button><Button variant="ghost" className="icon-button" aria-label={t("Random anatomy")} title={t("Random anatomy")} disabled={!atlas} onClick={randomAnatomy}><Shuffle size={18}/></Button><Button variant="ghost" className="icon-button" aria-label={t("Display settings")} title={t("Display settings")} onClick={()=>openPanel('display')}><SlidersHorizontal size={18}/></Button><Button variant="ghost" className="icon-button" aria-label={t("About this atlas")} onClick={()=>{setDetails(false);setPanel(null);setAbout(true);}}><Info size={18}/></Button></nav>
++  <section className={`layers-panel glass ${panel==='layers'?'mobile-open':''}`} aria-label={t("Anatomical layers")}>
++   <div className="panel-heading"><span>{t("Systems")}</span><Button variant="ghost" className="mobile-only icon-button" onClick={()=>setPanel(null)} aria-label={t("Close systems")}><X size={18}/></Button><Badge variant="secondary" className="desktop-only small-number">{activeSystems.length}</Badge></div>
++   <div className="layer-presets"><Button variant="ghost" aria-pressed={activeSystems.every(x=>state.visible.includes(x.id))} onClick={()=>setState(s=>({...s,selected:[],isolate:false,scope:undefined,visible:activeSystems.map(x=>x.id)}))}>{t("All")}</Button><Button variant="ghost" aria-pressed={state.visible.length===1&&state.visible[0]==='skeletal'} onClick={()=>setState(s=>({...s,selected:[],isolate:false,scope:undefined,visible:['skeletal']}))}>{t("Skeleton")}</Button><Button variant="ghost" aria-pressed={state.visible.length===6&&['cardiac','respiratory','digestive','urinary','endocrine','reproductive'].every(id=>state.visible.includes(id as SystemId))} onClick={()=>setState(s=>({...s,selected:[],isolate:false,visible:['cardiac','respiratory','digestive','urinary','endocrine','reproductive']}))}>{t("Organs")}</Button></div>
++   <div className="system-list">{activeSystems.map(s=><div className={`system-row ${state.visible.includes(s.id)?'enabled':''}`} key={s.id}><Button variant="ghost" className="system-name" title={`Show only ${s.name.toLowerCase()}`} onClick={()=>setState(v=>({...v,scope:undefined,visible:[s.id],isolate:false,selected:[]}))}><span className="system-dot" style={{background:s.color}}/>{t(s.name)}<span className="system-count">{counts[s.id]}</span></Button><Switch checked={state.visible.includes(s.id)} onCheckedChange={()=>toggle(s.id)} aria-label={`Show ${s.name.toLowerCase()}`} /></div>)}</div>
++   <div className="panel-foot"><span>{visibleCount.toLocaleString()} {t("pieces visible")}</span><Button variant="ghost" onClick={()=>setState(s=>({...s,scope:undefined,visible:[],selected:[],isolate:false}))}>{t("Hide all")}</Button></div>
+   </section>
+-  {panel==='search'&&<section className="search-panel glass" aria-label="Find anatomy"><div className="panel-heading"><span>Find a structure</span><Button variant="ghost" className="icon-button" onClick={()=>setPanel(null)} aria-label="Close search"><X size={18}/></Button></div><Combobox<Concept> items={results} value={null} onValueChange={value=>{if(value)choose(value);}} inputValue={query} onInputValueChange={setQuery} itemToStringLabel={c=>c.name} filter={null} open onOpenChange={open=>{if(!open)setPanel(null);}}><ComboboxInput autoFocus placeholder="Heart, femur, cranial nerve…" aria-label="Search named anatomical structures" showTrigger={false}/><ComboboxContent className="anatomy-search-results"><ComboboxEmpty>No structures match your search.</ComboboxEmpty><ComboboxList>{(c:Concept)=><ComboboxItem key={c.id} value={c}><span className="search-result-name">{c.name}</span><span className="small-number">{c.elements.length} {c.elements.length===1?'piece':'pieces'}</span></ComboboxItem>}</ComboboxList></ComboboxContent></Combobox><p className="search-note">{query?'Showing up to 80 matches. Refine your search to find smaller structures.':'Start with a major organ, or search every named structure.'}</p></section>}
+-  <nav className="view-controls glass" aria-label="Camera controls">{(['three-quarter','front','side','back'] as View[]).map((v,i)=><Button variant="ghost" key={v} className={state.view===v?'active':''} aria-pressed={state.view===v} disabled={state.explode>.8&&v!=='front'} onClick={()=>setState(s=>({...s,view:v,reset:s.reset+1,rotate:false}))} title={`${v} view`} aria-label={`${v} view`}><span>{['¾','F','S','B'][i]}</span></Button>)}<i/><Button variant="ghost" disabled={state.explode>=.4} aria-label={state.rotate?'Pause rotation':'Rotate body'} title="Auto rotate" className={state.rotate?'active':''} onClick={()=>setState(s=>({...s,rotate:!s.rotate}))}>{state.rotate?<Pause size={17}/>:<RotateCw size={18}/>}</Button><Button variant="ghost" aria-label="Reset view and layers" title="Reset" onClick={reset}><RotateCcw size={17}/></Button></nav>
+-  <div className="scene-caption"><span className="caption-line"/><span>{state.isolate?(chosen?.name??'SELECTED STRUCTURE'):state.explode>.95?'ANATOMICAL INVENTORY':state.explode>.05?'SEPARATED STRUCTURES':'ADULT HUMAN · MALE'}</span><span className="caption-line"/></div>
+-  <div className="bottom-dock glass"><Button variant="ghost" className="mobile-only dock-layers" onClick={()=>openPanel('layers')} aria-label="Open system layers"><Layers3 size={20}/><span>Systems</span></Button><div className="explode-control"><div className="explode-label"><label id="explode-label">Explode anatomy</label><output>{Math.round(state.explode*100)}<span>%</span></output></div><Slider aria-labelledby="explode-label" min={0} max={100} step={1} value={[state.explode*100]} onValueChange={v=>setState(s=>({...s,explode:(Array.isArray(v)?v[0]:v)/100,view:(Array.isArray(v)?v[0]:v)>80?'front':s.view,rotate:false}))}/><div className="slider-endpoints"><span>Assembled</span><span>Every piece</span></div></div><Button variant="ghost" className="dock-reset" onClick={reset} aria-label="Assemble and reset"><RotateCcw size={18}/><span>Reset</span></Button></div>
+-  <footer className="studio-footer"><span>{state.explode>.8?'Drag to pan':'Drag to orbit'} <b>·</b> Pinch to zoom <b>·</b> Tap to inspect</span><Button variant="ghost" onClick={()=>{setDetails(false);setPanel(null);setAbout(true);}}>Source & credits <ArrowUpRight size={12}/></Button></footer>
+-  {progress<100&&!error&&<div className="loading glass" role="status"><Activity size={18}/><div><strong>Preparing the anatomy</strong><span>{progress}% · Loading {atlas?.parts.length.toLocaleString()??'2,234'} pieces</span><div className="loading-track"><i style={{width:`${progress}%`}}/></div></div></div>}
+-  {error&&<div className="loading glass error" role="alert"><p>{error}</p><Button variant="ghost" onClick={()=>location.reload()}>Reload viewer</Button></div>}
+-  <Sheet open={details&&selectedParts.length>0} modal={false} disablePointerDismissal onOpenChange={setDetails}><SheetContent initialFocus={detailTitle} className={`detail-sheet glass ${state.isolate?'is-isolated':''}`} showCloseButton={true}><div className="detail-header"><div className="detail-accent" style={{background:system?.color}}/><div className="eyebrow">{system?.name??'ANATOMY'}</div><SheetTitle ref={detailTitle} tabIndex={-1} className="structure-title">{chosen?.name}</SheetTitle></div><div className="detail-scroll" key={`${chosen?.id}-${state.isolate}`}><SheetDescription className="structure-description">{chosen&&selected?explanation(chosen.name,selected.system):''}</SheetDescription>{chosen&&!EXPLANATIONS[chosen.name.toLowerCase()]&&<span className="context-note">System overview · structure identified from source anatomy</span>}<div className="structure-meta"><span>Atlas reference<strong>{chosen?.id}</strong></span><span>Selected pieces<strong>{state.selected.length.toLocaleString()}</strong></span></div>{selectedParts.length>1&&<div className="member-list"><h3>Included structures</h3>{selectedParts.slice(0,50).map(p=><Button variant="ghost" key={p.id} onClick={()=>choosePart(p.id)}><span>{p.name}</span><ChevronRight size={14}/></Button>)}{selectedParts.length>50&&<p>And {selectedParts.length-50} more modeled pieces.</p>}</div>}<a className="source-link" href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noreferrer">View anatomical source <ArrowUpRight size={14}/></a></div><div className="detail-actions"><Button className={`primary-action ${state.isolate?'active':''}`} onClick={()=>setState(s=>({...s,isolate:!s.isolate,explode:0}))}><Focus size={18}/>{state.isolate?'Show surrounding anatomy':'Isolate structure'}<ChevronRight size={16}/></Button><Button variant="ghost" className="secondary-action" onClick={()=>{setState(s=>({...s,selected:[],isolate:false}));setDetails(false);}}>Clear selection</Button></div></SheetContent></Sheet>
+-  <Sheet open={about} onOpenChange={setAbout}><SheetContent className="about-sheet glass"><div className="eyebrow">SOURCE & SCOPE</div><SheetTitle className="structure-title">A body, revealed.</SheetTitle><SheetDescription>Explore the adult male reference anatomy from BodyParts3D.</SheetDescription><div className="about-copy"><p><strong>Male · BodyParts3D</strong><br/>2,234 individual meshes and 3,432 named concepts from an adult male reference anatomy.</p><p>This reference does not contain every human structure or variation. Named concepts can contain multiple pieces; each source mesh is rendered once.</p><p>Colors and system groupings are designed for exploration. The geometry is simplified for the web, and short explanations provide general educational context. This is an anatomical reference, not a diagnostic or surgical tool.</p><h3>Source</h3><p>BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International.</p><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html" target="_blank" rel="noreferrer">Dataset license <ArrowUpRight size={14}/></a><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html" target="_blank" rel="noreferrer">Original geometry & metadata <ArrowUpRight size={14}/></a><a href="https://academic.oup.com/nar/article/37/suppl_1/D782/1000752" target="_blank" rel="noreferrer">Read the source publication <ArrowUpRight size={14}/></a></div></SheetContent></Sheet>
++  {panel==='search'&&<section className="search-panel glass" aria-label={t("Find anatomy")}><div className="panel-heading"><span>{t("Find a structure")}</span><Button variant="ghost" className="icon-button" onClick={()=>setPanel(null)} aria-label={t("Close search")}><X size={18}/></Button></div><Combobox<Concept> items={results} value={null} onValueChange={value=>{if(value)choose(value);}} inputValue={query} onInputValueChange={setQuery} itemToStringLabel={c=>c.name} filter={null} open onOpenChange={open=>{if(!open)setPanel(null);}}><ComboboxInput autoFocus placeholder="Heart, femur, cranial nerve…" aria-label="Search named anatomical structures" showTrigger={false}/><ComboboxContent className="anatomy-search-results"><ComboboxEmpty>No structures match your search.</ComboboxEmpty><ComboboxList>{(c:Concept)=><ComboboxItem key={c.id} value={c}><span className="search-result-name">{c.name}</span><span className="small-number">{c.elements.length} {c.elements.length===1?'piece':'pieces'}</span></ComboboxItem>}</ComboboxList></ComboboxContent></Combobox><p className="search-note">{query?'Showing up to 80 matches. Refine your search to find smaller structures.':'Start with a major organ, or search every named structure.'}</p></section>}
++  {panel==='display'&&<section className="search-panel glass discovery-panel display-panel" aria-label={t("Display settings")}>
++   <div className="panel-heading"><span>{t("Display settings")}</span><Button variant="ghost" className="icon-button" aria-label={t("Close display settings")} onClick={()=>setPanel(null)}><X size={18}/></Button></div>
++   <label>{t("Brightness")} <input type="range" min={70} max={140} value={brightness} onChange={event=>setBrightness(Number(event.target.value))}/></label>
++   <label>{t("Contrast")} <input type="range" min={75} max={135} value={contrast} onChange={event=>setContrast(Number(event.target.value))}/></label>
++   <label>{t("Auto-rotation speed")} <input type="range" min={.2} max={2} step={.05} value={state.rotationSpeed??.65} onChange={event=>setState(s=>({...s,rotationSpeed:Number(event.target.value)}))}/></label>
++   <Button variant="outline" onClick={()=>{setBrightness(100);setContrast(100);setState(s=>({...s,rotationSpeed:.65}))}}>{t("Reset display")}</Button>
++  </section>}
++  {panel==='browse'&&<section className="search-panel glass discovery-panel" aria-label={t("Browse anatomy")}>
++   <div className="panel-heading"><span>{t("Browse anatomy")}</span><Button variant="ghost" className="icon-button" aria-label={t("Close browse")} onClick={()=>setPanel(null)}><X size={18}/></Button></div>
++   <div className="discovery-selects">
++    <label>{t("Model")}<select value={female?'female':'male'} onChange={event=>{
++     const model=event.target.value;
++     if(window.parent!==window)window.parent.postMessage({type:'sahd-anatomy-model',model},window.location.origin);
++     else{const url=new URL(window.location.href);url.searchParams.set('model',model);window.location.assign(url);}
++    }}><option value="male">{t("Male anatomy")}</option><option value="female">{t("Female anatomy")}</option></select></label>
++    <label>{t("Region")}<select value={state.scope&&discovery?.regions.some(group=>group.id===groupId)?groupId:''} onChange={event=>{const group=discovery?.regions.find(item=>item.id===event.target.value);if(group)focusGroup(group);else clearScope()}}>
++     <option value="">{t("Whole body")}</option>{discovery?.regions.map(group=><option key={group.id} value={group.id}>{t(group.name)}</option>)}
++    </select></label>
++    <label>{t("Teaching area")}<select value={state.scope&&discovery?.areas.some(group=>group.id===groupId)?groupId:''} onChange={event=>{const group=discovery?.areas.find(item=>item.id===event.target.value);if(group)focusGroup(group);else clearScope()}}>
++     <option value="">{t("None")}</option>{discovery?.areas.map(group=><option key={group.id} value={group.id}>{t(group.name)}</option>)}
++    </select></label>
++   </div>
++   <Button variant="outline" aria-expanded={showStructures} onClick={()=>setShowStructures(value=>!value)}>{t("Browse structures")}</Button>
++   {(state.scope||hidden.size>0)&&<div className="discovery-actions">{state.scope&&<Button variant="outline" onClick={clearScope}>{t("Clear focus")}</Button>}{hidden.size>0&&<Button variant="outline" aria-expanded={showHidden} onClick={()=>setShowHidden(value=>!value)}>{t("Hidden pieces")} ({hidden.size})</Button>}</div>}
++   {showHidden&&hidden.size>0&&<div className="discovery-list hidden-pieces">
++    {[...hidden].map(id=><button key={id} onClick={()=>setState(s=>({...s,hidden:s.hidden?.filter(value=>value!==id)}))}>{parts.get(id)?.name||id}<small>{t("Restore")}</small></button>)}
++    <Button variant="outline" onClick={()=>{setState(s=>({...s,hidden:[]}));setShowHidden(false)}}>{t("Restore all")}</Button>
++   </div>}
++   {showStructures&&<>
++    <div className="discovery-filters">
++     <input type="search" aria-label={t("Filter structures")} placeholder={t("Search names or IDs")} value={browseQuery} onChange={e=>{setBrowseQuery(e.target.value);setBrowseLimit(40)}}/>
++     <select aria-label={t("Filter anatomical system")} value={systemFilter} onChange={e=>{setSystemFilter(e.target.value);setBrowseLimit(40)}}><option value="">{t("All systems")}</option>{activeSystems.map(system=><option key={system.id} value={system.id}>{t(system.name)}</option>)}</select>
++    </div>
++    <div className="discovery-list">{browsable.slice(0,browseLimit).map(part=><button key={part.id} onClick={()=>{setState(s=>({...s,hidden:s.hidden?.filter(id=>id!==part.id)}));choosePart(part.id)}}>{part.name}<small>{hidden.has(part.id)?'Hidden · ':''}{part.id}</small></button>)}{!browsable.length&&<p>{t("No matching structures.")}</p>}{browsable.length>browseLimit&&<Button variant="outline" onClick={()=>setBrowseLimit(n=>n+40)}>{t("Show more")} ({browsable.length-browseLimit})</Button>}</div>
++   </>}
++  </section>}
++  <nav className="view-controls glass" aria-label={t("Camera controls")}>{(['three-quarter','front','side','back'] as View[]).map((v,i)=><Button variant="ghost" key={v} className={state.view===v?'active':''} aria-pressed={state.view===v} disabled={state.explode>.8&&v!=='front'} onClick={()=>setState(s=>({...s,view:v,reset:s.reset+1,rotate:false}))} title={`${v} view`} aria-label={`${v} view`}><span>{['¾','F','S','B'][i]}</span></Button>)}<i/>{lesson&&<><Button variant="ghost" aria-label={t('Zoom in')} onClick={()=>setState(s=>({...s,zoomCommand:{direction:1}}))}>+</Button><Button variant="ghost" aria-label={t('Zoom out')} onClick={()=>setState(s=>({...s,zoomCommand:{direction:-1}}))}>−</Button></>}<Button variant="ghost" disabled={state.explode>=.4} aria-label={state.rotate?'Pause rotation':'Rotate body'} title="Auto rotate" className={state.rotate?'active':''} onClick={()=>setState(s=>({...s,rotate:!s.rotate}))}>{state.rotate?<Pause size={17}/>:<RotateCw size={18}/>}</Button><Button variant="ghost" aria-label="Reset view and layers" title={t("Reset")} onClick={reset}><RotateCcw size={17}/></Button></nav>
++  <div className="scene-caption"><span className="caption-line"/><span>{state.isolate?(chosen?.name??t('SELECTED STRUCTURE')):state.explode>.95?t('ANATOMICAL INVENTORY'):state.explode>.05&&state.explode<=SYSTEM_SEPARATION_END?t('SYSTEMS APART'):state.explode>.05?t('SEPARATED STRUCTURES'):t(modelLabel).toUpperCase()}</span><span className="caption-line"/></div>
++  <div className="bottom-dock glass"><Button variant="ghost" className="mobile-only dock-layers" onClick={()=>openPanel('layers')} aria-label={t("Open system layers")}><Layers3 size={20}/><span>{t("Systems")}</span></Button><div className="explode-control"><div className="explode-label"><label id="explode-label">{t("Explode anatomy")}</label><Button type="button" variant="ghost" size="icon" aria-label={t(playing?'Pause explosion':'Play explosion')} title={t(playing?'Pause explosion':'Play explosion')} disabled={progress<100||!playing&&state.explode===SYSTEM_SEPARATION_END} onClick={playExplosion}>{playing?<Pause size={15}/>:<Play size={15}/>}</Button><output>{Math.round(state.explode*100)}<span>%</span></output></div><Slider aria-labelledby="explode-label" min={0} max={100} step={1} value={[state.explode*100]} onValueChange={v=>{stopPlayback();setState(s=>({...s,explode:(Array.isArray(v)?v[0]:v)/100,view:(Array.isArray(v)?v[0]:v)>80?'front':s.view,rotate:false}))}}/><div className="slider-endpoints"><span>{t("Assembled")}</span><span className="systems-stop">{t("Systems apart")}</span><span>{t("Every piece")}</span></div></div><Button variant="ghost" className="dock-reset" onClick={reset} aria-label="Assemble and reset"><RotateCcw size={18}/><span>{t("Reset")}</span></Button></div>
++  <footer className="studio-footer"><span>{t(state.explode>.8?'Drag to pan':'Drag to orbit')} <b>·</b> {t("Pinch to zoom")} <b>·</b> {t("Tap to inspect")}</span><Button variant="ghost" onClick={()=>{setDetails(false);setPanel(null);setAbout(true);}}>{t("Source & credits")} <ArrowUpRight size={12}/></Button></footer>
++  {progress<100&&!error&&<div className="loading glass" role="status"><Activity size={18}/><div><strong>{t("Preparing the anatomy")}</strong><span>{progress}% · {t("Loading")} {atlas?.parts.length.toLocaleString()??(female?'2,245':'2,234')} {t("pieces")}</span><div className="loading-track"><i style={{width:`${progress}%`}}/></div></div></div>}
++  {error&&<div className="loading glass error" role="alert"><p>{error}</p><Button variant="ghost" onClick={()=>location.reload()}>{t("Reload viewer")}</Button></div>}
++  <Sheet open={!lesson&&selectedParts.length>0} modal={false} disablePointerDismissal onOpenChange={setDetails}><SheetContent initialFocus={detailTitle} className={`detail-sheet glass ${state.isolate?'is-isolated':''}`} showCloseButton={true}><div className="detail-header"><div className="detail-accent" style={{background:system?.color}}/><div className="eyebrow">{system?t(system.name):'ANATOMY'}</div><SheetTitle ref={detailTitle} tabIndex={-1} className="structure-title">{chosen?.name}</SheetTitle></div><div className="detail-scroll" key={`${chosen?.id}-${state.isolate}`}><SheetDescription className="structure-description">{chosen&&selected?explanation(chosen.name,selected.system):''}</SheetDescription>{chosen&&!EXPLANATIONS[chosen.name.toLowerCase()]&&<span className="context-note">System overview · structure identified from source anatomy</span>}<div className="structure-meta"><span>Atlas reference<strong>{chosen?.id}</strong></span><span>Selected pieces<strong>{state.selected.length.toLocaleString()}</strong></span></div>{selectedParts.length>1&&<div className="member-list"><h3>Included structures</h3>{selectedParts.slice(0,50).map(p=><Button variant="ghost" key={p.id} onClick={()=>choosePart(p.id)}><span>{p.name}</span><ChevronRight size={14}/></Button>)}{selectedParts.length>50&&<p>And {selectedParts.length-50} more modeled pieces.</p>}</div>}<a className="source-link" href="https://lifesciencedb.jp/bp3d/" target="_blank" rel="noreferrer">View anatomical source <ArrowUpRight size={14}/></a></div><div className="detail-actions"><Button className={`primary-action ${state.isolate?'active':''}`} onClick={()=>setState(s=>({...s,isolate:!s.isolate,explode:0}))}><Focus size={18}/>{state.isolate?'Show surrounding anatomy':'Isolate structure'}<ChevronRight size={16}/></Button><Button variant="ghost" className="secondary-action" onClick={()=>{setState(s=>({...s,selected:[],isolate:false}));setDetails(false);}}>{t("Clear selection")}</Button></div><Button variant="outline" onClick={hideSelected}>{t("Hide selected")} {t(selectedParts.length===1?"piece":"pieces")}</Button></SheetContent></Sheet>
++  <Sheet open={about} onOpenChange={setAbout}><SheetContent className="about-sheet glass"><div className="eyebrow">{t("SOURCE & SCOPE")}</div><SheetTitle className="structure-title">{t("A body, revealed.")}</SheetTitle><SheetDescription>{t(modelLabel)}</SheetDescription><div className="about-copy"><p><strong>{t(modelLabel)}</strong><br/>{female?'Experimental model adapted from BodyParts3D and HRA. Proportions and placement are estimated.':'2,234 individual meshes and 3,432 named concepts from an adult male reference anatomy.'}</p><p>This reference does not contain every human structure or variation. Named concepts can contain multiple pieces; each source mesh is rendered once.</p><p>Colors and system groupings are designed for exploration. The geometry is simplified for the web, and short explanations provide general educational context. This is an anatomical reference, not a diagnostic or surgical tool.</p><h3>{t("Source")}</h3>{female&&<a href="/human-atlas/ANATOLUME-ATTRIBUTION.md" target="_blank" rel="noreferrer">Anatolume, Human Atlas Enhanced and HRA credits</a>}<p>BodyParts3D, © The Database Center for Life Science licensed under CC Attribution 4.0 International.</p><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/lic.html" target="_blank" rel="noreferrer">Dataset license <ArrowUpRight size={14}/></a><a href="https://dbarchive.biosciencedbc.jp/en/bodyparts3d/download.html" target="_blank" rel="noreferrer">Original geometry & metadata <ArrowUpRight size={14}/></a><a href="https://academic.oup.com/nar/article/37/suppl_1/D782/1000752" target="_blank" rel="noreferrer">Read the source publication <ArrowUpRight size={14}/></a></div></SheetContent></Sheet>
+  </main>;
+ }
+diff --git a/app/portal-explode-playback.ts b/app/portal-explode-playback.ts
+new file mode 100644
+index 0000000..a70a35f
+--- /dev/null
++++ b/app/portal-explode-playback.ts
+@@ -0,0 +1,16 @@
++// Adapted from Human Atlas Enhanced (MIT).
++export const SYSTEM_SEPARATION_END=.30;
++
++/** Scale a stage's timing to the remaining distance, with a short minimum for resume. */
++export function explosionPlaybackDuration(from: number, to: number, stageDuration: number, familyCount: number): number {
++  if (stageDuration <= 0 || from === to) return 0;
++  const span = to === SYSTEM_SEPARATION_END ? SYSTEM_SEPARATION_END : familyCount >= 2 ? 1 - SYSTEM_SEPARATION_END : 1;
++  return Math.max(400, stageDuration * Math.min(1, Math.abs(to - from) / span));
++}
++
++export function explosionPlaybackAmount(from: number, to: number, elapsed: number, duration: number): number {
++  if (duration <= 0 || elapsed >= duration) return to;
++  const progress = Math.max(0, Math.min(1, elapsed / duration));
++  const eased = progress * progress * (3 - 2 * progress);
++  return from + (to - from) * eased;
++}
+diff --git a/app/portal-language.ts b/app/portal-language.ts
+new file mode 100644
+index 0000000..81ab7d2
+--- /dev/null
++++ b/app/portal-language.ts
+@@ -0,0 +1,112 @@
++export const indonesian:Record<string,string>={
++ "Explore": "Jelajahi",
++ "Learn": "Belajar",
++ "Study Tools": "Alat Belajar",
++ "Explorer panels": "Panel penjelajah",
++ "INTERACTIVE ANATOMY": "ANATOMI INTERAKTIF",
++ "modeled pieces": "bagian model",
++ "Male reference": "Model pria",
++ "Female study model": "Model studi perempuan",
++ "Find a structure": "Cari struktur",
++ "Search anatomy": "Cari anatomi",
++ "Find anatomy": "Cari anatomi",
++ "Close search": "Tutup pencarian",
++ "Search names or IDs": "Cari nama atau ID",
++ "Search structures": "Cari struktur",
++ "Filter structures": "Filter struktur",
++ "Filter anatomical system": "Filter sistem anatomi",
++ "No matching structures.": "Tidak ada struktur yang cocok.",
++ "No structures found.": "Struktur tidak ditemukan.",
++ "Browse": "Jelajah",
++ "Browse anatomy": "Jelajahi anatomi",
++ "Close browse": "Tutup jelajah",
++ "Model": "Model",
++ "Region": "Wilayah",
++ "Teaching area": "Area belajar",
++ "Male anatomy": "Anatomi pria",
++ "Female anatomy": "Anatomi perempuan",
++ "Whole body": "Seluruh tubuh",
++ "None": "Tidak ada",
++ "Browse structures": "Jelajahi struktur",
++ "Clear focus": "Hapus fokus",
++ "Hidden pieces": "Bagian tersembunyi",
++ "Hidden · ": "Tersembunyi · ",
++ "Restore": "Pulihkan",
++ "Restore all": "Pulihkan semua",
++ "All systems": "Semua sistem",
++ "Show more": "Tampilkan lebih banyak",
++ "Display settings": "Pengaturan tampilan",
++ "Close display settings": "Tutup pengaturan tampilan",
++ "Brightness": "Kecerahan",
++ "Contrast": "Kontras",
++ "Auto-rotation speed": "Kecepatan putar otomatis",
++ "Reset display": "Atur ulang tampilan",
++ "Random anatomy": "Anatomi acak",
++ "About this atlas": "Tentang atlas ini",
++ "Anatomical layers": "Lapisan anatomi",
++ "Systems": "Sistem",
++ "Close systems": "Tutup sistem",
++ "All": "Semua",
++ "Skeleton": "Rangka",
++ "Organs": "Organ",
++ "Hide all": "Sembunyikan semua",
++ "pieces visible": "bagian terlihat",
++ "Open system layers": "Buka lapisan sistem",
++ "Camera controls": "Kontrol kamera",
++ "Toggle auto-rotation": "Aktifkan atau matikan putar otomatis",
++ "Explode anatomy": "Pisahkan anatomi",
++ "Pause explosion": "Jeda pemisahan",
++ "Play explosion": "Putar pemisahan",
++ "Assembled": "Utuh",
++ "Systems apart": "Sistem terpisah",
++ "Every piece": "Tiap bagian",
++ "Reset": "Atur ulang",
++ "ANATOMICAL INVENTORY": "DAFTAR STRUKTUR",
++ "SYSTEMS APART": "SISTEM TERPISAH",
++ "SEPARATED STRUCTURES": "STRUKTUR TERPISAH",
++ "SELECTED STRUCTURE": "STRUKTUR TERPILIH",
++ "Drag to pan": "Seret untuk menggeser",
++ "Drag to orbit": "Seret untuk memutar",
++ "Pinch to zoom": "Cubit untuk memperbesar",
++ "Tap to inspect": "Ketuk untuk memeriksa",
++ "Preparing the anatomy": "Menyiapkan anatomi",
++ "Loading": "Memuat",
++ "pieces": "bagian",
++ "Reload viewer": "Muat ulang penampil",
++ "Source & credits": "Sumber & kredit",
++ "SOURCE & SCOPE": "SUMBER & CAKUPAN",
++ "A body, revealed.": "Mengenal tubuh manusia",
++ "Source": "Sumber",
++ "Structure": "Struktur",
++ "Context": "Konteks",
++ "Clear selection": "Hapus pilihan",
++ "Close": "Tutup",
++ "Isolate structure": "Isolasi struktur",
++ "Show in context": "Lihat dalam konteks",
++ "Hide selected": "Sembunyikan",
++ "piece": "bagian",
++ "Muscles": "Otot",
++ "Heart": "Jantung",
++ "Sensory organs": "Organ indra",
++ "Arteries": "Arteri",
++ "Veins": "Vena",
++ "Nervous system": "Sistem saraf",
++ "Respiratory": "Pernapasan",
++ "Digestive": "Pencernaan",
++ "Urinary": "Saluran kemih",
++ "Lymphatic": "Limfatik",
++ "Endocrine": "Endokrin",
++ "Reproductive": "Reproduksi",
++ "Breast tissue": "Jaringan payudara",
++ "Body surface": "Permukaan tubuh",
++ "Connective tissue": "Jaringan ikat",
++ "Head & jaw": "Kepala & rahang",
++ "Cervical": "Leher",
++ "Shoulder": "Bahu",
++ "Thoracic": "Dada",
++ "Abdominal": "Perut",
++ "Pelvic": "Panggul",
++ "Upper limb": "Lengan",
++ "Lower limb": "Tungkai",
++ "Ankle & foot": "Pergelangan kaki & kaki"
++};
+diff --git a/app/scene.tsx b/app/scene.tsx
+index 553f1db..498e8d9 100644
+--- a/app/scene.tsx
++++ b/app/scene.tsx
+@@ -5,6 +5,7 @@ import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.j
+ import {mergeGeometries} from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+ import {createExplosionLayout} from './explosion-layout';
+ import {decodeModelResponse} from './model-download';
++import {SYSTEM_SEPARATION_END as separation} from './portal-explode-playback';
+ import {PointerTap} from './pointer-tap';
+ import {SYSTEMS,type Atlas,type SceneState} from './anatomy';
+ interface Props {atlas:Atlas;state:SceneState;onSelect:(id:string)=>void;onProgress:(n:number)=>void;onError:(s:string)=>void}
+@@ -33,7 +34,9 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+   const selectedData=new Uint8Array(width*4),selectionTexture=new T.DataTexture(selectedData,width,1);selectionTexture.needsUpdate=true;
+   const materials:T.Material[]=[],geometries:T.BufferGeometry[]=[],pickers:(T.Mesh|undefined)[]=[],centers=atlas.parts.map(p=>new T.Vector3().fromArray(p.bounds[0]).add(new T.Vector3().fromArray(p.bounds[1])).multiplyScalar(.5));
+   const offsets:T.Vector3[]=[],bounds=atlas.parts.map(p=>new T.Box3(new T.Vector3().fromArray(p.bounds[0]),new T.Vector3().fromArray(p.bounds[1])));
+-  let packingWidth=1,packingHeight=1;
++  let packingWidth=1,packingHeight=1,familyWidth=1,familyHeight=1;
++  const familyOffsets=new Map<string,number>();
++  const families=[["skeletal"],["muscular"],["respiratory","cardiac","digestive","urinary","endocrine","reproductive","mammary"],["arterial","venous","lymphatic"],["nervous","sensory"],["connective"],["integumentary"]];
+   const markerPositions=new Float32Array(atlas.parts.length*3),markerGeometry=new T.BufferGeometry();markerGeometry.setAttribute('position',new T.BufferAttribute(markerPositions,3));
+   const markerMaterial=new T.PointsMaterial({color:0x64748b,size:5,sizeAttenuation:false,transparent:true,opacity:.72,depthTest:false});
+   markerMaterial.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nif (distance(gl_PointCoord, vec2(0.5)) > 0.5) discard;');};
+@@ -60,6 +63,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+   const mats=new Map(SYSTEMS.map(s=>[s.id,materialFor(s.id)]));
+   let loaded=0;
+   const loadChunk=async(ci:number)=>{
++   if(atlas.sex==='female'&&typeof DecompressionStream==='undefined')throw new Error('This browser cannot decompress the female study model. Please use a current browser.');
+    const chunk=atlas.chunks[ci],compressed=!!chunk.gzip&&typeof DecompressionStream!=='undefined';const response=await fetch(compressed?chunk.gzip!:chunk.url,{signal:abort.signal});const buffer=await decodeModelResponse(response,chunk.bytes,compressed);if(disposed)return;
+    const groups=new Map<string,T.BufferGeometry[]>();
+    atlas.parts.forEach((p,i)=>{
+@@ -78,9 +82,16 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+   const fit=(view:string,extent=0)=>{
+    const aspect=camera.aspect,mobile=el.clientWidth<768,normalDistance=mobile?Math.max(4.5,1.8*el.clientHeight/Math.max(160,el.clientHeight-350)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))):4;
+    const reservedHeight=mobile?350:270;const availableAspect=Math.max(.35,(el.clientWidth-(mobile?40:340))/Math.max(160,el.clientHeight-reservedHeight));const atlasDistance=Math.max(packingHeight,packingWidth/availableAspect)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))*(el.clientHeight/Math.max(160,el.clientHeight-reservedHeight))*1.08;
+-   const distance=T.MathUtils.lerp(normalDistance,Math.max(.2,atlasDistance),extent);if(extent>.8)view='front';
+-   const direction=view==='front'?new T.Vector3(0,.02,1):view==='back'?new T.Vector3(0,.02,-1):view==='side'?new T.Vector3(1,.02,0):new T.Vector3(.35,.06,1).normalize();
+-   controls.target.set(extent>.1&&el.clientWidth>767?-packingWidth*.12:0,extent>.1||mobile?.85:.68,0);camera.position.copy(controls.target).addScaledVector(direction,distance);controls.update();dirty=true;
++   const familyAspect=Math.max(.35,(el.clientWidth-(mobile?52:340))/el.clientHeight);
++   const familyDistance=Math.max(familyHeight*1.28,familyWidth/familyAspect*1.13)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)));
++   const spread=Math.min(1,extent/separation);
++   const pieces=Math.max(0,(extent-separation)/(1-separation));
++   const distance=T.MathUtils.lerp(T.MathUtils.lerp(normalDistance,familyDistance,spread),atlasDistance,pieces);
++   const base=view==='front'?new T.Vector3(0,.02,1):view==='back'?new T.Vector3(0,.02,-1):view==='side'?new T.Vector3(1,.02,0):new T.Vector3(.35,.06,1).normalize();
++   const direction=base.lerp(new T.Vector3(0,0,1),Math.min(1,spread*1.4)).normalize();
++   controls.maxDistance=Math.max(40,distance*2);
++   const shift=mobile?0:-distance*Math.tan(T.MathUtils.degToRad(camera.fov/2))*210/el.clientHeight*spread;
++   controls.target.set(shift,T.MathUtils.lerp(mobile?.85:.68,.85,spread),0);camera.position.copy(controls.target).addScaledVector(direction,distance);controls.update();dirty=true;
+   };
+   const resize=()=>{layoutKey='';lastState=null;renderer.setPixelRatio(Math.min(devicePixelRatio,el.clientWidth<768||el.clientHeight<600?1.5:2));camera.aspect=el.clientWidth/el.clientHeight;camera.updateProjectionMatrix();renderer.setSize(el.clientWidth,el.clientHeight);fit(latest.current.view,amount);};const observer=new ResizeObserver(resize);observer.observe(el);
+   const raycaster=new T.Raycaster(),pointer=new T.Vector2(),tap=new PointerTap(),worldBox=new T.Box3(),hitPoint=new T.Vector3();
+@@ -95,35 +106,59 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+   };
+   renderer.domElement.addEventListener('pointerdown',down);renderer.domElement.addEventListener('pointermove',move);renderer.domElement.addEventListener('pointerup',up);renderer.domElement.addEventListener('pointercancel',cancel);
+   const clock=new T.Clock();let lastExtent=-1;
++  let lastZoom:SceneState["zoomCommand"];
+   const animate=()=>{
+    if(disposed)return;frame=requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.05),s=latest.current;
+-   const changed=lastState?.visible!==s.visible||lastState?.selected!==s.selected||lastState?.isolate!==s.isolate;
++   const changed=lastState?.visible!==s.visible||lastState?.selected!==s.selected||lastState?.isolate!==s.isolate||lastState?.hidden!==s.hidden||lastState?.scope!==s.scope;
+    const moving=Math.abs(amount-s.explode)>.0001;
+    if(moving){amount=T.MathUtils.damp(amount,s.explode,8,dt);dirty=true;}
+    if(changed||moving||lastExtent<0){
+     const visible=new Set(s.visible),selection=new Set(s.selected);
+-    const visibleParts=atlas.parts.filter(p=>s.isolate?selection.has(p.id):visible.has(p.system)||selection.has(p.id));
++    const hidden=new Set(s.hidden),scope=s.scope?new Set(s.scope):null;
++    const shown=(p:Atlas['parts'][number])=>!hidden.has(p.id)&&(s.isolate?(s.lesson&&scope?scope.has(p.id):selection.has(p.id)):scope?scope.has(p.id):visible.has(p.system)||selection.has(p.id));
++    const visibleParts=atlas.parts.filter(shown);
+     const nextLayoutKey=visibleParts.map(p=>p.id).join(',')+':'+camera.aspect.toFixed(3);
+-    if(nextLayoutKey!==layoutKey){const layout=createExplosionLayout(visibleParts,camera.aspect);packingWidth=layout.width;packingHeight=layout.height;atlas.parts.forEach((p,i)=>{const cell=layout.cells.get(p.id);offsets[i]=cell?new T.Vector3(cell.x,cell.y+.85,0):centers[i].clone();});layoutKey=nextLayoutKey;if(amount>.05&&!s.isolate)fit(s.view,Math.max(0,(amount-.3)/.7));}
++    if(nextLayoutKey!==layoutKey){
++     familyOffsets.clear();
++     familyHeight=1.65;
++     let cursor=0;
++     for(const family of families){
++      const group=visibleParts.filter(part=>family.includes(part.system));
++      if(!group.length)continue;
++      const min=Math.min(...group.map(part=>part.bounds[0][0]));
++      const max=Math.max(...group.map(part=>part.bounds[1][0]));
++      for(const system of family)familyOffsets.set(system,cursor-min);
++      cursor+=max-min+.13;
++     }
++     familyWidth=Math.max(.2,cursor-.13);
++     for(const [system,x] of familyOffsets)familyOffsets.set(system,x-familyWidth/2);
++     const layout=createExplosionLayout(visibleParts,camera.aspect);packingWidth=layout.width;packingHeight=layout.height;atlas.parts.forEach((p,i)=>{const cell=layout.cells.get(p.id);offsets[i]=cell?new T.Vector3(cell.x,cell.y+.85,0):centers[i].clone();});layoutKey=nextLayoutKey;if(amount>.05&&!s.isolate)fit(s.view,amount);}
+ 
+     atlas.parts.forEach((p,i)=>{
+      const c=centers[i],destination=offsets[i];let dx=0,dy=0,dz=0;
+-     if(amount<=.45){const t=amount/.45;const group=SYSTEMS.findIndex(sys=>sys.id===p.system);const angle=group/SYSTEMS.length*Math.PI*2;dx=Math.sin(angle)*t*.48;dy=(c.y-.85)*t*.28;dz=Math.cos(angle)*t*.48;}
+-     else {const t=(amount-.45)/.55,group=SYSTEMS.findIndex(sys=>sys.id===p.system),angle=group/SYSTEMS.length*Math.PI*2;dx=T.MathUtils.lerp(Math.sin(angle)*.48,destination.x-c.x,t);dy=T.MathUtils.lerp((c.y-.85)*.28,destination.y-c.y,t);dz=T.MathUtils.lerp(Math.cos(angle)*.48,-c.z,t);}
+-     const selected=selection.has(p.id);data.set([dx,dy,dz,(s.isolate?selected:visible.has(p.system)||selected)?1:0],i*4);selectedData[i*4]=selected?255:0;
++     const familyX=familyOffsets.get(p.system)??0;
++     if(amount<=separation){dx=familyX*(amount/separation);}
++     else {const t=(amount-separation)/(1-separation);dx=T.MathUtils.lerp(familyX,destination.x-c.x,t);dy=(destination.y-c.y)*t;dz=-c.z*t;}
++     const selected=selection.has(p.id);data.set([dx,dy,dz,shown(p)?1:0],i*4);selectedData[i*4]=selected?255:0;
+      markerPositions.set(data[i*4+3]>.5?[c.x+dx,c.y+dy,c.z+dz]:[10000,10000,10000],i*3);const mesh=pickers[i];if(mesh){mesh.position.set(dx,dy,dz);mesh.updateMatrix();mesh.updateMatrixWorld(true);}
+     });partTexture.needsUpdate=true;selectionTexture.needsUpdate=true;markerGeometry.attributes.position.needsUpdate=true;lastState=s;lastExtent=amount;dirty=true;
+    }
+    if(s.view!==lastView||s.reset!==lastReset){fit(s.view,amount);lastView=s.view;lastReset=s.reset;}
+-   if(moving&&!s.isolate)fit(amount>.5?'front':s.view,Math.max(0,(amount-.3)/.7));
+-   const isolateKey=s.isolate?s.selected.join(',')+':'+s.reset+':'+s.inspectorOpen+':'+camera.aspect:'';
++   if(moving&&!s.isolate)fit(s.view,amount);
++   const fitPieces=s.lesson&&s.scope?s.scope:s.selected;
++   const isolateKey=s.isolate?fitPieces.join(',')+':'+s.reset+':'+s.view+':'+s.inspectorOpen+':'+camera.aspect:'';
+    if(isolateKey!==lastIsolate||(s.isolate&&moving)){
+-    if(s.isolate){const box=new T.Box3();atlas.parts.forEach((p,i)=>{if(s.selected.includes(p.id))box.union(bounds[i].clone().translate(new T.Vector3(data[i*4],data[i*4+1],data[i*4+2])));});
+-     if(!box.isEmpty()){const center=box.getCenter(new T.Vector3()),size=box.getSize(new T.Vector3());const w=el.clientWidth,h=el.clientHeight,mobile=w<768,landscape=w>h&&h<=600;let left=20,right=w-20,top=mobile?175:110,bottom=h-170;if(s.inspectorOpen){if(landscape){right=w-335;top=100;bottom=h-125;}else if(mobile){const sheet=document.querySelector('.detail-sheet')?.getBoundingClientRect(),header=document.querySelector('.identity')?.getBoundingClientRect();top=(header?.bottom??94)+16;bottom=(sheet?.top??h*.58-139)-16;}else{right=w-370;left=w>1100?285:25;}}const availableWidth=Math.max(150,right-left),availableHeight=Math.max(40,bottom-top);camera.setViewOffset(w,h,w/2-(left+right)/2,h/2-(top+bottom)/2,w,h);const distance=Math.max(.07,Math.max(size.y*h/availableHeight,size.x*w/availableWidth/camera.aspect,size.z)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))*1.35);controls.maxDistance=Math.max(40,distance*2);controls.target.copy(center);camera.position.copy(center).add(new T.Vector3(.2,.1,1).normalize().multiplyScalar(distance));controls.update();dirty=true;}
++    if(s.isolate){const box=new T.Box3();atlas.parts.forEach((p,i)=>{if(fitPieces.includes(p.id))box.union(bounds[i].clone().translate(new T.Vector3(data[i*4],data[i*4+1],data[i*4+2])));});
++     if(!box.isEmpty()){const center=box.getCenter(new T.Vector3()),size=box.getSize(new T.Vector3());const w=el.clientWidth,h=el.clientHeight,mobile=w<768,landscape=w>h&&h<=600;let left=20,right=w-20,top=mobile?175:110,bottom=h-170;if(s.lesson){top=24;bottom=h-24;right=w-54;}if(s.inspectorOpen){if(landscape){right=w-335;top=100;bottom=h-125;}else if(mobile){const sheet=document.querySelector('.detail-sheet')?.getBoundingClientRect(),header=document.querySelector('.identity')?.getBoundingClientRect();top=(header?.bottom??94)+16;bottom=(sheet?.top??h*.58-139)-16;}else{right=w-370;left=w>1100?285:25;}}const availableWidth=Math.max(150,right-left),availableHeight=Math.max(40,bottom-top);camera.setViewOffset(w,h,w/2-(left+right)/2,h/2-(top+bottom)/2,w,h);const distance=Math.max(.07,Math.max(size.y*h/availableHeight,size.x*w/availableWidth/camera.aspect,size.z)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))*1.35);controls.maxDistance=Math.max(40,distance*2);controls.target.copy(center);camera.position.copy(center).add(new T.Vector3(...(s.view==='front'?[0,0,1]:s.view==='side'?[1,0,0]:s.view==='back'?[0,0,-1]:[.2,.1,1]) as [number,number,number]).normalize().multiplyScalar(distance));controls.update();dirty=true;}
+     }else if(lastIsolate){camera.clearViewOffset();fit(s.view,amount);}
+     lastIsolate=isolateKey;
+    }
+-   controls.enableRotate=amount<.8;controls.mouseButtons.LEFT=amount<.8?T.MOUSE.ROTATE:T.MOUSE.PAN;controls.touches.ONE=amount<.8?T.TOUCH.ROTATE:T.TOUCH.PAN;ground.visible=platform.visible=ring.visible=innerRing.visible=amount<.5&&!s.isolate;markers.visible=amount>.75;controls.autoRotate=s.rotate&&!s.isolate&&amount<.4;controls.autoRotateSpeed=.65;controls.update();if(controls.autoRotate)dirty=true;
++   if(s.zoomCommand&&s.zoomCommand!==lastZoom){
++    const offset=camera.position.clone().sub(controls.target);
++    const distance=T.MathUtils.clamp(offset.length()*(s.zoomCommand.direction===1?.82:1.22),controls.minDistance,controls.maxDistance);
++    camera.position.copy(controls.target).add(offset.setLength(distance));lastZoom=s.zoomCommand;dirty=true;
++   }
++   controls.enableRotate=amount<.8;controls.mouseButtons.LEFT=amount<.8?T.MOUSE.ROTATE:T.MOUSE.PAN;controls.touches.ONE=amount<.8?T.TOUCH.ROTATE:T.TOUCH.PAN;ground.visible=platform.visible=ring.visible=innerRing.visible=amount<.5&&!s.isolate;markers.visible=amount>.75;controls.autoRotate=s.rotate&&!s.isolate&&amount<.03;controls.autoRotateSpeed=s.rotationSpeed??.65;controls.update();if(controls.autoRotate)dirty=true;
+    if(dirty){renderer.render(scene,camera);targets=[];if(amount>.45){const hasSolid=atlas.parts.some((p,i)=>p.system!=='integumentary'&&data[i*4+3]>.5);atlas.parts.forEach((p,i)=>{if(data[i*4+3]<.5||(hasSolid&&p.system==='integumentary'))return;let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;for(let corner=0;corner<8;corner++){projected.set(p.bounds[(corner&1)?1:0][0]+data[i*4],p.bounds[(corner&2)?1:0][1]+data[i*4+1],p.bounds[(corner&4)?1:0][2]+data[i*4+2]).project(camera);const x=(projected.x+1)*el.clientWidth/2,y=(1-projected.y)*el.clientHeight/2;left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}projected.copy(centers[i]).add(new T.Vector3(data[i*4],data[i*4+1],data[i*4+2])).project(camera);if(projected.z< -1||projected.z>1)return;targets.push({index:i,x:(projected.x+1)*el.clientWidth/2,y:(1-projected.y)*el.clientHeight/2,left,right,top,bottom});});}dirty=false;}
+ 
+   };animate();
