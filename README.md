@@ -89,9 +89,19 @@ Menu **3D Anatomy** di `/anatomy` tersedia untuk semua anggota portal. Viewer [H
 
 Panel **Browse** memakai wilayah tubuh dan area belajar dari [Human Atlas Enhanced](https://github.com/PrejudiceNeutrino/human-atlas-enhanced), commit `fb3ca0f3950dafce4d262c3a0404959753796791`. Hanya ID struktur yang tersedia di masing-masing model yang ditampilkan. Viewer juga mengadaptasi pemutaran Explode bertahap dari repositori yang sama, serta menyediakan Random Anatomy, pengaturan tampilan, dan pemulihan struktur tersembunyi satu per satu. Untuk membangun ulang metadata, jalankan `python3 scripts/build-anatomy-discovery.py /path/to/human-atlas-enhanced/public public/human-atlas/models`.
 
-Tab **Learn** dan **Study Tools** mengadaptasi materi berbahasa Inggris dari commit Enhanced yang sama, untuk sistem pencernaan, pernapasan, dan limfoid. Bangun ulang data dengan `python3 scripts/build-anatomy-learning.py /path/to/human-atlas-enhanced public/human-atlas/learn`.
+Tab **Learn** mengadaptasi materi berbahasa Inggris dari commit Enhanced yang sama, untuk sistem pencernaan, pernapasan, dan limfoid. Bangun ulang data dengan `python3 scripts/build-anatomy-learning.py /path/to/human-atlas-enhanced public/human-atlas/learn`.
+
+Di dalam **Learn**, **Visualize** menyediakan model 3D yang bisa diputar, digeser, diperbesar, dan diklik untuk inspeksi. Panel Visibility dan Inspect mengapit kanvas di desktop. Pemutaran Explode pada Explore berhenti di 30%. **Gallery** memuat 94 gambar dengan pencarian, filter kategori, favorit, dan dialog Inspect Figure. Latihan label tersedia untuk gambar sistem pencernaan yang memiliki label terverifikasi. **Study Tools** tersedia di dalam Learn.
 
 Untuk memperbarui build, terapkan `scripts/patches/human-atlas-portal.patch` pada source Human Atlas dan jalankan `npm run build -- --base=/human-atlas/`. Salin HTML dan aset hasil build; pertahankan manifest, model, dan atribusi yang sudah tersedia di `public/human-atlas/`. URL chunk di kedua manifest menggunakan awalan `/human-atlas/models/`. Lisensi kode MIT dan atribusi BodyParts3D 4.0 (CC BY 4.0) tersedia di viewer. Atlas ditujukan untuk pembelajaran.
+
+## Update portal — 16 November 2026
+
+- **Dashboard** — Report Overview mengikuti keterlibatan pengguna. Tabel Cases dan Latest Appointments menampilkan semua data, dan pagination disembunyikan saat tabel kosong.
+- **Laporan dan grafik** — Surgery dihitung dari Medical Team dan Operation, termasuk asisten. Big Fire di Report Overview mengikuti incident commander dan personel. Grafik Member Performance menyediakan filter dokter, tipe laporan, dan tanggal.
+- **Form report** — Lebar search bar diseragamkan, Upload Template sejajar dengan filter, dan Attending Doctor dihapus dari Report Information pada Surgery.
+- **Profil** — Navbar langsung memperbarui display name. Akun tanpa nomor badge menampilkan **No Badge Number**.
+- **Akses** — Akses operasional dibuka untuk posisi dan divisi aktif. Grafik Member Performance khusus Director, Deputy Director, Advisor, Chief, dan Deputy. Penerapan migrasi Supabase `034_open_operational_access.sql` di production belum diverifikasi.
 
 ## Struktur proyek
 
