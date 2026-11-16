@@ -14,7 +14,7 @@ const systems:Record<string,{system:string;structures:string[]}>={
 };
 
 export function AnatomyVisualize({subject,title,initialModel,onExplore}:{subject:string;title:string;initialModel:AnatomySelection['model'];onExplore:(selection:AnatomySelection)=>void}){
- const {t,language}=usePreferences();
+ const {t,language,theme}=usePreferences();
  const [model,setModel]=useState(initialModel),[structure,setStructure]=useState('');
  const [visibility,setVisibility]=useState(true),[context,setContext]=useState(false);
  const [inspector,setInspector]=useState<{open:boolean;name?:string;description:string;count:number;hidden:number;isolated:boolean}>();
@@ -27,8 +27,8 @@ export function AnatomyVisualize({subject,title,initialModel,onExplore}:{subject
   frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-lesson',action,value},window.location.origin);
  }
  useEffect(()=>{
-  frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-language',language},window.location.origin);
- },[language]);
+  frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-language',language,theme},window.location.origin);
+ },[language,theme]);
  useEffect(()=>{
   function receive(event:MessageEvent){
    if(event.origin===location.origin&&event.source===frame.current?.contentWindow&&event.data?.type==='sahd-anatomy-inspector')setInspector(event.data);
@@ -59,7 +59,7 @@ export function AnatomyVisualize({subject,title,initialModel,onExplore}:{subject
      <button type="button" disabled={!inspector?.hidden} onClick={()=>send('restore')}>{t('Restore all hidden')}</button>
     </aside>}
     <div className="anatomy-lesson-stage">
-    <iframe ref={frame} src={source} title={`${title} 3D`} onLoad={()=>frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-language',language},window.location.origin)}/>
+    <iframe ref={frame} src={source} title={`${title} 3D`} onLoad={()=>frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-language',language,theme},window.location.origin)}/>
     <div className="anatomy-lesson-explode">
      <label>{language==='id'?'Urai anatomi':t('Explode anatomy')} <output>{explode}%</output>
       <input type="range" min={0} max={30} value={explode} onChange={event=>{const value=Number(event.target.value);setExplode(value);send('explode',value/100)}}/>
@@ -92,7 +92,7 @@ const categories={
 };
 
 export function AnatomyGallery({subject,title}:{subject:string;title:string}){
- const {t,language}=usePreferences();
+ const {t,language,theme}=usePreferences();
  const root=`/human-atlas/learn/gallery/${subject}/`;
  const [figures,setFigures]=useState<Figure[]>([]),[error,setError]=useState(false),[retry,setRetry]=useState(0);
  const [filter,setFilter]=useState('all'),[query,setQuery]=useState(''),[stars,setStars]=useState<string[]>([]);

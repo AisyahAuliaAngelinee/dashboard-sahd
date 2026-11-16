@@ -15,13 +15,14 @@ type Subject={articles:{id:string;title:string;subtitle?:string;introMarkdown?:s
 const normalize=(value:string)=>value.normalize('NFKC').toLowerCase().replace(/[^\p{L}\p{N}\s]/gu,' ').trim().replace(/\s+/g,' ');
 
 function ReadingText({text}:{text?:string}){
+ const {t}=usePreferences();
  const inline=(value:string)=>value.split(/(\*\*[^*\n]+\*\*|\*[^*\n]+\*)/g).map((segment,index)=>segment.startsWith('**')?<strong key={index}>{segment.slice(2,-2)}</strong>:segment.startsWith('*')&&segment.endsWith('*')&&segment.length>2?<em key={index}>{segment.slice(1,-1)}</em>:segment);
  return <div className="anatomy-reading-text" data-no-translate>{text?.trim().split(/\n{2,}/).map((block,index)=>{
   const lines=block.split('\n');
   const list=lines.every(line=>/^\s*[-*]\s+/.test(line));
   const numbered=lines.every(line=>/^\s*\d+[.)]\s+/.test(line));
   if(list||numbered){const Tag=numbered?'ol':'ul';return <Tag key={index}>{lines.map((line,i)=><li key={i}>{inline(line.replace(/^\s*(?:[-*]|\d+[.)])\s+/,''))}</li>)}</Tag>}
-  return <p key={index}>{inline(block.replace(/^#{1,6}\s+/gm,''))}</p>;
+  return <p key={index}>{inline(t(block.replace(/^#{1,6}\s+/gm,'')))}</p>;
  })}</div>;
 }
 function StudyActivity({data,activity}:{data:Subject;activity:typeof activities[number]}){
@@ -58,21 +59,23 @@ function StudyActivity({data,activity}:{data:Subject;activity:typeof activities[
 const readingTabs=['General Overview','Deep Dive','How It Connects','Exam Cram'];
 export default function AnatomyLearning({initialSubject,onChooseSubject,model,onExplore}:{initialSubject:string;onChooseSubject:()=>void;model:AnatomySelection['model'];onExplore:(selection:AnatomySelection)=>void}){
  const {t}=usePreferences();
+ const {language}=usePreferences();
  const subject=initialSubject;
+ const contentKey=subject+language;
  const [state,setState]=useState<{subject:string;data?:Subject;error?:boolean}>(),[articleId,setArticleId]=useState(''),[activity,setActivity]=useState<typeof activities[number]>('Quiz'),[retry,setRetry]=useState(0),[selectedSection,setSelectedSection]=useState('');
  useEffect(()=>{
   const controller=new AbortController();
-  fetch('/human-atlas/learn/'+subject+'.json',{signal:controller.signal}).then(response=>{if(!response.ok)throw Error();return response.json()}).then(data=>{if(!controller.signal.aborted)setState({subject,data})}).catch(()=>{if(!controller.signal.aborted)setState({subject,error:true})});
+  fetch('/human-atlas/learn/'+subject+(language==='id'?'.id':'')+'.json',{signal:controller.signal}).then(response=>{if(!response.ok)throw Error();return response.json()}).then(data=>{if(!controller.signal.aborted)setState({subject:contentKey,data})}).catch(()=>{if(!controller.signal.aborted)setState({subject:contentKey,error:true})});
   return()=>controller.abort();
- },[subject,retry]);
- const data=state?.subject===subject?state.data:undefined;
+ },[subject,language,contentKey,retry]);
+ const data=state?.subject===contentKey?state.data:undefined;
  const article=data?.articles.find(item=>item.id===articleId)||data?.articles[0];
  const title=t(anatomySubjects.find(item=>item.value===subject)?.label||'Learn');
  const study=articleId==='study';
  const activeTab=['study','visualize','gallery'].includes(articleId)?articleId:article?.id;
  const studyTools=data&&<div className="anatomy-study-tools">
    <ReportSelect label={t('Activity')} value={activity} onChange={value=>setActivity(value as typeof activity)} items={activities.map(label=>({value:label,label:t(label)}))}/>
-   <StudyActivity key={subject+activity} data={data} activity={activity}/>
+   <StudyActivity key={contentKey+activity} data={data} activity={activity}/>
  </div>;
  return <section className="anatomy-learning anatomy-learn-page">
   <div className="anatomy-learn-heading">
@@ -95,13 +98,13 @@ export default function AnatomyLearning({initialSubject,onChooseSubject,model,on
       <div className="anatomy-learn-intro"><h3>{t(readingTabs[data.articles.indexOf(article)]||article.title)}</h3><ReadingText text={article.introMarkdown}/></div>
       <div className="anatomy-learn-grid">
        <nav className="anatomy-learn-index" aria-label={t('On this page')}><span>{t('On this page')}</span>
-        <ol>{article.sections.map((section,index)=><li key={section.id}><a href={'#learn-'+section.id} aria-current={(selectedSection?section.id===selectedSection:index===0)?'location':undefined} onClick={event=>{event.preventDefault();setSelectedSection(section.id);const heading=document.getElementById('learn-'+section.id);heading?.focus({preventScroll:true});heading?.scrollIntoView({block:'start'});}}>{section.title}</a></li>)}</ol>
+        <ol>{article.sections.map((section,index)=><li key={section.id}><a href={'#learn-'+section.id} aria-current={(selectedSection?section.id===selectedSection:index===0)?'location':undefined} onClick={event=>{event.preventDefault();setSelectedSection(section.id);const heading=document.getElementById('learn-'+section.id);heading?.focus({preventScroll:true});heading?.scrollIntoView({block:'start'});}}>{t(section.title)}</a></li>)}</ol>
        </nav>
-       <div>{article.sections.map(section=><section key={section.id} className="anatomy-learn-section"><h4 id={'learn-'+section.id} tabIndex={-1}>{section.title}</h4><ReadingText text={section.markdown}/></section>)}</div>
+       <div>{article.sections.map(section=><section key={section.id} className="anatomy-learn-section"><h4 id={'learn-'+section.id} tabIndex={-1}>{t(section.title)}</h4><ReadingText text={section.markdown}/></section>)}</div>
       </div>
      </article>}
     </TabsContent>
-   </Tabs>:state?.subject===subject&&state.error?<p role="alert">{t('Could not load learning content.')} <Button variant="outline" onClick={()=>{setState(undefined);setRetry(value=>value+1)}}>{t('Retry')}</Button></p>:<p role="status">{t('Loading…')}</p>}
+   </Tabs>:state?.subject===contentKey&&state.error?<p role="alert">{t('Could not load learning content.')} <Button variant="outline" onClick={()=>{setState(undefined);setRetry(value=>value+1)}}>{t('Retry')}</Button></p>:<p role="status">{t('Loading…')}</p>}
   <p className="muted text-xs">{t('Source')}: <a href="https://github.com/PrejudiceNeutrino/human-atlas-enhanced" target="_blank" rel="noopener noreferrer">Human Atlas Enhanced</a></p>
  </section>;
 }

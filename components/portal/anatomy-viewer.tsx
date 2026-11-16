@@ -1,4 +1,5 @@
 'use client';
+import {Button} from '@/components/ui/button';
 import {useEffect,useRef,useState} from 'react';
 import {ArrowUpRight,BookOpen} from 'lucide-react';
 import {Dialog,DialogContent,DialogTitle,DialogDescription} from '@/components/ui/dialog';
@@ -7,7 +8,7 @@ import {LocalizedView} from './localized-view';
 import AnatomyLearning,{anatomySubjects} from './anatomy-learning';
 
 export default function AnatomyViewer(){
- const {language}=usePreferences();
+ const {language,theme}=usePreferences();
  const [model,setModel]=useState<'male'|'female'>('male');
  const [tab,setTab]=useState<'explore'|'learn'>('explore');
  const [exploreFocus,setExploreFocus]=useState('');
@@ -24,15 +25,15 @@ export default function AnatomyViewer(){
   window.addEventListener('message',changed);
   return()=>window.removeEventListener('message',changed);
  },[]);
- function syncLanguage(){frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-language',language},window.location.origin)}
- useEffect(syncLanguage,[language]);
+ function syncLanguage(){frame.current?.contentWindow?.postMessage({type:'sahd-anatomy-language',language,theme},window.location.origin)}
+ useEffect(syncLanguage,[language,theme]);
  const url='/human-atlas/index.html?'+new URLSearchParams({portal:'1',model,focus:exploreFocus});
  return <LocalizedView>
   <main className="anatomy-full-workspace" data-view={tab}>
    {tab!=='explore'&&<div className="anatomy-full-header"><strong className="anatomy-learn-wordmark">Human Atlas</strong>
     <nav className="anatomy-section-tabs" aria-label="Anatomy workspace">
-     <button type="button" onClick={()=>setTab('explore')}>Explore</button>
-     <button type="button" aria-pressed={tab==='learn'} onClick={()=>setLearnOpen(true)}>Learn</button>
+     <Button variant="secondary" type="button" aria-pressed={false} onClick={()=>setTab('explore')}>Explore</Button>
+     <Button variant="default" type="button" aria-pressed={tab==='learn'} onClick={()=>setLearnOpen(true)}>Learn</Button>
     </nav>
    </div>}
    <Dialog open={learnOpen} onOpenChange={setLearnOpen}>

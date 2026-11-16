@@ -31,10 +31,10 @@ index 031d084..b9c9ade 100644
   'heart':'A muscular pump in the chest. Its right side sends blood to the lungs; its left side sends blood through the systemic circulation.',
   'liver':'A large organ beneath the right side of the diaphragm. It processes absorbed nutrients, produces bile, and synthesizes many proteins carried in the blood.',
 diff --git a/app/globals.css b/app/globals.css
-index 91cbe15..74fd310 100644
+index 91cbe15..7f6cdaf 100644
 --- a/app/globals.css
 +++ b/app/globals.css
-@@ -86,3 +86,41 @@ h1 .edition{font-family:inherit;font-weight:500;font-size:10px;letter-spacing:.0
+@@ -86,3 +86,68 @@ h1 .edition{font-family:inherit;font-weight:500;font-size:10px;letter-spacing:.0
  @media(max-width:767px){body:has(.detail-sheet) .view-controls{visibility:hidden}}
  
  @media(max-height:600px) and (orientation:landscape){body:has(.detail-sheet) .bottom-dock{left:12px;right:324px;width:auto;transform:none;max-width:none;margin:0}}
@@ -76,8 +76,35 @@ index 91cbe15..74fd310 100644
 +body:has(.studio[data-lesson=true] .detail-sheet) .view-controls{visibility:hidden}
 +.studio[data-lesson=true] .view-controls{box-shadow:none;border-radius:12px;padding:4px;gap:2px}
 +.studio[data-lesson=true] .view-controls button{width:32px;height:32px;min-height:32px}
++
++.bottom-dock [data-slot=slider]{width:100%;display:block}
++.bottom-dock [data-slot=slider-track]{position:relative;width:100%;height:5px;min-height:5px;border-radius:999px;background:#dce2e7;overflow:hidden}
++.bottom-dock [data-slot=slider-range]{position:absolute;height:100%;background:#263d4c;border-radius:999px}
++.bottom-dock [data-slot=slider-thumb]{background:#263d4c;border:4px solid #fff;width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 1px #d4dce2}
++.bottom-dock .dock-reset{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;align-self:stretch;min-width:64px;padding:10px 12px;border:1px solid #dce2e7;border-radius:12px;background:#f4f6f8;color:#526574;transition:background .15s}
++.bottom-dock .dock-reset:hover{background:#e6edf1}
++.bottom-dock .dock-reset:focus-visible{outline:2px solid #527c8d;outline-offset:3px}
++
++html,body,.studio{background:#f6f8fb}
++.atlas-workspace-tabs{background:transparent!important;box-shadow:none!important;border-radius:0!important}
++.atlas-workspace-tabs button,.atlas-workspace-tabs button[aria-pressed=true]{background:transparent!important;box-shadow:none!important;border-radius:0!important;border-bottom:3px solid transparent!important}
++.atlas-workspace-tabs button[aria-pressed=true]{color:#087f83!important;border-bottom-color:#168d87!important}
++html[data-theme=dark],html[data-theme=dark] body,html[data-theme=dark] .studio{background:#141f28;color:#e7eef5}
++html[data-theme=dark] .glass,html[data-theme=dark] .top-actions button,html[data-theme=dark] .detail-sheet{background:#243440ed;color:#e7eef5;border-color:#486071}
++html[data-theme=dark] .identity,html[data-theme=dark] .identity h1,html[data-theme=dark] .explode-label,html[data-theme=dark] .system-name{color:#e7eef5}
++html[data-theme=dark] .atlas-workspace-tabs button[aria-pressed=true]{color:#8cd9d1!important;border-bottom-color:#8cd9d1!important}
++html[data-theme=dark] .dock-reset,html[data-theme=dark] .explode-label output{background:#334956;color:#e7eef5;border-color:#486071}
++
++.atlas-workspace-tabs{background:rgba(225,233,238,.65)!important;backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);border-radius:14px!important;padding:5px;gap:5px}
++.atlas-workspace-tabs button{background:#edf1f5!important;border:1px solid transparent!important;border-radius:10px!important;color:#526574!important}
++.atlas-workspace-tabs button[aria-pressed=true]{background:#fff!important;border:1px solid #168d8740!important;color:#087f83!important;box-shadow:0 2px 6px #23374915!important}
++html[data-theme=dark] .atlas-workspace-tabs{background:rgba(36,54,64,.65)!important}
++html[data-theme=dark] .atlas-workspace-tabs button{background:#243440!important;color:#c4d2df!important}
++html[data-theme=dark] .atlas-workspace-tabs button[aria-pressed=true]{background:#354b5a!important;border-color:#8cd9d180!important;color:#8cd9d1!important}
++.atlas-workspace-tabs,html[data-theme=dark] .atlas-workspace-tabs{background:none!important;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0;box-shadow:none!important}
++.atlas-workspace-tabs [data-slot=button][aria-pressed=true],html[data-theme=dark] .atlas-workspace-tabs [data-slot=button][aria-pressed=true]{background:#087f83!important;color:#fff!important;border-color:#087f83!important}
 diff --git a/app/page.tsx b/app/page.tsx
-index 5b59ba1..2cd5ba0 100644
+index 5b59ba1..c372736 100644
 --- a/app/page.tsx
 +++ b/app/page.tsx
 @@ -1,7 +1,5 @@
@@ -89,7 +116,7 @@ index 5b59ba1..2cd5ba0 100644
  import {Button} from '@/components/ui/button';
  import {Badge} from '@/components/ui/badge';
  import {Slider} from '@/components/ui/slider';
-@@ -9,44 +7,183 @@ import {Switch} from '@/components/ui/switch';
+@@ -9,44 +7,184 @@ import {Switch} from '@/components/ui/switch';
  import {Sheet,SheetContent,SheetTitle,SheetDescription} from '@/components/ui/sheet';
  import {Combobox,ComboboxInput,ComboboxContent,ComboboxList,ComboboxItem,ComboboxEmpty} from '@/components/ui/combobox';
  import AnatomyScene from './scene';
@@ -125,6 +152,7 @@ index 5b59ba1..2cd5ba0 100644
 + useEffect(()=>{
 +  const sync=(event:MessageEvent)=>{
 +   if(event.origin!==window.location.origin||event.source!==window.parent||event.data?.type!=='sahd-anatomy-language')return;
++   if(event.data.theme==='dark'||event.data.theme==='light')document.documentElement.dataset.theme=event.data.theme;
 +   if(event.data.language==='en'||event.data.language==='id')setLanguage(event.data.language);
 +  };
 +  window.addEventListener('message',sync);
@@ -235,7 +263,7 @@ index 5b59ba1..2cd5ba0 100644
 -   <div className="panel-foot"><span>{visibleCount.toLocaleString()} pieces visible</span><Button variant="ghost" onClick={()=>setState(s=>({...s,visible:[],selected:[],isolate:false}))}>Hide all</Button></div>
 +  <header className="identity"><div className="eyebrow"><span className="status-dot"/> {t("INTERACTIVE ANATOMY")}</div><h1>Human Atlas<Badge variant="outline" className="edition">3D</Badge></h1><div className="identity-meta">{atlas?atlas.parts.length.toLocaleString():(female?'2,245':'2,234')} {t("modeled pieces")} <span>·</span> {t(modelLabel)}</div></header>
 +  <nav className="top-actions" aria-label={t("Explorer panels")}>{inPortal&&<div className="atlas-workspace-tabs">
-+   {([['explore','Explore'],['learn','Learn']] as const).map(([tab,label])=><button type="button" key={tab} aria-pressed={tab==='explore'} onClick={()=>window.parent.postMessage({type:'sahd-anatomy-tab',tab},window.location.origin)}>{t(label)}</button>)}
++   {([['explore','Explore'],['learn','Learn']] as const).map(([tab,label])=><Button variant={tab==='explore'?'default':'secondary'} type="button" key={tab} aria-pressed={tab==='explore'} onClick={()=>window.parent.postMessage({type:'sahd-anatomy-tab',tab},window.location.origin)}>{t(label)}</Button>)}
 +  </div>}<Button variant="ghost" className={panel==='search'?'active':''} onClick={()=>openPanel('search')} aria-label={t("Search anatomy")}><Search size={18}/><span>{t("Find a structure")}</span><kbd>/</kbd></Button><Button variant="ghost" onClick={()=>openPanel('browse')} aria-label={t("Browse anatomy")}><Layers3 size={18}/><span>{t("Browse")}</span></Button><Button variant="ghost" className="icon-button" aria-label={t("Random anatomy")} title={t("Random anatomy")} disabled={!atlas} onClick={randomAnatomy}><Shuffle size={18}/></Button><Button variant="ghost" className="icon-button" aria-label={t("Display settings")} title={t("Display settings")} onClick={()=>openPanel('display')}><SlidersHorizontal size={18}/></Button><Button variant="ghost" className="icon-button" aria-label={t("About this atlas")} onClick={()=>{setDetails(false);setPanel(null);setAbout(true);}}><Info size={18}/></Button></nav>
 +  <section className={`layers-panel glass ${panel==='layers'?'mobile-open':''}`} aria-label={t("Anatomical layers")}>
 +   <div className="panel-heading"><span>{t("Systems")}</span><Button variant="ghost" className="mobile-only icon-button" onClick={()=>setPanel(null)} aria-label={t("Close systems")}><X size={18}/></Button><Badge variant="secondary" className="desktop-only small-number">{activeSystems.length}</Badge></div>
@@ -440,7 +468,7 @@ index 0000000..81ab7d2
 + "Ankle & foot": "Pergelangan kaki & kaki"
 +};
 diff --git a/app/scene.tsx b/app/scene.tsx
-index 553f1db..498e8d9 100644
+index 553f1db..b0319d7 100644
 --- a/app/scene.tsx
 +++ b/app/scene.tsx
 @@ -5,6 +5,7 @@ import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.j
@@ -451,7 +479,18 @@ index 553f1db..498e8d9 100644
  import {PointerTap} from './pointer-tap';
  import {SYSTEMS,type Atlas,type SceneState} from './anatomy';
  interface Props {atlas:Atlas;state:SceneState;onSelect:(id:string)=>void;onProgress:(n:number)=>void;onError:(s:string)=>void}
-@@ -33,7 +34,9 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+@@ -17,7 +18,9 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+   const abort=new AbortController();
+   let renderer:T.WebGLRenderer;
+   try{renderer=new T.WebGLRenderer({antialias:true,alpha:false,powerPreference:'high-performance'});}catch{onError('This browser could not start the 3D viewer. Please try a browser with WebGL enabled.');return;}
+-  renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<768?1.5:2));renderer.setClearColor('#f2f3f3');renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;el.appendChild(renderer.domElement);
++  renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<768?1.5:2));const syncTheme=()=>{renderer.setClearColor(document.documentElement.dataset.theme==='dark'?'#141f28':'#f6f8fb');dirty=true;};
++  syncTheme();const themeObserver=new MutationObserver(syncTheme);themeObserver.observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
++  renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;el.appendChild(renderer.domElement);
+   renderer.domElement.setAttribute('aria-label','Interactive human anatomy. Drag to orbit, pinch or scroll to zoom, and tap a structure to inspect it.');
+   const scene=new T.Scene(),camera=new T.PerspectiveCamera(34,1,.005,100),controls=new OrbitControls(camera,renderer.domElement);
+   camera.position.set(1.4,1.05,3.6);controls.target.set(0,.85,0);controls.enableDamping=true;controls.dampingFactor=.085;controls.minDistance=.07;controls.maxDistance=40;controls.maxPolarAngle=Math.PI*.96;controls.addEventListener('change',()=>{dirty=true;});
+@@ -33,7 +36,9 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
    const selectedData=new Uint8Array(width*4),selectionTexture=new T.DataTexture(selectedData,width,1);selectionTexture.needsUpdate=true;
    const materials:T.Material[]=[],geometries:T.BufferGeometry[]=[],pickers:(T.Mesh|undefined)[]=[],centers=atlas.parts.map(p=>new T.Vector3().fromArray(p.bounds[0]).add(new T.Vector3().fromArray(p.bounds[1])).multiplyScalar(.5));
    const offsets:T.Vector3[]=[],bounds=atlas.parts.map(p=>new T.Box3(new T.Vector3().fromArray(p.bounds[0]),new T.Vector3().fromArray(p.bounds[1])));
@@ -462,7 +501,7 @@ index 553f1db..498e8d9 100644
    const markerPositions=new Float32Array(atlas.parts.length*3),markerGeometry=new T.BufferGeometry();markerGeometry.setAttribute('position',new T.BufferAttribute(markerPositions,3));
    const markerMaterial=new T.PointsMaterial({color:0x64748b,size:5,sizeAttenuation:false,transparent:true,opacity:.72,depthTest:false});
    markerMaterial.onBeforeCompile=shader=>{shader.fragmentShader=shader.fragmentShader.replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\nif (distance(gl_PointCoord, vec2(0.5)) > 0.5) discard;');};
-@@ -60,6 +63,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+@@ -60,6 +65,7 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
    const mats=new Map(SYSTEMS.map(s=>[s.id,materialFor(s.id)]));
    let loaded=0;
    const loadChunk=async(ci:number)=>{
@@ -470,7 +509,7 @@ index 553f1db..498e8d9 100644
     const chunk=atlas.chunks[ci],compressed=!!chunk.gzip&&typeof DecompressionStream!=='undefined';const response=await fetch(compressed?chunk.gzip!:chunk.url,{signal:abort.signal});const buffer=await decodeModelResponse(response,chunk.bytes,compressed);if(disposed)return;
     const groups=new Map<string,T.BufferGeometry[]>();
     atlas.parts.forEach((p,i)=>{
-@@ -78,9 +82,16 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+@@ -78,9 +84,16 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
    const fit=(view:string,extent=0)=>{
     const aspect=camera.aspect,mobile=el.clientWidth<768,normalDistance=mobile?Math.max(4.5,1.8*el.clientHeight/Math.max(160,el.clientHeight-350)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))):4;
     const reservedHeight=mobile?350:270;const availableAspect=Math.max(.35,(el.clientWidth-(mobile?40:340))/Math.max(160,el.clientHeight-reservedHeight));const atlasDistance=Math.max(packingHeight,packingWidth/availableAspect)/(2*Math.tan(T.MathUtils.degToRad(camera.fov/2)))*(el.clientHeight/Math.max(160,el.clientHeight-reservedHeight))*1.08;
@@ -490,7 +529,7 @@ index 553f1db..498e8d9 100644
    };
    const resize=()=>{layoutKey='';lastState=null;renderer.setPixelRatio(Math.min(devicePixelRatio,el.clientWidth<768||el.clientHeight<600?1.5:2));camera.aspect=el.clientWidth/el.clientHeight;camera.updateProjectionMatrix();renderer.setSize(el.clientWidth,el.clientHeight);fit(latest.current.view,amount);};const observer=new ResizeObserver(resize);observer.observe(el);
    const raycaster=new T.Raycaster(),pointer=new T.Vector2(),tap=new PointerTap(),worldBox=new T.Box3(),hitPoint=new T.Vector3();
-@@ -95,35 +106,59 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
+@@ -95,40 +108,64 @@ export default function AnatomyScene({atlas,state,onSelect,onProgress,onError}:P
    };
    renderer.domElement.addEventListener('pointerdown',down);renderer.domElement.addEventListener('pointermove',move);renderer.domElement.addEventListener('pointerup',up);renderer.domElement.addEventListener('pointercancel',cancel);
    const clock=new T.Clock();let lastExtent=-1;
@@ -561,3 +600,9 @@ index 553f1db..498e8d9 100644
     if(dirty){renderer.render(scene,camera);targets=[];if(amount>.45){const hasSolid=atlas.parts.some((p,i)=>p.system!=='integumentary'&&data[i*4+3]>.5);atlas.parts.forEach((p,i)=>{if(data[i*4+3]<.5||(hasSolid&&p.system==='integumentary'))return;let left=Infinity,right=-Infinity,top=Infinity,bottom=-Infinity;for(let corner=0;corner<8;corner++){projected.set(p.bounds[(corner&1)?1:0][0]+data[i*4],p.bounds[(corner&2)?1:0][1]+data[i*4+1],p.bounds[(corner&4)?1:0][2]+data[i*4+2]).project(camera);const x=(projected.x+1)*el.clientWidth/2,y=(1-projected.y)*el.clientHeight/2;left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y);}projected.copy(centers[i]).add(new T.Vector3(data[i*4],data[i*4+1],data[i*4+2])).project(camera);if(projected.z< -1||projected.z>1)return;targets.push({index:i,x:(projected.x+1)*el.clientWidth/2,y:(1-projected.y)*el.clientHeight/2,left,right,top,bottom});});}dirty=false;}
  
    };animate();
+   const contextLost=(e:Event)=>{e.preventDefault();onError('The 3D session was paused by your device. Reload to continue.');};renderer.domElement.addEventListener('webglcontextlost',contextLost);
+-  return()=>{disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();controls.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());scene.traverse(o=>{if(o instanceof T.Mesh&&!geometries.includes(o.geometry)){o.geometry.dispose();const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.dispose());}});env.dispose();partTexture.dispose();selectionTexture.dispose();markerGeometry.dispose();markerMaterial.dispose();hover.remove();renderer.dispose();renderer.domElement.remove();};
++  return()=>{themeObserver.disconnect();disposed=true;abort.abort();cancelAnimationFrame(frame);observer.disconnect();controls.dispose();geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());scene.traverse(o=>{if(o instanceof T.Mesh&&!geometries.includes(o.geometry)){o.geometry.dispose();const ms=Array.isArray(o.material)?o.material:[o.material];ms.forEach(m=>m.dispose());}});env.dispose();partTexture.dispose();selectionTexture.dispose();markerGeometry.dispose();markerMaterial.dispose();hover.remove();renderer.dispose();renderer.domElement.remove();};
+  },[atlas]);
+  return <div className="scene" ref={host}/>;
+ }
